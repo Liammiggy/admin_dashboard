@@ -7,7 +7,7 @@ class NewUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        "New Users Pages",
+        "New Users Pagessss",
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );

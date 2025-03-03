@@ -201,7 +201,7 @@ class _UserListState extends State<UserList> {
                   SizedBox(
                     width: double.infinity,
                     child: DataTable(
-                      headingRowColor: MaterialStateColor.resolveWith(
+                      headingRowColor: WidgetStateColor.resolveWith(
                         (states) => const Color.fromRGBO(30, 30, 45, 1),
                       ),
                       columnSpacing: 16,

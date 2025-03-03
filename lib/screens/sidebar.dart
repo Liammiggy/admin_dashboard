@@ -157,6 +157,7 @@ class _SidebarState extends State<Sidebar> {
       children: [
         _buildSubModule("User List", "UserList"),
         _buildSubModule("New User", "manage_user"),
+        _buildSubModule("Access Role", "access"),
       ],
     );
   }
