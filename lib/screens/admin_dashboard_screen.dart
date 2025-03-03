@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'dash.dart';
 import 'manage_users.dart';
-import 'new_users.dart';
 import 'membership.dart';
 import 'pastor.dart';
 import 'claims.dart';
