@@ -9,7 +9,7 @@ import 'pastor.dart';
 import 'claims.dart';
 import 'contributions.dart';
 import 'user_list.dart';
-import 'new_users.dart';
+
 import 'user_access_role.dart';
 
 void main() {
