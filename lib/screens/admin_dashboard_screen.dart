@@ -77,15 +77,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       case "Reports":
         return Reports();
       default:
-        return const Center(
-          child: Text(
-            "Module not found",
-            style: TextStyle(
-              color: Color.fromARGB(255, 212, 113, 113),
-              fontSize: 24,
-            ),
-          ),
-        );
+        return const Dash();
+      // Center(
+      //   child: Text(
+      //     "Module not founsss",
+      //     style: TextStyle(
+      //       color: Color.fromARGB(255, 212, 113, 113),
+      //       fontSize: 24,
+      //     ),
+      //   ),
+      // );
     }
   }
 }
