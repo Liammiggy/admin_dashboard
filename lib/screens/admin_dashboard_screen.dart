@@ -1,13 +1,15 @@
 // admin_dashboard_screen.dart
+import 'package:admin_dashboard/screens/reports.dart';
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'dash.dart';
 import 'manage_users.dart';
+import 'new_users.dart';
 import 'membership.dart';
 import 'pastor.dart';
 import 'claims.dart';
 import 'contributions.dart';
-import 'reports.dart';
+import 'user_list.dart';
 
 void main() {
   runApp(const AdminDashboard());
@@ -61,32 +63,75 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   Widget _buildPageContent() {
-    switch (activePage) {
-      case "Dash":
+    switch (activePage.trim()) {
+      case "Dashboard":
         return Dash();
-      case "Manage Users":
+
+      // case "user_list": // ✅ Match the route name passed from Sidebar
+      //   return UserList();
+
+      case "UserList": // ✅ Match the route name passed from Sidebar
+        return UserList();
+
+      case "manage_user":
         return ManageUsers();
+
       case "Membership":
         return Membership();
+
       case "Pastor":
         return Pastor();
+
       case "Claims & Request":
         return Claims();
+
       case "Contributions":
         return Contributions();
+
       case "Reports":
         return Reports();
+
       default:
-        return const Dash();
-      // Center(
-      //   child: Text(
-      //     "Module not founsss",
-      //     style: TextStyle(
-      //       color: Color.fromARGB(255, 212, 113, 113),
-      //       fontSize: 24,
-      //     ),
-      //   ),
-      // );
+        return Center(
+          child: Text(
+            "Module not found: $activePage", // ✅ Show actual value
+            style: TextStyle(
+              color: Color.fromARGB(255, 212, 113, 113),
+              fontSize: 24,
+            ),
+          ),
+        );
     }
   }
 }
+
+  // Widget _buildPageContent() {
+  //   switch (activePage) {
+  //     case "Dashboard":
+  //       return Dash();
+  //     case "Manage Users":
+  //       return ManageUsers();
+  //     case "Membership":
+  //       return Membership();
+  //     case "Pastor":
+  //       return Pastor();
+  //     case "Claims & Request":
+  //       return Claims();
+  //     case "Contributions":
+  //       return Contributions();
+  //     case "Reports":
+  //       return Reports();
+  //     default:
+  //       return const Dash();
+  //     // Center(
+  //     //   child: Text(
+  //     //     "Module not founsss",
+  //     //     style: TextStyle(
+  //     //       color: Color.fromARGB(255, 212, 113, 113),
+  //     //       fontSize: 24,
+  //     //     ),
+  //     //   ),
+  //     // );
+  //   }
+  // }
+
