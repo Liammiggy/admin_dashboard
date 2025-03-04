@@ -243,7 +243,7 @@ class _SidebarState extends State<Sidebar> {
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
           color: _activeModule == title ? Colors.blueGrey : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(5),
         ),
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         child: ListTile(
@@ -254,7 +254,9 @@ class _SidebarState extends State<Sidebar> {
                     title,
                     style: TextStyle(
                       color:
-                          _activeModule == title ? Colors.blue : Colors.white,
+                          _activeModule == title
+                              ? const Color.fromRGBO(30, 30, 45, 1)
+                              : Colors.white,
                       fontWeight:
                           _activeModule == title
                               ? FontWeight.bold
@@ -280,7 +282,7 @@ class _SidebarState extends State<Sidebar> {
                 "Manage Users",
                 style: TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                 ),
               )
               : const SizedBox.shrink(), // Prevents null error
