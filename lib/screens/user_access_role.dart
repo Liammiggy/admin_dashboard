@@ -290,21 +290,49 @@ class UserAccess extends StatefulWidget {
 class _UserAccessState extends State<UserAccess> {
   final List<Map<String, dynamic>> modules = [
     {
-      'name': 'Module 1',
+      'name': 'Dashboard',
       'create': true,
       'read': true,
       'update': true,
       'delete': false,
     },
     {
-      'name': 'Module 2',
+      'name': 'Manage Useres',
       'create': false,
       'read': true,
       'update': false,
       'delete': true,
     },
     {
-      'name': 'Module 3',
+      'name': 'Membership',
+      'create': true,
+      'read': false,
+      'update': true,
+      'delete': false,
+    },
+    {
+      'name': 'Pastor',
+      'create': true,
+      'read': false,
+      'update': true,
+      'delete': false,
+    },
+    {
+      'name': 'Claims & Request',
+      'create': true,
+      'read': false,
+      'update': true,
+      'delete': false,
+    },
+    {
+      'name': 'Contributions',
+      'create': true,
+      'read': false,
+      'update': true,
+      'delete': false,
+    },
+    {
+      'name': 'Reports',
       'create': true,
       'read': false,
       'update': true,
@@ -315,10 +343,17 @@ class _UserAccessState extends State<UserAccess> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: const Color.fromARGB(255, 21, 21, 33),
       appBar: AppBar(
-        title: const Text("Access Management"),
-        backgroundColor: Colors.black,
+        title: const Text(
+          "Access Roles",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 21, 21, 33),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -327,29 +362,31 @@ class _UserAccessState extends State<UserAccess> {
             // Access Roles Container
             Container(
               padding: const EdgeInsets.all(16),
+
               decoration: BoxDecoration(
-                color: Colors.grey[850],
-                borderRadius: BorderRadius.circular(10),
+                color: const Color.fromARGB(255, 30, 30, 45),
+                borderRadius: BorderRadius.circular(8),
               ),
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Access Roles",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  // const Text(
+                  //   "Access Roles",
+                  //   style: TextStyle(
+                  //     color: Colors.white,
+                  //     fontSize: 20,
+                  //     fontWeight: FontWeight.normal,
+                  //   ),
+                  // ),
                   const SizedBox(height: 10),
                   TextField(
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.grey[900],
+                      fillColor: const Color.fromRGBO(21, 21, 33, 1),
                       hintText: "Add access role",
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(5),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -360,14 +397,45 @@ class _UserAccessState extends State<UserAccess> {
                     children: [
                       ElevatedButton(
                         onPressed: () {},
-                        child: const Text("Submit"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
+
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 50,
+                            vertical: 20,
+                          ),
+                        ),
+                        child: const Text(
+                          "Submit",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
                       const SizedBox(width: 10),
+
                       ElevatedButton(
                         onPressed: () {},
-                        child: const Text("Reset"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
+                          backgroundColor: const Color.fromRGBO(
+                            145,
+                            152,
+                            158,
+                            1,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 50,
+                            vertical: 20,
+                          ),
+                        ),
+
+                        child: const Text(
+                          "Reset",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ),
                     ],
@@ -382,8 +450,8 @@ class _UserAccessState extends State<UserAccess> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.grey[850],
-                borderRadius: BorderRadius.circular(10),
+                color: const Color.fromARGB(255, 30, 30, 45),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -392,15 +460,15 @@ class _UserAccessState extends State<UserAccess> {
                     "Access Management",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.grey[900],
+                      fillColor: const Color.fromRGBO(21, 21, 33, 1),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -409,7 +477,14 @@ class _UserAccessState extends State<UserAccess> {
                     style: const TextStyle(color: Colors.white),
                     value: "Administrator",
                     items:
-                        ["Administrator", "User", "Guest"].map((role) {
+                        [
+                          "Administrator",
+                          "Staff",
+                          "Pastor",
+                          "Member",
+                          "User",
+                          "IT",
+                        ].map((role) {
                           return DropdownMenuItem(
                             value: role,
                             child: Text(
@@ -432,16 +507,16 @@ class _UserAccessState extends State<UserAccess> {
                 width: double.infinity, // Maximizes table width
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.grey[850],
-                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromARGB(255, 30, 30, 45),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: SingleChildScrollView(
                     child: DataTable(
-                      columnSpacing: 200,
-                      headingRowColor: MaterialStateColor.resolveWith(
-                        (states) => Colors.grey[800]!,
+                      columnSpacing: 220,
+                      headingRowColor: WidgetStateColor.resolveWith(
+                        (states) => const Color.fromRGBO(30, 30, 45, 1)!,
                       ),
                       columns: const [
                         DataColumn(
@@ -533,16 +608,21 @@ class _UserAccessState extends State<UserAccess> {
               alignment: Alignment.topRight, // Moves button up
               child: ElevatedButton(
                 onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 50,
+                    vertical: 20,
+                  ),
+                ),
+
                 child: const Text(
                   "Save Changes",
-                  style: TextStyle(fontSize: 16), // Slightly smaller font
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 150, // Reduced width
-                    vertical: 20, // Reduced height
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),
