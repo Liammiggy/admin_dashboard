@@ -9,8 +9,9 @@ import 'pastor.dart';
 import 'claims.dart';
 import 'contributions.dart';
 import 'user_list.dart';
-
 import 'user_access_role.dart';
+import 'package:admin_dashboard/screens/members/add_member.dart';
+import 'package:admin_dashboard/screens/members/member_list.dart';
 
 void main() {
   runApp(const AdminDashboard());
@@ -80,8 +81,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       case "access":
         return UserAccess();
 
-      case "Membership":
-        return Membership();
+      // case "Membership":
+      //   return Membership();
+
+      case "memberlist":
+        return MemberList();
+
+      case "members":
+        return AddMember();
 
       case "Pastor":
         return Pastor();

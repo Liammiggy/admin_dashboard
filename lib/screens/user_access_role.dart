@@ -516,7 +516,7 @@ class _UserAccessState extends State<UserAccess> {
                     child: DataTable(
                       columnSpacing: 220,
                       headingRowColor: WidgetStateColor.resolveWith(
-                        (states) => const Color.fromRGBO(30, 30, 45, 1)!,
+                        (states) => const Color.fromRGBO(30, 30, 45, 1),
                       ),
                       columns: const [
                         DataColumn(

@@ -221,7 +221,8 @@ class _SidebarState extends State<Sidebar> {
               children: [
                 _buildModule("Dashboard", Icons.dashboard),
                 _buildManageUsersModule(),
-                _buildModule("Membership", Icons.group),
+                _buildManageMembers(),
+                // _buildModule("Membership", Icons.group),
                 _buildModule("Pastor", Icons.person_pin),
                 _buildModule("Claims & Request", Icons.request_page),
                 _buildModule("Contributions", Icons.attach_money),
@@ -238,62 +239,171 @@ class _SidebarState extends State<Sidebar> {
     return MouseRegion(
       onEnter: (_) => setState(() => _activeModule = title),
       onExit: (_) => setState(() => _activeModule = ""),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        decoration: BoxDecoration(
-          color: _activeModule == title ? Colors.blueGrey : Colors.transparent,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        child: ListTile(
-          leading: Icon(icon, color: Colors.white70),
-          title:
-              widget.isSidebarOpen
-                  ? Text(
-                    title,
-                    style: TextStyle(
-                      color:
-                          _activeModule == title
-                              ? const Color.fromRGBO(30, 30, 45, 1)
-                              : Colors.white,
-                      fontWeight:
-                          _activeModule == title
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                    ),
-                  )
-                  : const SizedBox.shrink(), // Prevents null error
-          onTap: () {
-            setState(() => _activeModule = title);
-            widget.onSelectModule(title);
-          },
+      child: Material(
+        color:
+            Colors
+                .transparent, // Ensures no interference with AnimatedContainer
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          decoration: BoxDecoration(
+            color:
+                _activeModule == title
+                    ? const Color.fromRGBO(67, 94, 190, 1)
+                    : Colors.transparent,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: ListTile(
+            leading: Icon(icon, color: Colors.white70),
+            title:
+                widget.isSidebarOpen
+                    ? Text(
+                      title,
+                      style: TextStyle(
+                        color:
+                            _activeModule == title
+                                ? const Color.fromARGB(255, 40, 45, 30)
+                                : Colors.white,
+                        fontWeight:
+                            _activeModule == title
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                      ),
+                    )
+                    : const SizedBox.shrink(), // Prevents null error
+            onTap: () {
+              setState(() => _activeModule = title);
+              widget.onSelectModule(title);
+            },
+          ),
         ),
       ),
     );
   }
 
+  // Widget _buildModule(String title, IconData icon) {
+  //   return MouseRegion(
+  //     onEnter: (_) => setState(() => _activeModule = title),
+  //     onExit: (_) => setState(() => _activeModule = ""),
+  //     child: AnimatedContainer(
+  //       duration: const Duration(milliseconds: 200),
+  //       curve: Curves.easeInOut,
+  //       decoration: BoxDecoration(
+  //         color:
+  //             _activeModule == title
+  //                 ? const Color.fromRGBO(67, 94, 190, 1)
+  //                 : Colors.transparent,
+  //         borderRadius: BorderRadius.circular(5),
+  //       ),
+  //       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+  //       child: ListTile(
+  //         leading: Icon(icon, color: Colors.white70),
+  //         title:
+  //             widget.isSidebarOpen
+  //                 ? Text(
+  //                   title,
+  //                   style: TextStyle(
+  //                     color:
+  //                         _activeModule == title
+  //                             ? const Color.fromRGBO(30, 30, 45, 1)
+  //                             : Colors.white,
+  //                     fontWeight:
+  //                         _activeModule == title
+  //                             ? FontWeight.bold
+  //                             : FontWeight.normal,
+  //                   ),
+  //                 )
+  //                 : const SizedBox.shrink(), // Prevents null error
+  //         onTap: () {
+  //           setState(() => _activeModule = title);
+  //           widget.onSelectModule(title);
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Widget _buildManageUsersModule() {
-    return ExpansionTile(
-      leading: const Icon(Icons.person, color: Colors.white70),
-      title:
-          widget.isSidebarOpen
-              ? const Text(
-                "Manage Users",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                ),
-              )
-              : const SizedBox.shrink(), // Prevents null error
-      initiallyExpanded: _manageUsersExpanded,
-      onExpansionChanged:
-          (expanded) => setState(() => _manageUsersExpanded = expanded),
-      children: [
-        _buildSubModule("User List", "UserList"),
-        _buildSubModule("New User", "manage_user"),
-        _buildSubModule("Access Role", "access"),
-      ],
+    return Material(
+      color:
+          _activeModule == "Manage Users"
+              ? const Color.fromRGBO(67, 94, 190, 1)
+              : Colors.transparent,
+      child: ExpansionTile(
+        leading: const Icon(Icons.person, color: Colors.white70),
+        title:
+            widget.isSidebarOpen
+                ? const Text(
+                  "Manage Users",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                )
+                : const SizedBox.shrink(), // Prevents null error
+        initiallyExpanded: _manageUsersExpanded,
+        onExpansionChanged:
+            (expanded) => setState(() => _manageUsersExpanded = expanded),
+        children: [
+          _buildSubModule("User List", "UserList"),
+          _buildSubModule("New User", "manage_user"),
+          _buildSubModule("Access Role", "access"),
+        ],
+      ),
+    );
+  }
+
+  // Widget _buildManageMembers() {
+  //   return ExpansionTile(
+  //     leading: const Icon(Icons.group, color: Colors.white70),
+  //     title:
+  //         widget.isSidebarOpen
+  //             ? const Text(
+  //               "Membership",
+  //               style: TextStyle(
+  //                 color: Colors.white,
+  //                 fontWeight: FontWeight.normal,
+  //               ),
+  //             )
+
+  //             : const SizedBox.shrink(), // Prevents null error
+  //     initiallyExpanded: _manageUsersExpanded,
+  //     onExpansionChanged:
+  //         (expanded) => setState(() => _manageUsersExpanded = expanded),
+  //     children: [
+  //       _buildSubModule("Member List", "UserList"),
+  //       _buildSubModule("Add Member", "manage_user"),
+  //     ],
+  //   );
+  // }
+
+  Widget _buildManageMembers() {
+    return Material(
+      color:
+          _activeModule == "Membership"
+              ? const Color.fromRGBO(67, 94, 190, 1)
+              : Colors.transparent,
+      child: ExpansionTile(
+        leading: const Icon(Icons.group, color: Colors.white70),
+        title:
+            widget.isSidebarOpen
+                ? const Text(
+                  "Membership",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                )
+                : const SizedBox.shrink(), // Prevents null error
+        initiallyExpanded: _manageUsersExpanded,
+        onExpansionChanged:
+            (expanded) => setState(() => _manageUsersExpanded = expanded),
+        children: [
+          _buildSubModule("Member Lists", "memberlist"),
+          _buildSubModule("Add Member", "members"),
+        ],
+      ),
     );
   }
 
@@ -305,7 +415,10 @@ class _SidebarState extends State<Sidebar> {
         setState(() => _activeModule = title);
         widget.onSelectModule(route);
       },
-      tileColor: _activeModule == title ? Colors.blueGrey : Colors.transparent,
+      tileColor:
+          _activeModule == title
+              ? const Color.fromRGBO(67, 94, 190, 1)
+              : Colors.transparent,
     );
   }
 }
