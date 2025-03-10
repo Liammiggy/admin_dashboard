@@ -1,8 +1,6 @@
 // import 'package:flutter/material.dart';
-
 // class UserList extends StatelessWidget {
 //   const UserList({super.key}); // Add key to the constructor
-
 //   @override
 //   Widget build(BuildContext context) {
 //     return Center(
@@ -13,12 +11,12 @@
 //     );
 //   }
 // }import 'package:flutter/material.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:admin_dashboard/screens/members/add_member.dart';
 
 class MemberList extends StatefulWidget {
   const MemberList({super.key});
-
   @override
   _MemberListState createState() => _MemberListState();
 }
@@ -28,36 +26,69 @@ class _MemberListState extends State<MemberList> {
     {
       "id": "ID01",
       "name": "Raymond Bolambao",
-      "username": "Raymond",
-      "role": "Admin",
+      "address": "Cebu City",
+      "retirementAge": "65",
+      "phone": "09123456789",
+      "pastor": "Jane Smith",
       "status": "Active",
     },
     {
       "id": "ID02",
-      "name": "Liam Anderson",
-      "username": "Liam",
-      "role": "Staff",
+      "name": "John Doe",
+      "address": "Manila",
+      "retirementAge": "60",
+      "phone": "09234567890",
+      "pastor": "Raymond Bolambao",
       "status": "Inactive",
     },
     {
       "id": "ID03",
-      "name": "Mason Clark",
-      "username": "Mason",
-      "role": "Pastor",
+      "name": "Jane Smith",
+      "address": "Davao City",
+      "retirementAge": "62",
+      "phone": "09345678901",
+      "pastor": "John Doe",
       "status": "Active",
     },
     {
       "id": "ID04",
-      "name": "Henry Mitchell",
-      "username": "Henry",
-      "role": "Client",
+      "name": "Michael Cruz",
+      "address": "Quezon City",
+      "retirementAge": "58",
+      "phone": "09456789012",
+      "pastor": "Jane Smith",
+      "status": "Active",
+    },
+    {
+      "id": "ID05",
+      "name": "Emily Garcia",
+      "address": "Baguio",
+      "retirementAge": "66",
+      "phone": "09567890123",
+      "pastor": "Michael Cruz",
+      "status": "Inactive",
+    },
+    {
+      "id": "ID06",
+      "name": "Carlos Mendoza",
+      "address": "Iloilo",
+      "retirementAge": "64",
+      "phone": "09678901234",
+      "pastor": "Emily Garcia",
+      "status": "Active",
+    },
+    {
+      "id": "ID07",
+      "name": "Anna Lopez",
+      "address": "Zamboanga",
+      "retirementAge": "63",
+      "phone": "09789012345",
+      "pastor": "Carlos Mendoza",
       "status": "Active",
     },
   ];
-
   String searchQuery = "";
   int entriesPerPage = 10; // Default number of entries per page
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +147,6 @@ class _MemberListState extends State<MemberList> {
                 color: const Color.fromRGBO(30, 30, 45, 1),
                 borderRadius: BorderRadius.circular(10),
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -133,7 +163,7 @@ class _MemberListState extends State<MemberList> {
                           child: TextField(
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              hintText: "Search User...",
+                              hintText: "Search Member...",
                               hintStyle: const TextStyle(color: Colors.white),
                               prefixIcon: const Icon(
                                 Icons.search,
@@ -226,7 +256,7 @@ class _MemberListState extends State<MemberList> {
                         ),
                         DataColumn(
                           label: Text(
-                            "Username",
+                            "Address",
                             style: TextStyle(
                               color: Color.fromRGBO(67, 94, 190, 1),
                               fontWeight: FontWeight.bold,
@@ -235,7 +265,25 @@ class _MemberListState extends State<MemberList> {
                         ),
                         DataColumn(
                           label: Text(
-                            "Access Role",
+                            "Retirement Age",
+                            style: TextStyle(
+                              color: Color.fromRGBO(67, 94, 190, 1),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Phone",
+                            style: TextStyle(
+                              color: Color.fromRGBO(67, 94, 190, 1),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Pastor",
                             style: TextStyle(
                               color: Color.fromRGBO(67, 94, 190, 1),
                               fontWeight: FontWeight.bold,
@@ -289,7 +337,7 @@ class _MemberListState extends State<MemberList> {
                                     ),
                                     DataCell(
                                       SelectableText(
-                                        user["username"],
+                                        user["address"],
                                         style: const TextStyle(
                                           color: Colors.white,
                                         ),
@@ -297,12 +345,39 @@ class _MemberListState extends State<MemberList> {
                                     ),
                                     DataCell(
                                       SelectableText(
-                                        user["role"],
+                                        user["retirementAge"],
                                         style: const TextStyle(
                                           color: Colors.white,
                                         ),
                                       ),
                                     ),
+                                    DataCell(
+                                      SelectableText(
+                                        user["phone"],
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      SelectableText(
+                                        user["pastor"],
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    // DataCell(
+                                    //   IconButton(
+                                    //     icon: const Icon(
+                                    //       Icons.edit,
+                                    //       color: Colors.lightBlue,
+                                    //     ),
+                                    //     onPressed: () {
+                                    //       // TODO: Edit functionality
+                                    //     },
+                                    //   ),
+                                    // ),
                                     DataCell(
                                       IconButton(
                                         icon: const Icon(
@@ -310,7 +385,502 @@ class _MemberListState extends State<MemberList> {
                                           color: Colors.lightBlue,
                                         ),
                                         onPressed: () {
-                                          // TODO: Edit functionality
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (BuildContext context) {
+                                              return StatefulBuilder(
+                                                builder: (context, setState) {
+                                                  final _formKey =
+                                                      GlobalKey<FormState>();
+                                                  final TextEditingController
+                                                  _invoiceController =
+                                                      TextEditingController();
+                                                  final TextEditingController
+                                                  _amountController =
+                                                      TextEditingController();
+                                                  String? _selectedSavingsType;
+                                                  String? _selectedPaymentType;
+                                                  return Dialog(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            5,
+                                                          ),
+                                                    ),
+                                                    backgroundColor:
+                                                        const Color.fromRGBO(
+                                                          30,
+                                                          30,
+                                                          45,
+                                                          1,
+                                                        ),
+                                                    child: Container(
+                                                      width:
+                                                          600, // Adjusted width
+                                                      height:
+                                                          450, // Adjusted height
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            15,
+                                                          ),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          // Title & Close Button
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              const Text(
+                                                                "Savings Payment",
+                                                                style: TextStyle(
+                                                                  color:
+                                                                      Colors
+                                                                          .white,
+                                                                  fontSize: 16,
+                                                                ),
+                                                              ),
+                                                              IconButton(
+                                                                icon: const Icon(
+                                                                  Icons.close,
+                                                                  color:
+                                                                      Colors
+                                                                          .white,
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                    context,
+                                                                  ).pop();
+                                                                },
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          // Form
+                                                          Form(
+                                                            key: _formKey,
+                                                            child: Column(
+                                                              children: [
+                                                                // Customer Name (Read-Only)
+                                                                TextFormField(
+                                                                  readOnly:
+                                                                      true,
+                                                                  initialValue:
+                                                                      "Raymond Bolambao",
+                                                                  style: const TextStyle(
+                                                                    color:
+                                                                        Colors
+                                                                            .white,
+                                                                  ),
+                                                                  decoration: InputDecoration(
+                                                                    labelText:
+                                                                        "Customer Name",
+                                                                    labelStyle:
+                                                                        const TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                    enabledBorder: OutlineInputBorder(
+                                                                      borderSide:
+                                                                          const BorderSide(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                            5,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                // Savings Type Dropdown
+                                                                Theme(
+                                                                  data: Theme.of(
+                                                                    context,
+                                                                  ).copyWith(
+                                                                    canvasColor:
+                                                                        const Color.fromRGBO(
+                                                                          30,
+                                                                          30,
+                                                                          45,
+                                                                          1,
+                                                                        ),
+                                                                  ),
+                                                                  child: DropdownButtonFormField<
+                                                                    String
+                                                                  >(
+                                                                    decoration: InputDecoration(
+                                                                      labelText:
+                                                                          "Savings Type",
+                                                                      labelStyle:
+                                                                          const TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                      enabledBorder: OutlineInputBorder(
+                                                                        borderSide: const BorderSide(
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                              5,
+                                                                            ),
+                                                                      ),
+                                                                    ),
+                                                                    dropdownColor:
+                                                                        Colors
+                                                                            .black87,
+                                                                    style: const TextStyle(
+                                                                      color:
+                                                                          Colors
+                                                                              .white,
+                                                                    ),
+                                                                    items: const [
+                                                                      DropdownMenuItem(
+                                                                        child: Text(
+                                                                          "Regular Savings",
+                                                                          style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        ),
+                                                                        value:
+                                                                            "regular",
+                                                                      ),
+                                                                      DropdownMenuItem(
+                                                                        child: Text(
+                                                                          "Time Deposit",
+                                                                          style: TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        ),
+                                                                        value:
+                                                                            "deposit",
+                                                                      ),
+                                                                    ],
+                                                                    onChanged: (
+                                                                      value,
+                                                                    ) {
+                                                                      setState(
+                                                                        () =>
+                                                                            _selectedSavingsType =
+                                                                                value,
+                                                                      );
+                                                                    },
+                                                                    validator:
+                                                                        (
+                                                                          value,
+                                                                        ) =>
+                                                                            value == null
+                                                                                ? "Please select a savings type"
+                                                                                : null,
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                // Payment Type & Invoice Row
+                                                                Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child: Theme(
+                                                                        data: Theme.of(
+                                                                          context,
+                                                                        ).copyWith(
+                                                                          canvasColor:
+                                                                              Colors.black87,
+                                                                        ),
+                                                                        child: DropdownButtonFormField<
+                                                                          String
+                                                                        >(
+                                                                          decoration: InputDecoration(
+                                                                            labelText:
+                                                                                "Payment Type",
+                                                                            labelStyle: const TextStyle(
+                                                                              color:
+                                                                                  Colors.white,
+                                                                            ),
+                                                                            enabledBorder: OutlineInputBorder(
+                                                                              borderSide: const BorderSide(
+                                                                                color:
+                                                                                    Colors.white,
+                                                                              ),
+                                                                              borderRadius: BorderRadius.circular(
+                                                                                5,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          dropdownColor:
+                                                                              Colors.black87,
+                                                                          style: const TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                          items: const [
+                                                                            DropdownMenuItem(
+                                                                              child: Text(
+                                                                                "Cash",
+                                                                                style: TextStyle(
+                                                                                  color:
+                                                                                      Colors.white,
+                                                                                ),
+                                                                              ),
+                                                                              value:
+                                                                                  "cash",
+                                                                            ),
+                                                                            DropdownMenuItem(
+                                                                              child: Text(
+                                                                                "Online",
+                                                                                style: TextStyle(
+                                                                                  color:
+                                                                                      Colors.white,
+                                                                                ),
+                                                                              ),
+                                                                              value:
+                                                                                  "online",
+                                                                            ),
+                                                                          ],
+                                                                          onChanged: (
+                                                                            value,
+                                                                          ) {
+                                                                            setState(
+                                                                              () =>
+                                                                                  _selectedPaymentType =
+                                                                                      value,
+                                                                            );
+                                                                          },
+                                                                          validator:
+                                                                              (
+                                                                                value,
+                                                                              ) =>
+                                                                                  value ==
+                                                                                          null
+                                                                                      ? "Please select a payment type"
+                                                                                      : null,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Expanded(
+                                                                      child: TextFormField(
+                                                                        controller:
+                                                                            _invoiceController,
+                                                                        style: const TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                        decoration: InputDecoration(
+                                                                          labelText:
+                                                                              "Invoice / Reference Number",
+                                                                          labelStyle: const TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                          enabledBorder: OutlineInputBorder(
+                                                                            borderSide: const BorderSide(
+                                                                              color:
+                                                                                  Colors.white,
+                                                                            ),
+                                                                            borderRadius: BorderRadius.circular(
+                                                                              5,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        validator:
+                                                                            (
+                                                                              value,
+                                                                            ) =>
+                                                                                value ==
+                                                                                            null ||
+                                                                                        value.isEmpty
+                                                                                    ? "Required field"
+                                                                                    : null,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                // Amount Input
+                                                                TextFormField(
+                                                                  controller:
+                                                                      _amountController,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .number,
+                                                                  style: const TextStyle(
+                                                                    color:
+                                                                        Colors
+                                                                            .white,
+                                                                  ),
+                                                                  decoration: InputDecoration(
+                                                                    labelText:
+                                                                        "Enter Amount...",
+                                                                    labelStyle:
+                                                                        const TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                    enabledBorder: OutlineInputBorder(
+                                                                      borderSide:
+                                                                          const BorderSide(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                            5,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                  validator:
+                                                                      (value) =>
+                                                                          value == null ||
+                                                                                  value.isEmpty
+                                                                              ? "Enter a valid amount"
+                                                                              : null,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+
+                                                          // Buttons
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              SizedBox(
+                                                                width:
+                                                                    150, // Adjust width
+                                                                height:
+                                                                    50, // Adjust height
+                                                                child: TextButton(
+                                                                  style: TextButton.styleFrom(
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .grey,
+                                                                    padding: const EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          12,
+                                                                    ), // Adjust padding
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                            8,
+                                                                          ), // Rounded corners
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    _formKey
+                                                                        .currentState
+                                                                        ?.reset();
+                                                                    _invoiceController
+                                                                        .clear();
+                                                                    _amountController
+                                                                        .clear();
+                                                                    setState(() {
+                                                                      _selectedSavingsType =
+                                                                          null;
+                                                                      _selectedPaymentType =
+                                                                          null;
+                                                                    });
+                                                                  },
+                                                                  child: const Text(
+                                                                    "Reset",
+                                                                    style: TextStyle(
+                                                                      color:
+                                                                          Colors
+                                                                              .white,
+                                                                      fontSize:
+                                                                          18, // Match font size with Submit button
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal, // Optional: bold text
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ), // Space before the button
+                                                              SizedBox(
+                                                                width:
+                                                                    150, // Adjust width as needed
+                                                                height:
+                                                                    50, // Adjust height as needed
+                                                                child: TextButton(
+                                                                  style: TextButton.styleFrom(
+                                                                    backgroundColor:
+                                                                        const Color.fromRGBO(
+                                                                          67,
+                                                                          94,
+                                                                          190,
+                                                                          1,
+                                                                        ),
+                                                                    padding: const EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          12,
+                                                                    ), // Padding for better button size
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                            5,
+                                                                          ), // Optional: rounded corners
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    if (_formKey
+                                                                        .currentState!
+                                                                        .validate()) {
+                                                                      Navigator.of(
+                                                                        context,
+                                                                      ).pop();
+                                                                    }
+                                                                  },
+                                                                  child: const Text(
+                                                                    "Submit",
+                                                                    style: TextStyle(
+                                                                      color:
+                                                                          Colors
+                                                                              .white,
+                                                                      fontSize:
+                                                                          18, // Adjust font size
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal, // Optional: bold text
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          );
                                         },
                                       ),
                                     ),
