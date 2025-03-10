@@ -1,29 +1,30 @@
+// // pastor.dart
 // import 'package:flutter/material.dart';
-// class UserList extends StatelessWidget {
-//   const UserList({super.key}); // Add key to the constructor
+
+// class PastorList extends StatelessWidget {
+//   const PastorList({super.key});
+
 //   @override
 //   Widget build(BuildContext context) {
-//     return Center(
+//     return const Center(
 //       child: Text(
-//         "User Lista",
-//         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//         "Pastor Page List",
+//         style: TextStyle(color: Color.fromARGB(255, 54, 1, 1), fontSize: 24),
 //       ),
 //     );
 //   }
-// }import 'package:flutter/material.dart';
+// }
 
-// import 'package:dropdown_button2/dropdown_button2.dart';
-
+import 'package:admin_dashboard/screens/pastors/add_pastor.dart';
 import 'package:flutter/material.dart';
-import 'package:admin_dashboard/screens/members/add_member.dart';
 
-class MemberList extends StatefulWidget {
-  const MemberList({super.key});
+class PastorList extends StatefulWidget {
+  const PastorList({super.key});
   @override
-  _MemberListState createState() => _MemberListState();
+  _PastorListState createState() => _PastorListState();
 }
 
-class _MemberListState extends State<MemberList> {
+class _PastorListState extends State<PastorList> {
   final List<Map<String, dynamic>> users = [
     {
       "id": "ID01",
@@ -98,7 +99,7 @@ class _MemberListState extends State<MemberList> {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
         title: const Text(
-          "Member List",
+          "Pastor List",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -127,12 +128,12 @@ class _MemberListState extends State<MemberList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AddMember(),
+                    builder: (context) => const AddPastor(),
                   ), // Navigate to ManageUsers
                 );
               },
               child: const Text(
-                "Add Member",
+                "Add Pastor",
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),

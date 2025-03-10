@@ -174,6 +174,7 @@
 //     );
 //   }
 // }
+
 import 'package:flutter/material.dart';
 
 class Sidebar extends StatefulWidget {
@@ -223,7 +224,8 @@ class _SidebarState extends State<Sidebar> {
                 _buildManageUsersModule(),
                 _buildManageMembers(),
                 // _buildModule("Membership", Icons.group),
-                _buildModule("Pastor", Icons.person_pin),
+                // _buildModule("Pastor", Icons.person_pin),
+                _buildPastorModule(),
                 _buildModule("Claims & Request", Icons.request_page),
                 _buildModule("Contributions", Icons.attach_money),
                 _buildModule("Reports", Icons.bar_chart),
@@ -282,48 +284,6 @@ class _SidebarState extends State<Sidebar> {
     );
   }
 
-  // Widget _buildModule(String title, IconData icon) {
-  //   return MouseRegion(
-  //     onEnter: (_) => setState(() => _activeModule = title),
-  //     onExit: (_) => setState(() => _activeModule = ""),
-  //     child: AnimatedContainer(
-  //       duration: const Duration(milliseconds: 200),
-  //       curve: Curves.easeInOut,
-  //       decoration: BoxDecoration(
-  //         color:
-  //             _activeModule == title
-  //                 ? const Color.fromRGBO(67, 94, 190, 1)
-  //                 : Colors.transparent,
-  //         borderRadius: BorderRadius.circular(5),
-  //       ),
-  //       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-  //       child: ListTile(
-  //         leading: Icon(icon, color: Colors.white70),
-  //         title:
-  //             widget.isSidebarOpen
-  //                 ? Text(
-  //                   title,
-  //                   style: TextStyle(
-  //                     color:
-  //                         _activeModule == title
-  //                             ? const Color.fromRGBO(30, 30, 45, 1)
-  //                             : Colors.white,
-  //                     fontWeight:
-  //                         _activeModule == title
-  //                             ? FontWeight.bold
-  //                             : FontWeight.normal,
-  //                   ),
-  //                 )
-  //                 : const SizedBox.shrink(), // Prevents null error
-  //         onTap: () {
-  //           setState(() => _activeModule = title);
-  //           widget.onSelectModule(title);
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _buildManageUsersModule() {
     return Material(
       color:
@@ -354,30 +314,6 @@ class _SidebarState extends State<Sidebar> {
     );
   }
 
-  // Widget _buildManageMembers() {
-  //   return ExpansionTile(
-  //     leading: const Icon(Icons.group, color: Colors.white70),
-  //     title:
-  //         widget.isSidebarOpen
-  //             ? const Text(
-  //               "Membership",
-  //               style: TextStyle(
-  //                 color: Colors.white,
-  //                 fontWeight: FontWeight.normal,
-  //               ),
-  //             )
-
-  //             : const SizedBox.shrink(), // Prevents null error
-  //     initiallyExpanded: _manageUsersExpanded,
-  //     onExpansionChanged:
-  //         (expanded) => setState(() => _manageUsersExpanded = expanded),
-  //     children: [
-  //       _buildSubModule("Member List", "UserList"),
-  //       _buildSubModule("Add Member", "manage_user"),
-  //     ],
-  //   );
-  // }
-
   Widget _buildManageMembers() {
     return Material(
       color:
@@ -407,6 +343,36 @@ class _SidebarState extends State<Sidebar> {
     );
   }
 
+  Widget _buildPastorModule() {
+    return Material(
+      color:
+          _activeModule == "Add Pastor"
+              ? const Color.fromRGBO(67, 94, 190, 1)
+              : Colors.transparent,
+      child: ExpansionTile(
+        leading: const Icon(Icons.person_pin, color: Colors.white70),
+        title:
+            widget.isSidebarOpen
+                ? const Text(
+                  "Add Pastor",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                )
+                : const SizedBox.shrink(), // Prevents null error
+        initiallyExpanded: _manageUsersExpanded,
+        onExpansionChanged:
+            (expanded) => setState(() => _manageUsersExpanded = expanded),
+        children: [
+          _buildSubModule("Pastor List", "pastorlist"),
+          _buildSubModule("New Pastor", "add_paster"),
+          // _buildSubModule("Access Role", "access"),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSubModule(String title, String route) {
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 50),
@@ -422,3 +388,181 @@ class _SidebarState extends State<Sidebar> {
     );
   }
 }
+
+// // option 2
+
+// import 'package:flutter/material.dart';
+
+// class Sidebar extends StatefulWidget {
+//   final Function(String) onSelectModule;
+//   final bool isSidebarOpen;
+
+//   const Sidebar({
+//     required this.onSelectModule,
+//     required this.isSidebarOpen,
+//     super.key,
+//   });
+
+//   @override
+//   _SidebarState createState() => _SidebarState();
+// }
+
+// class _SidebarState extends State<Sidebar> {
+//   String _activeModule = "Dashboard";
+//   bool _manageUsersExpanded = false;
+//   bool _manageMembersExpanded = false;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return AnimatedContainer(
+//       duration: const Duration(milliseconds: 300),
+//       curve: Curves.easeInOut,
+//       width: widget.isSidebarOpen ? 250 : 80,
+//       decoration: BoxDecoration(
+//         gradient: LinearGradient(
+//           colors: [Colors.blueGrey.shade900, Colors.blueGrey.shade700],
+//           begin: Alignment.topLeft,
+//           end: Alignment.bottomRight,
+//         ),
+//         boxShadow: [BoxShadow(color: Colors.black45, blurRadius: 5)],
+//       ),
+//       child: Column(
+//         children: [
+//           _buildHeader(),
+//           Expanded(
+//             child: ListView(
+//               padding: EdgeInsets.zero,
+//               children: [
+//                 _buildModule("Dashboard", Icons.dashboard),
+//                 _buildExpandableModule(
+//                   title: "Manage Users",
+//                   icon: Icons.person,
+//                   isExpanded: _manageUsersExpanded,
+//                   onExpand:
+//                       (expanded) =>
+//                           setState(() => _manageUsersExpanded = expanded),
+//                   children: [
+//                     _buildSubModule("User List", "UserList"),
+//                     _buildSubModule("New User", "manage_user"),
+//                     _buildSubModule("Access Role", "access"),
+//                   ],
+//                 ),
+//                 _buildExpandableModule(
+//                   title: "Membership",
+//                   icon: Icons.group,
+//                   isExpanded: _manageMembersExpanded,
+//                   onExpand:
+//                       (expanded) =>
+//                           setState(() => _manageMembersExpanded = expanded),
+//                   children: [
+//                     _buildSubModule("Member Lists", "memberlist"),
+//                     _buildSubModule("Add Member", "members"),
+//                   ],
+//                 ),
+//                 _buildModule("Pastor", Icons.person_pin),
+//                 _buildModule("Claims & Request", Icons.request_page),
+//                 _buildModule("Contributions", Icons.attach_money),
+//                 _buildModule("Reports", Icons.bar_chart),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   Widget _buildHeader() {
+//     return Padding(
+//       padding: const EdgeInsets.all(10.0),
+//       child: Align(
+//         alignment: Alignment.centerRight,
+//         child: IconButton(
+//           icon: Icon(
+//             widget.isSidebarOpen ? Icons.menu_open : Icons.menu,
+//             color: Colors.white,
+//             size: 30,
+//           ),
+//           onPressed: () => widget.onSelectModule('toggleSidebar'),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _buildModule(String title, IconData icon) {
+//     return MouseRegion(
+//       onEnter: (_) => setState(() => _activeModule = title),
+//       onExit: (_) => setState(() => _activeModule = ""),
+//       child: AnimatedContainer(
+//         duration: const Duration(milliseconds: 200),
+//         curve: Curves.easeInOut,
+//         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+//         decoration: BoxDecoration(
+//           color:
+//               _activeModule == title ? Colors.blueAccent : Colors.transparent,
+//           borderRadius: BorderRadius.circular(10),
+//         ),
+//         child: ListTile(
+//           leading: Icon(icon, color: Colors.white),
+//           title:
+//               widget.isSidebarOpen
+//                   ? Text(
+//                     title,
+//                     style: TextStyle(
+//                       color: Colors.white,
+//                       fontWeight:
+//                           _activeModule == title
+//                               ? FontWeight.bold
+//                               : FontWeight.normal,
+//                     ),
+//                   )
+//                   : null,
+//           onTap: () {
+//             setState(() => _activeModule = title);
+//             widget.onSelectModule(title);
+//           },
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _buildExpandableModule({
+//     required String title,
+//     required IconData icon,
+//     required bool isExpanded,
+//     required Function(bool) onExpand,
+//     required List<Widget> children,
+//   }) {
+//     return Material(
+//       color: _activeModule == title ? Colors.blueAccent : Colors.transparent,
+//       child: Theme(
+//         data: ThemeData().copyWith(
+//           dividerColor: Colors.transparent,
+//           splashColor: Colors.transparent,
+//           highlightColor: Colors.transparent,
+//         ),
+//         child: ExpansionTile(
+//           leading: Icon(icon, color: Colors.white),
+//           title:
+//               widget.isSidebarOpen
+//                   ? Text(title, style: TextStyle(color: Colors.white))
+//                   : const SizedBox(),
+
+//           initiallyExpanded: isExpanded,
+//           onExpansionChanged: onExpand,
+//           children: children,
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _buildSubModule(String title, String route) {
+//     return ListTile(
+//       contentPadding: const EdgeInsets.only(left: 40),
+//       title: Text(title, style: TextStyle(color: Colors.white70)),
+//       onTap: () {
+//         setState(() => _activeModule = title);
+//         widget.onSelectModule(route);
+//       },
+//     );
+//   }
+// }

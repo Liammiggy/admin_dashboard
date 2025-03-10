@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'dash.dart';
 import 'manage_users.dart';
-import 'pastor.dart';
+// import 'pastor.dart';
 import 'claims.dart';
 import 'contributions.dart';
 import 'user_list.dart';
 import 'user_access_role.dart';
 import 'package:admin_dashboard/screens/members/add_member.dart';
 import 'package:admin_dashboard/screens/members/member_list.dart';
+import 'package:admin_dashboard/screens/pastors/pastorList.dart';
+import 'package:admin_dashboard/screens/pastors/add_pastor.dart';
 
 void main() {
   runApp(const AdminDashboard());
@@ -89,8 +91,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       case "members":
         return AddMember();
 
-      case "Pastor":
-        return Pastor();
+      // case "Pastor":
+      //   return Pastor();
+
+      case "pastorlist":
+        return PastorList();
+
+      case "add_paster":
+        return AddPastor();
 
       case "Claims & Request":
         return Claims();
