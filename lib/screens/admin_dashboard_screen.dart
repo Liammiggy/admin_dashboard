@@ -11,8 +11,11 @@ import 'user_list.dart';
 import 'user_access_role.dart';
 import 'package:admin_dashboard/screens/members/add_member.dart';
 import 'package:admin_dashboard/screens/members/member_list.dart';
+import 'package:admin_dashboard/screens/members/bulk_upload.dart';
 import 'package:admin_dashboard/screens/pastors/pastorList.dart';
 import 'package:admin_dashboard/screens/pastors/add_pastor.dart';
+import 'package:admin_dashboard/screens/organization/add_organization.dart';
+import 'package:admin_dashboard/screens/organization/organization_list.dart';
 
 void main() {
   runApp(const AdminDashboard());
@@ -91,14 +94,23 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       case "members":
         return AddMember();
 
+      case "bulkfileupload":
+        return browse();
+
       // case "Pastor":
       //   return Pastor();
 
       case "pastorlist":
         return PastorList();
 
-      case "add_paster":
+      case "add_pastor":
         return AddPastor();
+
+      case "orglist":
+        return PastorList1();
+
+      case "add_org":
+        return Add_Organization();
 
       case "Claims & Request":
         return Claims();

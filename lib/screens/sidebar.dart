@@ -226,6 +226,7 @@ class _SidebarState extends State<Sidebar> {
                 // _buildModule("Membership", Icons.group),
                 // _buildModule("Pastor", Icons.person_pin),
                 _buildPastorModule(),
+                _buildOrganizationModule(),
                 _buildModule("Claims & Request", Icons.request_page),
                 _buildModule("Contributions", Icons.attach_money),
                 _buildModule("Reports", Icons.bar_chart),
@@ -338,6 +339,7 @@ class _SidebarState extends State<Sidebar> {
         children: [
           _buildSubModule("Member Lists", "memberlist"),
           _buildSubModule("Add Member", "members"),
+          _buildSubModule("Bulk Upload", "bulkfileupload"),
         ],
       ),
     );
@@ -346,7 +348,7 @@ class _SidebarState extends State<Sidebar> {
   Widget _buildPastorModule() {
     return Material(
       color:
-          _activeModule == "Add Pastor"
+          _activeModule == "Pastor"
               ? const Color.fromRGBO(67, 94, 190, 1)
               : Colors.transparent,
       child: ExpansionTile(
@@ -354,7 +356,7 @@ class _SidebarState extends State<Sidebar> {
         title:
             widget.isSidebarOpen
                 ? const Text(
-                  "Add Pastor",
+                  "Pastor",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.normal,
@@ -366,7 +368,37 @@ class _SidebarState extends State<Sidebar> {
             (expanded) => setState(() => _manageUsersExpanded = expanded),
         children: [
           _buildSubModule("Pastor List", "pastorlist"),
-          _buildSubModule("New Pastor", "add_paster"),
+          _buildSubModule("New Pastor", "add_pastor"),
+          // _buildSubModule("Access Role", "access"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOrganizationModule() {
+    return Material(
+      color:
+          _activeModule == "Organization"
+              ? const Color.fromRGBO(67, 94, 190, 1)
+              : Colors.transparent,
+      child: ExpansionTile(
+        leading: const Icon(Icons.person_pin, color: Colors.white70),
+        title:
+            widget.isSidebarOpen
+                ? const Text(
+                  "Organization",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                )
+                : const SizedBox.shrink(), // Prevents null error
+        initiallyExpanded: _manageUsersExpanded,
+        onExpansionChanged:
+            (expanded) => setState(() => _manageUsersExpanded = expanded),
+        children: [
+          _buildSubModule("Organization List", "orglist"),
+          _buildSubModule("New Organization", "add_org"),
           // _buildSubModule("Access Role", "access"),
         ],
       ),

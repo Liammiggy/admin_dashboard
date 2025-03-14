@@ -394,16 +394,16 @@ class _PastorListState extends State<PastorList> {
                                             builder: (BuildContext context) {
                                               return StatefulBuilder(
                                                 builder: (context, setState) {
-                                                  final _formKey =
+                                                  final formKey =
                                                       GlobalKey<FormState>();
                                                   final TextEditingController
-                                                  _invoiceController =
+                                                  invoiceController =
                                                       TextEditingController();
                                                   final TextEditingController
-                                                  _amountController =
+                                                  amountController =
                                                       TextEditingController();
-                                                  String? _selectedSavingsType;
-                                                  String? _selectedPaymentType;
+                                                  String? selectedSavingsType;
+                                                  String? selectedPaymentType;
                                                   return Dialog(
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius:
@@ -466,7 +466,7 @@ class _PastorListState extends State<PastorList> {
                                                           ),
                                                           // Form
                                                           Form(
-                                                            key: _formKey,
+                                                            key: formKey,
                                                             child: Column(
                                                               children: [
                                                                 // Customer Name (Read-Only)
@@ -549,6 +549,8 @@ class _PastorListState extends State<PastorList> {
                                                                     ),
                                                                     items: const [
                                                                       DropdownMenuItem(
+                                                                        value:
+                                                                            "regular",
                                                                         child: Text(
                                                                           "Regular Savings",
                                                                           style: TextStyle(
@@ -556,10 +558,10 @@ class _PastorListState extends State<PastorList> {
                                                                                 Colors.white,
                                                                           ),
                                                                         ),
-                                                                        value:
-                                                                            "regular",
                                                                       ),
                                                                       DropdownMenuItem(
+                                                                        value:
+                                                                            "deposit",
                                                                         child: Text(
                                                                           "Time Deposit",
                                                                           style: TextStyle(
@@ -567,8 +569,6 @@ class _PastorListState extends State<PastorList> {
                                                                                 Colors.white,
                                                                           ),
                                                                         ),
-                                                                        value:
-                                                                            "deposit",
                                                                       ),
                                                                     ],
                                                                     onChanged: (
@@ -576,7 +576,7 @@ class _PastorListState extends State<PastorList> {
                                                                     ) {
                                                                       setState(
                                                                         () =>
-                                                                            _selectedSavingsType =
+                                                                            selectedSavingsType =
                                                                                 value,
                                                                       );
                                                                     },
@@ -631,6 +631,8 @@ class _PastorListState extends State<PastorList> {
                                                                           ),
                                                                           items: const [
                                                                             DropdownMenuItem(
+                                                                              value:
+                                                                                  "cash",
                                                                               child: Text(
                                                                                 "Cash",
                                                                                 style: TextStyle(
@@ -638,10 +640,10 @@ class _PastorListState extends State<PastorList> {
                                                                                       Colors.white,
                                                                                 ),
                                                                               ),
-                                                                              value:
-                                                                                  "cash",
                                                                             ),
                                                                             DropdownMenuItem(
+                                                                              value:
+                                                                                  "online",
                                                                               child: Text(
                                                                                 "Online",
                                                                                 style: TextStyle(
@@ -649,8 +651,6 @@ class _PastorListState extends State<PastorList> {
                                                                                       Colors.white,
                                                                                 ),
                                                                               ),
-                                                                              value:
-                                                                                  "online",
                                                                             ),
                                                                           ],
                                                                           onChanged: (
@@ -658,7 +658,7 @@ class _PastorListState extends State<PastorList> {
                                                                           ) {
                                                                             setState(
                                                                               () =>
-                                                                                  _selectedPaymentType =
+                                                                                  selectedPaymentType =
                                                                                       value,
                                                                             );
                                                                           },
@@ -679,7 +679,7 @@ class _PastorListState extends State<PastorList> {
                                                                     Expanded(
                                                                       child: TextFormField(
                                                                         controller:
-                                                                            _invoiceController,
+                                                                            invoiceController,
                                                                         style: const TextStyle(
                                                                           color:
                                                                               Colors.white,
@@ -720,7 +720,7 @@ class _PastorListState extends State<PastorList> {
                                                                 // Amount Input
                                                                 TextFormField(
                                                                   controller:
-                                                                      _amountController,
+                                                                      amountController,
                                                                   keyboardType:
                                                                       TextInputType
                                                                           .number,
@@ -792,17 +792,17 @@ class _PastorListState extends State<PastorList> {
                                                                     ),
                                                                   ),
                                                                   onPressed: () {
-                                                                    _formKey
+                                                                    formKey
                                                                         .currentState
                                                                         ?.reset();
-                                                                    _invoiceController
+                                                                    invoiceController
                                                                         .clear();
-                                                                    _amountController
+                                                                    amountController
                                                                         .clear();
                                                                     setState(() {
-                                                                      _selectedSavingsType =
+                                                                      selectedSavingsType =
                                                                           null;
-                                                                      _selectedPaymentType =
+                                                                      selectedPaymentType =
                                                                           null;
                                                                     });
                                                                   },
@@ -851,7 +851,7 @@ class _PastorListState extends State<PastorList> {
                                                                     ),
                                                                   ),
                                                                   onPressed: () {
-                                                                    if (_formKey
+                                                                    if (formKey
                                                                         .currentState!
                                                                         .validate()) {
                                                                       Navigator.of(

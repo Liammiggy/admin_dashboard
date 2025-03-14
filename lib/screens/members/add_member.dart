@@ -342,7 +342,7 @@ class _AddMemberState extends State<AddMember> {
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             Text(
-              "System Administrator",
+              "Browse Image",
               style: TextStyle(color: Colors.grey, fontSize: 14),
             ),
           ],

@@ -138,7 +138,7 @@ class _AddPastorState extends State<AddPastor> {
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             Text(
-              "System Administrator",
+              "Browse Image",
               style: TextStyle(color: Colors.grey, fontSize: 14),
             ),
           ],
@@ -164,8 +164,6 @@ class _AddPastorState extends State<AddPastor> {
               Expanded(child: _buildTextField("First Name")),
               SizedBox(width: 10),
               Expanded(child: _buildTextField("Last Name")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Parents Name")),
             ],
           ),
           Row(
@@ -185,35 +183,31 @@ class _AddPastorState extends State<AddPastor> {
 
           Row(
             children: [
-              Expanded(child: _buildTextField("Birthday mm/dd/yy")),
+              Expanded(child: _buildTextField("Birthday")),
               SizedBox(width: 10),
-              Expanded(child: _buildTextField("Age")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Adult")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Geography")),
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: "Organization-Church",
+                    border: OutlineInputBorder(),
+                  ),
+                  dropdownColor: Colors.black,
+                  style: TextStyle(color: Colors.white),
+                  items:
+                      ["Church 1", "Church 2", "Church 3"].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                  onChanged: (String? newValue) {
+                    // Handle change
+                  },
+                ),
+              ),
             ],
           ),
 
-          Row(
-            children: [
-              Expanded(child: _buildTextField("Pastor")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Church")),
-              SizedBox(width: 10),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(child: _buildTextField("Benefeciaries 1")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Benefeciaries 2")),
-              SizedBox(width: 10),
-            ],
-          ),
-
-          // _buildTextField("Benefeciaries 1"),
-          // _buildTextField("Benefeciaries 2"),
           SizedBox(height: 20),
           Row(
             children: [

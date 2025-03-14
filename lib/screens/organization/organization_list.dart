@@ -1,33 +1,35 @@
+// // pastor.dart
 // import 'package:flutter/material.dart';
-// class UserList extends StatelessWidget {
-//   const UserList({super.key}); // Add key to the constructor
+
+// class PastorList extends StatelessWidget {
+//   const PastorList({super.key});
+
 //   @override
 //   Widget build(BuildContext context) {
-//     return Center(
+//     return const Center(
 //       child: Text(
-//         "User Lista",
-//         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//         "Pastor Page List",
+//         style: TextStyle(color: Color.fromARGB(255, 54, 1, 1), fontSize: 24),
 //       ),
 //     );
 //   }
-// }import 'package:flutter/material.dart';
+// }
 
-// import 'package:dropdown_button2/dropdown_button2.dart';
-
+import 'package:admin_dashboard/screens/organization/add_organization.dart';
+import 'package:admin_dashboard/screens/pastors/add_pastor.dart';
 import 'package:flutter/material.dart';
-import 'package:admin_dashboard/screens/members/add_member.dart';
 
-class MemberList extends StatefulWidget {
-  const MemberList({super.key});
+class PastorList1 extends StatefulWidget {
+  const PastorList1({super.key});
   @override
-  _MemberListState createState() => _MemberListState();
+  _PastorList1State createState() => _PastorList1State();
 }
 
-class _MemberListState extends State<MemberList> {
+class _PastorList1State extends State<PastorList1> {
   final List<Map<String, dynamic>> users = [
     {
       "id": "ID01",
-      "name": "Raymond Bolambao",
+      "name": "Oasis",
       "address": "Cebu City",
       "retirementAge": "65",
       "phone": "09123456789",
@@ -38,7 +40,7 @@ class _MemberListState extends State<MemberList> {
       "id": "ID02",
       "name": "John Doe",
       "address": "Manila",
-      "retirementAge": "60",
+      // "retirementAge": "60",
       "phone": "09234567890",
       "pastor": "Raymond Bolambao",
       "status": "Inactive",
@@ -98,7 +100,7 @@ class _MemberListState extends State<MemberList> {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
         title: const Text(
-          "Member List",
+          "Organization List",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -127,12 +129,12 @@ class _MemberListState extends State<MemberList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AddMember(),
+                    builder: (context) => const Add_Organization(),
                   ), // Navigate to ManageUsers
                 );
               },
               child: const Text(
-                "Add Member",
+                "Add Organization",
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
@@ -165,7 +167,7 @@ class _MemberListState extends State<MemberList> {
                           child: TextField(
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              hintText: "Search Member...",
+                              hintText: "Search Organization...",
                               hintStyle: const TextStyle(color: Colors.white),
                               prefixIcon: const Icon(
                                 Icons.search,
@@ -249,7 +251,7 @@ class _MemberListState extends State<MemberList> {
                         ),
                         DataColumn(
                           label: Text(
-                            "Name",
+                            " Organization Name",
                             style: TextStyle(
                               color: Color.fromRGBO(67, 94, 190, 1),
                               fontWeight: FontWeight.bold,
@@ -265,15 +267,15 @@ class _MemberListState extends State<MemberList> {
                             ),
                           ),
                         ),
-                        DataColumn(
-                          label: Text(
-                            "Retirement Age",
-                            style: TextStyle(
-                              color: Color.fromRGBO(67, 94, 190, 1),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                        // DataColumn(
+                        //   label: Text(
+                        //     "Type",
+                        //     style: TextStyle(
+                        //       color: Color.fromRGBO(67, 94, 190, 1),
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //   ),
+                        // ),
                         DataColumn(
                           label: Text(
                             "Phone",
@@ -285,7 +287,7 @@ class _MemberListState extends State<MemberList> {
                         ),
                         DataColumn(
                           label: Text(
-                            "Pastor",
+                            "Owner",
                             style: TextStyle(
                               color: Color.fromRGBO(67, 94, 190, 1),
                               fontWeight: FontWeight.bold,
@@ -345,14 +347,14 @@ class _MemberListState extends State<MemberList> {
                                         ),
                                       ),
                                     ),
-                                    DataCell(
-                                      SelectableText(
-                                        user["retirementAge"],
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
+                                    // DataCell(
+                                    //   SelectableText(
+                                    //     user["retirementAge"],
+                                    //     style: const TextStyle(
+                                    //       color: Colors.white,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     DataCell(
                                       SelectableText(
                                         user["phone"],
