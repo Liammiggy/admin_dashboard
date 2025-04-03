@@ -16,7 +16,6 @@
 // }
 
 import 'package:admin_dashboard/screens/organization/add_organization.dart';
-import 'package:admin_dashboard/screens/pastors/add_pastor.dart';
 import 'package:flutter/material.dart';
 
 class PastorList1 extends StatefulWidget {
