@@ -453,15 +453,15 @@ class _UserListState extends State<UserList> {
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Container(
+              child: SizedBox(
                 width:
                     MediaQuery.of(context).size.width * 1.2, // Increase width
                 child: DataTable(
                   columnSpacing: 50, // Widen column spacing
-                  headingRowColor: MaterialStateColor.resolveWith(
+                  headingRowColor: WidgetStateColor.resolveWith(
                     (states) => Colors.grey[900]!,
                   ),
-                  dataRowColor: MaterialStateColor.resolveWith(
+                  dataRowColor: WidgetStateColor.resolveWith(
                     (states) => Colors.grey[850]!,
                   ),
                   columns: const [

@@ -1,30 +1,30 @@
-// // pastor.dart
+// church.dart
 // import 'package:flutter/material.dart';
 
-// class PastorList extends StatelessWidget {
-//   const PastorList({super.key});
+// class ChurchList extends StatelessWidget {
+//   const ChurchList({super.key});
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return const Center(
 //       child: Text(
-//         "Pastor Page List",
+//         "Church Page List",
 //         style: TextStyle(color: Color.fromARGB(255, 54, 1, 1), fontSize: 24),
 //       ),
 //     );
 //   }
 // }
 
-import 'package:admin_dashboard/screens/pastors/add_pastor.dart';
+import 'package:admin_dashboard/screens/church/addchurch.dart';
 import 'package:flutter/material.dart';
 
-class PastorList extends StatefulWidget {
-  const PastorList({super.key});
+class ChurchList extends StatefulWidget {
+  const ChurchList({super.key});
   @override
-  _PastorListState createState() => _PastorListState();
+  _ChurchListState createState() => _ChurchListState();
 }
 
-class _PastorListState extends State<PastorList> {
+class _ChurchListState extends State<ChurchList> {
   final List<Map<String, dynamic>> users = [
     {
       "id": "ID01",
@@ -99,7 +99,7 @@ class _PastorListState extends State<PastorList> {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
         title: const Text(
-          "Pastor List",
+          "Church List",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -128,12 +128,12 @@ class _PastorListState extends State<PastorList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AddPastor(),
+                    builder: (context) => const AddChurchList(),
                   ), // Navigate to ManageUsers
                 );
               },
               child: const Text(
-                "Add Pastor",
+                "Add Church",
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
@@ -166,7 +166,7 @@ class _PastorListState extends State<PastorList> {
                           child: TextField(
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              hintText: "Search Pastor...",
+                              hintText: "Search Church...",
                               hintStyle: const TextStyle(color: Colors.white),
                               prefixIcon: const Icon(
                                 Icons.search,

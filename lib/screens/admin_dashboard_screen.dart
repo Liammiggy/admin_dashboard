@@ -13,6 +13,8 @@ import 'package:admin_dashboard/screens/members/add_member.dart';
 import 'package:admin_dashboard/screens/members/member_list.dart';
 import 'package:admin_dashboard/screens/members/bulk_upload.dart';
 import 'package:admin_dashboard/screens/pastors/pastorList.dart';
+import 'package:admin_dashboard/screens/church/church.dart';
+import 'package:admin_dashboard/screens/church/addchurch.dart';
 import 'package:admin_dashboard/screens/pastors/add_pastor.dart';
 import 'package:admin_dashboard/screens/organization/add_organization.dart';
 import 'package:admin_dashboard/screens/organization/organization_list.dart';
@@ -102,6 +104,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
       case "pastorlist":
         return PastorList();
+
+      case "churchlist":
+        return ChurchList();
+
+      case "add_church":
+        return AddChurchList();
 
       case "add_pastor":
         return AddPastor();
