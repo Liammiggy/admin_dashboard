@@ -262,6 +262,7 @@ class _ClaimsState extends State<Claims> {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(21, 21, 33, 1),

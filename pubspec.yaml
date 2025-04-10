@@ -30,8 +30,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
 
+  # Add this below flutter
+ 
+  
+  
  
   file_picker: ^6.1.1  # Ensure correct indentation
 
@@ -45,7 +48,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-   
+  
+
 
    
 
