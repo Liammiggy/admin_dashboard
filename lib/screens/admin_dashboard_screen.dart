@@ -5,7 +5,7 @@ import 'sidebar.dart';
 import 'dash.dart';
 import 'manage_users.dart';
 // import 'pastor.dart';
-import 'claims.dart';
+import 'church/Claims_request/claims.dart';
 import 'contributions.dart';
 import 'user_list.dart';
 import 'user_access_role.dart';
@@ -120,7 +120,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       case "add_org":
         return Add_Organization();
 
-      case "Claims & Request":
+      case "Claims_Request":
         return Claims();
 
       case "Contributions":

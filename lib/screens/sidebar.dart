@@ -228,7 +228,8 @@ class _SidebarState extends State<Sidebar> {
                 _buildPastorModule(),
                 _buildChurchModule(),
                 _buildOrganizationModule(),
-                _buildModule("Claims & Request", Icons.request_page),
+                _buildClaimsRequestModule(),
+                // _buildModule("Claims & Request", Icons.request_page),
                 _buildModule("Contributions", Icons.attach_money),
                 _buildModule("Reports", Icons.bar_chart),
               ],
@@ -430,6 +431,37 @@ class _SidebarState extends State<Sidebar> {
         children: [
           _buildSubModule("Organization List", "orglist"),
           _buildSubModule("New Organization", "add_org"),
+          // _buildSubModule("Access Role", "access"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildClaimsRequestModule() {
+    return Material(
+      color:
+          _activeModule == "ClaimsRequest"
+              ? const Color.fromRGBO(67, 94, 190, 1)
+              : Colors.transparent,
+      child: ExpansionTile(
+        leading: const Icon(Icons.request_page, color: Colors.white70),
+        title:
+            widget.isSidebarOpen
+                ? const Text(
+                  "Claims & Request",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                  ),
+                )
+                : const SizedBox.shrink(), // Prevents null error
+        initiallyExpanded: _manageUsersExpanded,
+        onExpansionChanged:
+            (expanded) => setState(() => _manageUsersExpanded = expanded),
+        children: [
+          _buildSubModule("Incident Management", "Claims_Request"),
+          _buildSubModule("New Request", "add_org"),
+          _buildSubModule("Releasing", "orglist"),
           // _buildSubModule("Access Role", "access"),
         ],
       ),
