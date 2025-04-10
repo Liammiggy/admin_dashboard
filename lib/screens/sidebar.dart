@@ -323,7 +323,7 @@ class _SidebarState extends State<Sidebar> {
               ? const Color.fromRGBO(67, 94, 190, 1)
               : Colors.transparent,
       child: ExpansionTile(
-        leading: const Icon(Icons.group, color: Colors.white70),
+        leading: const Icon(Icons.group_work, color: Colors.white70),
         title:
             widget.isSidebarOpen
                 ? const Text(
@@ -353,7 +353,7 @@ class _SidebarState extends State<Sidebar> {
               ? const Color.fromRGBO(67, 94, 190, 1)
               : Colors.transparent,
       child: ExpansionTile(
-        leading: const Icon(Icons.person_pin, color: Colors.white70),
+        leading: const Icon(Icons.volunteer_activism, color: Colors.white70),
         title:
             widget.isSidebarOpen
                 ? const Text(
@@ -383,7 +383,7 @@ class _SidebarState extends State<Sidebar> {
               ? const Color.fromRGBO(67, 94, 190, 1)
               : Colors.transparent,
       child: ExpansionTile(
-        leading: const Icon(Icons.person_pin, color: Colors.white70),
+        leading: const Icon(Icons.church, color: Colors.white70),
         title:
             widget.isSidebarOpen
                 ? const Text(
@@ -413,7 +413,7 @@ class _SidebarState extends State<Sidebar> {
               ? const Color.fromRGBO(67, 94, 190, 1)
               : Colors.transparent,
       child: ExpansionTile(
-        leading: const Icon(Icons.person_pin, color: Colors.white70),
+        leading: const Icon(Icons.account_tree, color: Colors.white70),
         title:
             widget.isSidebarOpen
                 ? const Text(
