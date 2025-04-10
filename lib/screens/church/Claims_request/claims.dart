@@ -28,6 +28,147 @@ String selectedStatus = 'All';
 String selectedDate = 'Newest';
 String sortOrder = 'Asc';
 
+class IncidentRequestDialog extends StatelessWidget {
+  const IncidentRequestDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: const Color(0xFF1B1C36), // Dark theme
+      child: Container(
+        width: 600,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "New Incident Request",
+              style: TextStyle(fontSize: 20, color: Colors.white),
+            ),
+            const SizedBox(height: 20),
+            TextFormField(
+              decoration: const InputDecoration(
+                hintText: "John Doe",
+                filled: true,
+                fillColor: Colors.black26,
+              ),
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              decoration: const InputDecoration(
+                hintText: "Indecent Title",
+                filled: true,
+                fillColor: Colors.black26,
+              ),
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              decoration: const InputDecoration(
+                hintText: "Incident Type",
+                filled: true,
+                fillColor: Colors.black26,
+              ),
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField(
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.black26,
+                    ),
+                    dropdownColor: Colors.black87,
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'Pastor',
+                        child: Text(
+                          "Pastor",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {},
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: DropdownButtonFormField(
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.black26,
+                    ),
+                    dropdownColor: Colors.black87,
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'Status',
+                        child: Text(
+                          "Status",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {},
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Incident Requirements",
+                style: TextStyle(color: Colors.white70),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(12),
+              width: double.infinity,
+              color: Colors.grey[700],
+              child: const Center(
+                child: Text(
+                  "Drag & Drop your files or Browse",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(
+                3,
+                (index) =>
+                    Container(width: 60, height: 60, color: Colors.white10),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                  onPressed: () {},
+                  child: const Text("Submit"),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Reset"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _ClaimsState extends State<Claims> {
   final List<Map<String, dynamic>> users = [
     {
@@ -136,11 +277,7 @@ class _ClaimsState extends State<Claims> {
         ),
         actions: [
           Padding(
-            // padding: const EdgeInsets.symmetric(horizontal: 10),
-            padding: const EdgeInsets.only(
-              top: 12,
-              right: 15,
-            ), // Added top padding
+            padding: const EdgeInsets.only(top: 12, right: 15),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
@@ -153,11 +290,9 @@ class _ClaimsState extends State<Claims> {
                 ),
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Add_Organization(),
-                  ), // Navigate to ManageUsers
+                showDialog(
+                  context: context,
+                  builder: (context) => const IncidentRequestDialog(),
                 );
               },
               child: const Text(
@@ -166,6 +301,39 @@ class _ClaimsState extends State<Claims> {
               ),
             ),
           ),
+
+          // Padding(
+          //   // padding: const EdgeInsets.symmetric(horizontal: 10),
+          //   padding: const EdgeInsets.only(
+          //     top: 12,
+          //     right: 15,
+          //   ), // Added top padding
+          //   child: ElevatedButton(
+          //     style: ElevatedButton.styleFrom(
+          //       backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(5),
+          //       ),
+          //       padding: const EdgeInsets.symmetric(
+          //         horizontal: 50,
+          //         vertical: 20,
+          //       ),
+          //     ),
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => const IncidentRequestDialog(),
+          //           // const Add_Organization(),
+          //         ), // Navigate to ManageUsers
+          //       );
+          //     },
+          //     child: const Text(
+          //       "Add New",
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
       body: Padding(
@@ -447,6 +615,25 @@ class _ClaimsState extends State<Claims> {
                                     //     },
                                     //   ),
                                     // ),
+
+                                    // DataCell(
+                                    //   IconButton(
+                                    //     icon: const Icon(
+                                    //       Icons.edit,
+                                    //       color: Colors.lightBlue,
+                                    //     ),
+                                    //     onPressed: () {
+                                    //       // Navigate to AddNewChurch screen instead of showing a dialog
+                                    //       Navigator.of(context).push(
+                                    //         MaterialPageRoute(
+                                    //           builder:
+                                    //               (context) =>
+                                    //                   const AddnewChurch(),
+                                    //         ),
+                                    //       );
+                                    //     },
+                                    //   ),
+                                    // ),
                                     DataCell(
                                       IconButton(
                                         icon: const Icon(
@@ -454,18 +641,15 @@ class _ClaimsState extends State<Claims> {
                                           color: Colors.lightBlue,
                                         ),
                                         onPressed: () {
-                                          // Navigate to AddNewChurch screen instead of showing a dialog
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder:
-                                                  (context) =>
-                                                      const AddnewChurch(),
-                                            ),
+                                          showDialog(
+                                            context: context,
+                                            builder:
+                                                (context) =>
+                                                    IncidentRequestDialog(),
                                           );
                                         },
                                       ),
                                     ),
-
                                     DataCell(
                                       Container(
                                         padding: const EdgeInsets.symmetric(
