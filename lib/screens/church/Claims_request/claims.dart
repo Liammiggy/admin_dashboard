@@ -127,7 +127,7 @@ class _ClaimsState extends State<Claims> {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
         title: const Text(
-          "Organization List",
+          "Incident Request Management",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
