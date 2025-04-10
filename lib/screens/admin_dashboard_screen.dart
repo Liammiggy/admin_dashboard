@@ -109,7 +109,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         return ChurchList();
 
       case "add_church":
-        return AddChurchList();
+        return AddnewChurch();
 
       case "add_pastor":
         return AddPastor();

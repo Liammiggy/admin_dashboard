@@ -30,7 +30,7 @@ class _ChurchListState extends State<ChurchList> {
       "id": "ID01",
       "name": "Raymond Bolambao",
       "address": "Cebu City",
-      "retirementAge": "65",
+      // "retirementAge": "65",
       "phone": "09123456789",
       "pastor": "Jane Smith",
       "status": "Active",
@@ -39,7 +39,7 @@ class _ChurchListState extends State<ChurchList> {
       "id": "ID02",
       "name": "John Doe",
       "address": "Manila",
-      "retirementAge": "60",
+      // "retirementAge": "60",
       "phone": "09234567890",
       "pastor": "Raymond Bolambao",
       "status": "Inactive",
@@ -48,7 +48,7 @@ class _ChurchListState extends State<ChurchList> {
       "id": "ID03",
       "name": "Jane Smith",
       "address": "Davao City",
-      "retirementAge": "62",
+      // "retirementAge": "62",
       "phone": "09345678901",
       "pastor": "John Doe",
       "status": "Active",
@@ -57,7 +57,7 @@ class _ChurchListState extends State<ChurchList> {
       "id": "ID04",
       "name": "Michael Cruz",
       "address": "Quezon City",
-      "retirementAge": "58",
+      // "retirementAge": "58",
       "phone": "09456789012",
       "pastor": "Jane Smith",
       "status": "Active",
@@ -66,7 +66,7 @@ class _ChurchListState extends State<ChurchList> {
       "id": "ID05",
       "name": "Emily Garcia",
       "address": "Baguio",
-      "retirementAge": "66",
+      // "retirementAge": "66",
       "phone": "09567890123",
       "pastor": "Michael Cruz",
       "status": "Inactive",
@@ -75,7 +75,7 @@ class _ChurchListState extends State<ChurchList> {
       "id": "ID06",
       "name": "Carlos Mendoza",
       "address": "Iloilo",
-      "retirementAge": "64",
+      // "retirementAge": "64",
       "phone": "09678901234",
       "pastor": "Emily Garcia",
       "status": "Active",
@@ -84,7 +84,7 @@ class _ChurchListState extends State<ChurchList> {
       "id": "ID07",
       "name": "Anna Lopez",
       "address": "Zamboanga",
-      "retirementAge": "63",
+      // "retirementAge": "63",
       "phone": "09789012345",
       "pastor": "Carlos Mendoza",
       "status": "Active",
@@ -128,7 +128,7 @@ class _ChurchListState extends State<ChurchList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AddChurchList(),
+                    builder: (context) => const AddnewChurch(),
                   ), // Navigate to ManageUsers
                 );
               },
@@ -250,7 +250,7 @@ class _ChurchListState extends State<ChurchList> {
                         ),
                         DataColumn(
                           label: Text(
-                            "Name",
+                            "Church Name",
                             style: TextStyle(
                               color: Color.fromRGBO(67, 94, 190, 1),
                               fontWeight: FontWeight.bold,
@@ -266,15 +266,15 @@ class _ChurchListState extends State<ChurchList> {
                             ),
                           ),
                         ),
-                        DataColumn(
-                          label: Text(
-                            "Retirement Age",
-                            style: TextStyle(
-                              color: Color.fromRGBO(67, 94, 190, 1),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                        // DataColumn(
+                        //   label: Text(
+                        //     "Retirement Age",
+                        //     style: TextStyle(
+                        //       color: Color.fromRGBO(67, 94, 190, 1),
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //   ),
+                        // ),
                         DataColumn(
                           label: Text(
                             "Phone",
@@ -286,7 +286,7 @@ class _ChurchListState extends State<ChurchList> {
                         ),
                         DataColumn(
                           label: Text(
-                            "Pastor",
+                            "Church Pastor",
                             style: TextStyle(
                               color: Color.fromRGBO(67, 94, 190, 1),
                               fontWeight: FontWeight.bold,
@@ -346,14 +346,14 @@ class _ChurchListState extends State<ChurchList> {
                                         ),
                                       ),
                                     ),
-                                    DataCell(
-                                      SelectableText(
-                                        user["retirementAge"],
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
+                                    // DataCell(
+                                    //   SelectableText(
+                                    //     user["retirementAge"],
+                                    //     style: const TextStyle(
+                                    //       color: Colors.white,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     DataCell(
                                       SelectableText(
                                         user["phone"],
