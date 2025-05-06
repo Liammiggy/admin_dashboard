@@ -15,194 +15,15 @@
 //   }
 // }
 
-// import 'package:flutter/material.dart';
-
-// class AddMember extends StatelessWidget {
-//   const AddMember({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Color.fromRGBO(21, 21, 33, 1),
-//       appBar: AppBar(
-//         title: const Text(
-//           "Add New Member",
-//           style: TextStyle(color: Colors.white),
-//         ),
-//         backgroundColor: Color.fromRGBO(21, 21, 33, 1),
-//       ),
-//       body: SafeArea(
-//         child: SingleChildScrollView(
-//           padding: EdgeInsets.all(16),
-//           child: LayoutBuilder(
-//             builder: (context, constraints) {
-//               bool isMobile = constraints.maxWidth < 600;
-
-//               return Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   // Add New User Header
-//                   // Text(
-//                   //   "Add New User",
-//                   //   style: TextStyle(
-//                   //     color: Colors.white,
-//                   //     fontSize: 20,
-//                   //     fontWeight: FontWeight.bold,
-//                   //   ),
-//                   // ),
-//                   // SizedBox(height: 16),
-
-//                   // Layout - Stack on Mobile, Row on Desktop
-//                   if (!isMobile)
-//                     Row(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         _buildProfileCard(),
-//                         SizedBox(width: 20),
-//                         Expanded(child: _buildUserForm()),
-//                       ],
-//                     )
-//                   else ...[
-//                     _buildProfileCard(),
-//                     SizedBox(height: 20),
-//                     _buildUserForm(),
-//                   ],
-//                 ],
-//               );
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildProfileCard() {
-//     return Center(
-//       // Centers the container
-//       child: Container(
-//         padding: EdgeInsets.all(16),
-//         decoration: BoxDecoration(
-//           color: const Color.fromRGBO(30, 30, 45, 1),
-//           borderRadius: BorderRadius.circular(12),
-//         ),
-//         width: 500,
-//         height: 300,
-//         child: Column(
-//           mainAxisAlignment:
-//               MainAxisAlignment.center, // Centers content vertically
-//           crossAxisAlignment:
-//               CrossAxisAlignment.center, // Centers content horizontally
-//           children: [
-//             CircleAvatar(
-//               radius: 40,
-//               backgroundColor: Colors.blue,
-//               child: Icon(Icons.person, size: 40, color: Colors.white),
-//             ),
-//             SizedBox(height: 8),
-//             Text(
-//               "Ige Alvarina",
-//               style: TextStyle(color: Colors.white, fontSize: 18),
-//             ),
-//             Text(
-//               "System Administrator",
-//               style: TextStyle(color: Colors.grey, fontSize: 14),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildUserForm() {
-//     return Container(
-//       padding: EdgeInsets.all(20),
-//       decoration: BoxDecoration(
-//         color: const Color.fromRGBO(30, 30, 45, 1),
-//         borderRadius: BorderRadius.circular(8),
-//       ),
-//       child: Column(
-//         children: [
-//           _buildTextField("Name"),
-//           _buildTextField("Email"),
-//           _buildTextField("Phone"),
-//           _buildTextField("Birthday mm/dd/yy"),
-//           _buildTextField("Gender"),
-
-//           Row(
-//             children: [
-//               Expanded(child: _buildTextField("Username")),
-//               SizedBox(width: 10),
-//               Expanded(child: _buildTextField("Password", isPassword: true)),
-//             ],
-//           ),
-
-//           _buildTextField("Access Role"),
-//           SizedBox(height: 20),
-
-//           Row(
-//             children: [
-//               Expanded(
-//                 child: ElevatedButton(
-//                   onPressed: () {},
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(5),
-//                     ),
-//                     padding: EdgeInsets.symmetric(vertical: 24),
-//                   ),
-//                   child: Text(
-//                     "Submit",
-//                     style: TextStyle(fontSize: 16, color: Colors.white),
-//                   ),
-//                 ),
-//               ),
-//               SizedBox(width: 8),
-//               Expanded(
-//                 child: ElevatedButton(
-//                   onPressed: () {},
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: const Color.fromRGBO(145, 152, 158, 1),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(5),
-//                     ),
-//                     padding: EdgeInsets.symmetric(vertical: 25),
-//                   ),
-
-//                   child: Text(
-//                     "Reset",
-//                     style: TextStyle(fontSize: 16, color: Colors.white),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildTextField(String label, {bool isPassword = false}) {
-//     return Padding(
-//       padding: EdgeInsets.only(bottom: 12),
-//       child: TextField(
-//         obscureText: isPassword,
-//         style: TextStyle(color: Colors.white),
-//         decoration: InputDecoration(
-//           labelText: label,
-//           labelStyle: TextStyle(color: Colors.white70),
-//           filled: true,
-//           fillColor: const Color.fromRGBO(27, 27, 41, 1),
-//           border: OutlineInputBorder(
-//             borderRadius: BorderRadius.circular(8),
-//             borderSide: BorderSide(color: Colors.white24),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
+
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:logger/logger.dart'; // Import the logger package
+
+final logger = Logger(); // Initialize the logger
 
 class AddMember extends StatefulWidget {
   const AddMember({super.key});
@@ -213,26 +34,46 @@ class AddMember extends StatefulWidget {
 
 class _AddMemberState extends State<AddMember> {
   final _formKey = GlobalKey<FormState>();
-  final _controllers = {
-    "First Name": TextEditingController(),
-    "Last Name": TextEditingController(),
-    "Parents Name": TextEditingController(),
-    "Address": TextEditingController(),
-    "Country": TextEditingController(),
-    "Phone": TextEditingController(),
-    "Email": TextEditingController(),
-    "Age": TextEditingController(),
-    "Adult": TextEditingController(),
-    "Geography": TextEditingController(),
-    "Pastor": TextEditingController(),
-    "Church": TextEditingController(),
-    "Benefeciaries 1": TextEditingController(),
-    "Benefeciaries 2": TextEditingController(),
-  };
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _birthDateController = TextEditingController();
+  final TextEditingController _parentsNameController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  int? _selectedPastor;
+  int? _selectedMembershipType;
+  final TextEditingController _beneficiaryOneController = TextEditingController();
+  final TextEditingController _beneficiaryTwoController = TextEditingController();
+  int? _selectedStatus;
+  bool _isLoading = false; // Track loading state
 
   void _resetFields() {
-    for (var controller in _controllers.values) {
-      controller.clear();
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _birthDateController.clear();
+    _parentsNameController.clear();
+    _addressController.clear();
+    _phoneController.clear();
+    _emailController.clear();
+    _selectedPastor = null;
+    _selectedMembershipType = null;
+    _beneficiaryOneController.clear();
+    _beneficiaryTwoController.clear();
+    _selectedStatus = null;
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        _birthDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
     }
   }
 
@@ -240,10 +81,65 @@ class _AddMemberState extends State<AddMember> {
     if (_formKey.currentState!.validate()) {
       bool confirm = await _showConfirmationDialog();
       if (confirm) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Member added successfully!")));
-        _resetFields();
+        setState(() {
+          _isLoading = true; // Show loader
+        });
+        final url = Uri.parse('http://stewardshipapi.test/api/manage-members/add');
+        try {
+          final response = await http.post(
+            url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{
+              'first_name': _firstNameController.text,
+              'last_name': _lastNameController.text,
+              'birthdate': _birthDateController.text,
+              'parents_name': _parentsNameController.text,
+              'address': _addressController.text,
+              'phone': _phoneController.text,
+              'email': _emailController.text,
+              'pastor_id': _selectedPastor,
+              'membership_type': _selectedMembershipType,
+              'beneficiaries_1': _beneficiaryOneController.text,
+              'beneficiaries_2': _beneficiaryTwoController.text,
+              'status': _selectedStatus,
+            }),
+          );
+
+          logger.d('Save User Response: ${response.statusCode}, ${response.body}');
+          final responseData = jsonDecode(response.body);
+          if (response.statusCode == 200) {
+            if (responseData['code'] == 200) {
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).pop();
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(responseData['msg'])),
+              );
+              _resetFields();
+            } else {
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(responseData['msg'])),
+              );
+            }
+          } else {
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseData['msg'])),
+            );
+          }
+        } catch (error) {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("An error occurred.Please contact your Administrator.")),
+          );
+        } finally {
+          setState(() {
+            _isLoading = false; // Hide loader
+          });
+        }
       }
     }
   }
@@ -251,21 +147,20 @@ class _AddMemberState extends State<AddMember> {
   Future<bool> _showConfirmationDialog() async {
     return await showDialog(
           context: context,
-          builder:
-              (context) => AlertDialog(
-                title: Text("Confirm Submission"),
-                content: Text("Are you sure you want to save this member?"),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text("Cancel"),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: Text("Save"),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text("Confirm Submission"),
+            content: const Text("Are you sure you want to save this member?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text("Cancel"),
               ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text("Save"),
+              ),
+            ],
+          ),
         ) ??
         false;
   }
@@ -273,45 +168,56 @@ class _AddMemberState extends State<AddMember> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(21, 21, 33, 1),
+      backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
       appBar: AppBar(
         title: const Text(
           "Add New Member",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color.fromRGBO(21, 21, 33, 1),
+        backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              bool isMobile = constraints.maxWidth < 600;
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isMobile = constraints.maxWidth < 600;
 
-              return Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (!isMobile)
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildProfileCard(),
-                          SizedBox(width: 20),
-                          Expanded(child: _buildUserForm()),
+                  return Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (!isMobile)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // _buildProfileCard(),
+                              const SizedBox(width: 20),
+                              Expanded(child: _buildUserForm()),
+                            ],
+                          )
+                        else ...[
+                          // _buildProfileCard(),
+                          const SizedBox(height: 20),
+                          _buildUserForm(),
                         ],
-                      )
-                    else ...[
-                      _buildProfileCard(),
-                      SizedBox(height: 20),
-                      _buildUserForm(),
-                    ],
-                  ],
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            if (_isLoading)
+              Container(
+                color: Colors.black54,
+                child: const Center(
+                  child: CircularProgressIndicator(),
                 ),
-              );
-            },
-          ),
+              ),
+          ],
         ),
       ),
     );
@@ -320,14 +226,14 @@ class _AddMemberState extends State<AddMember> {
   Widget _buildProfileCard() {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: const Color.fromRGBO(30, 30, 45, 1),
           borderRadius: BorderRadius.circular(12),
         ),
         width: 500,
         height: 300,
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -353,72 +259,90 @@ class _AddMemberState extends State<AddMember> {
 
   Widget _buildUserForm() {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(30, 30, 45, 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         children: [
-          // _buildTextField("First Name"),
-          // _buildTextField("Last Name"),
-          // _buildTextField("Parents Name"),
           Row(
             children: [
-              Expanded(child: _buildTextField("First Name")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Last Name")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Parents Name")),
+              Expanded(child: _buildTextField("Firstname", controller: _firstNameController)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildTextField("Lastname", controller: _lastNameController)),
+            ],
+          ),
+          _buildDateField("Birthdate", controller: _birthDateController, onTap: () => _selectDate(context)),
+          Row(
+            children: [
+              Expanded(child: _buildTextField("Parents Name", controller: _parentsNameController)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildTextField("Address", controller: _addressController)),
             ],
           ),
           Row(
             children: [
-              Expanded(child: _buildTextField("Address")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Country")),
+              Expanded(child: _buildTextField("Phone", controller: _phoneController)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildTextField("Email", controller: _emailController, keyboardType: TextInputType.emailAddress)),
             ],
           ),
           Row(
             children: [
-              Expanded(child: _buildTextField("Phone")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Email")),
+              Expanded(
+                  child: _buildDropdownField<int>(
+                labelText: "Pastor",
+                value: _selectedPastor,
+                items: const [
+                  DropdownMenuItem(value: 1, child: Text("Active", style: TextStyle(color: Colors.white))),
+                  DropdownMenuItem(value: 0, child: Text("Inactive", style: TextStyle(color: Colors.white))),
+                ],
+                onChanged: (int? newValue) {
+                  setState(() {
+                    _selectedPastor = newValue;
+                  });
+                },
+              )),
+              const SizedBox(width: 10),
+              Expanded(
+                child: _buildDropdownField<int>(
+                  labelText: "Membership Type",
+                  value: _selectedMembershipType,
+                  items: const [
+                    DropdownMenuItem(value: 1, child: Text("Adult", style: TextStyle(color: Colors.white))),
+                    DropdownMenuItem(value: 2, child: Text("Kids", style: TextStyle(color: Colors.white))),
+                  ],
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      _selectedMembershipType = newValue;
+                    });
+                  },
+                ),
+              ),
             ],
           ),
-
           Row(
             children: [
-              Expanded(child: _buildTextField("Birthday mm/dd/yy")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Age")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Adult")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Geography")),
+              Expanded(child: _buildTextField("Benefeciaries 1", controller: _beneficiaryOneController)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildTextField("Benefeciaries 2", controller: _beneficiaryTwoController)),
             ],
           ),
-
-          Row(
-            children: [
-              Expanded(child: _buildTextField("Pastor")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Church")),
-              SizedBox(width: 10),
+          _buildDropdownField<int>(
+            labelText: "Status",
+            value: _selectedStatus,
+            items: const [
+              DropdownMenuItem(value: 1, child: Text("Active", style: TextStyle(color: Colors.white))),
+              DropdownMenuItem(value: 0, child: Text("Inactive", style: TextStyle(color: Colors.white))),
             ],
+            onChanged: (int? newValue) {
+              setState(() {
+                _selectedStatus = newValue;
+              });
+            },
           ),
-          Row(
-            children: [
-              Expanded(child: _buildTextField("Benefeciaries 1")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Benefeciaries 2")),
-              SizedBox(width: 10),
-            ],
-          ),
-
-          // _buildTextField("Benefeciaries 1"),
-          // _buildTextField("Benefeciaries 2"),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
@@ -429,15 +353,15 @@ class _AddMemberState extends State<AddMember> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 24),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Submit",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: ElevatedButton(
                   onPressed: _resetFields,
@@ -446,9 +370,9 @@ class _AddMemberState extends State<AddMember> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 24),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Reset",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
@@ -461,26 +385,93 @@ class _AddMemberState extends State<AddMember> {
     );
   }
 
-  Widget _buildTextField(String label, {bool isPassword = false}) {
+  Widget _buildTextField(String label, {TextEditingController? controller, bool isPassword = false, TextInputType? keyboardType}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
-        controller: _controllers[label],
+        controller: controller,
         obscureText: isPassword,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white70),
+          labelStyle: const TextStyle(color: Colors.white70),
           filled: true,
           fillColor: const Color.fromRGBO(27, 27, 41, 1),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.white24),
+            borderSide: const BorderSide(color: Colors.white24),
           ),
         ),
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
             return "$label is required";
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildDateField(String label, {TextEditingController? controller, VoidCallback? onTap}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextFormField(
+        controller: controller,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: Colors.white70),
+          filled: true,
+          fillColor: const Color.fromRGBO(27, 27, 41, 1),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.white24),
+          ),
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.calendar_today, color: Colors.white70),
+            onPressed: onTap,
+          ),
+        ),
+        readOnly: true,
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return "$label is required";
+          }
+          // You can add more specific date format validation if needed
+          return null;
+        },
+        onTap: onTap,
+      ),
+    );
+  }
+
+  Widget _buildDropdownField<T>({
+    required String labelText,
+    T? value,
+    required List<DropdownMenuItem<T>> items,
+    required ValueChanged<T?>? onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: DropdownButtonFormField<T>(
+        dropdownColor: const Color.fromRGBO(27, 27, 41, 1),
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: const TextStyle(color: Colors.white70),
+          filled: true,
+          fillColor: const Color.fromRGBO(27, 27, 41, 1),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.white24),
+          ),
+        ),
+        value: value,
+        items: items,
+        onChanged: onChanged,
+        validator: (value) {
+          if (value == null) {
+            return "$labelText is required";
           }
           return null;
         },

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:logger/logger.dart'; // Import the logger package
 
+final logger = Logger(); // Initialize the logger
 class AddPastor extends StatefulWidget {
   const AddPastor({super.key});
 
@@ -9,37 +15,70 @@ class AddPastor extends StatefulWidget {
 
 class _AddPastorState extends State<AddPastor> {
   final _formKey = GlobalKey<FormState>();
-  final _controllers = {
-    "First Name": TextEditingController(),
-    "Last Name": TextEditingController(),
-    "Parents Name": TextEditingController(),
-    "Address": TextEditingController(),
-    "Country": TextEditingController(),
-    "Phone": TextEditingController(),
-    "Email": TextEditingController(),
-    "Age": TextEditingController(),
-    "Adult": TextEditingController(),
-    "Geography": TextEditingController(),
-    "Pastor": TextEditingController(),
-    "Church": TextEditingController(),
-    "Benefeciaries 1": TextEditingController(),
-    "Benefeciaries 2": TextEditingController(),
-  };
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  int? _selectedStatus;
+  bool _isLoading = false;
 
   void _resetFields() {
-    for (var controller in _controllers.values) {
-      controller.clear();
-    }
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _emailController.clear();
+    _phoneController.clear();
+    _selectedStatus = null;
   }
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       bool confirm = await _showConfirmationDialog();
       if (confirm) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Member added successfully!")));
-        _resetFields();
+        setState(() {
+          _isLoading = true; // Show loader
+        });
+        final url = Uri.parse('http://stewardshipapi.test/api/manage-pastors/add');
+        try {
+          final response = await http.post(
+            url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{
+              'first_name': _firstNameController.text,
+              'last_name': _lastNameController.text,
+              'phone': _phoneController.text,
+              'email': _emailController.text,
+              'status': _selectedStatus, // New status field as integer
+            }),
+          );
+
+          logger.d('Save Pastor Response: ${response.statusCode}, ${response.body}');
+          final responseData = jsonDecode(response.body);
+          if (response.statusCode == 200) {
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pop();
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseData['msg'])),
+            );
+            _resetFields(); 
+          } else {
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseData['msg'])),
+            );
+          }
+        } catch (error) {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("An error occurred.Please contact your Administrator.")),
+          );
+        } finally {
+          setState(() {
+            _isLoading = false; // Hide loader
+          });
+        }
       }
     }
   }
@@ -47,21 +86,20 @@ class _AddPastorState extends State<AddPastor> {
   Future<bool> _showConfirmationDialog() async {
     return await showDialog(
           context: context,
-          builder:
-              (context) => AlertDialog(
-                title: Text("Confirm Submission"),
-                content: Text("Are you sure you want to save this member?"),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text("Cancel"),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: Text("Save"),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text("Confirm Submission"),
+            content: const Text("Are you sure you want to save this pastor?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text("Cancel"),
               ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text("Save"),
+              ),
+            ],
+          ),
         ) ??
         false;
   }
@@ -69,45 +107,56 @@ class _AddPastorState extends State<AddPastor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(21, 21, 33, 1),
+      backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
       appBar: AppBar(
         title: const Text(
           "Add New Pastor",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color.fromRGBO(21, 21, 33, 1),
+        backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              bool isMobile = constraints.maxWidth < 600;
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isMobile = constraints.maxWidth < 600;
 
-              return Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (!isMobile)
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildProfileCard(),
-                          SizedBox(width: 20),
-                          Expanded(child: _buildUserForm()),
+                  return Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (!isMobile)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //_buildProfileCard(),
+                              const SizedBox(width: 20),
+                              Expanded(child: _buildUserForm()),
+                            ],
+                          )
+                        else ...[
+                          //_buildProfileCard(),
+                          const SizedBox(height: 20),
+                          _buildUserForm(),
                         ],
-                      )
-                    else ...[
-                      _buildProfileCard(),
-                      SizedBox(height: 20),
-                      _buildUserForm(),
-                    ],
-                  ],
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            if (_isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
                 ),
-              );
-            },
-          ),
+              ),
+          ],
         ),
       ),
     );
@@ -116,14 +165,14 @@ class _AddPastorState extends State<AddPastor> {
   Widget _buildProfileCard() {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: const Color.fromRGBO(30, 30, 45, 1),
           borderRadius: BorderRadius.circular(12),
         ),
         width: 500,
         height: 300,
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -149,66 +198,41 @@ class _AddPastorState extends State<AddPastor> {
 
   Widget _buildUserForm() {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(30, 30, 45, 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         children: [
-          // _buildTextField("First Name"),
-          // _buildTextField("Last Name"),
-          // _buildTextField("Parents Name"),
           Row(
             children: [
-              Expanded(child: _buildTextField("First Name")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Last Name")),
+              Expanded(child: _buildTextField("Firstname", controller: _firstNameController)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildTextField("Lastname", controller: _lastNameController)),
             ],
           ),
           Row(
             children: [
-              Expanded(child: _buildTextField("Address")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Country")),
+              Expanded(child: _buildTextField("Phone", controller: _phoneController)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildTextField("Email", controller: _emailController, keyboardType: TextInputType.emailAddress)),
             ],
           ),
-          Row(
-            children: [
-              Expanded(child: _buildTextField("Phone")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Email")),
+          _buildDropdownField<int>(
+            labelText: "Status",
+            value: _selectedStatus,
+            items: const [
+              DropdownMenuItem(value: 1, child: Text("Active", style: TextStyle(color: Colors.white))),
+              DropdownMenuItem(value: 0, child: Text("Inactive", style: TextStyle(color: Colors.white))),
             ],
+            onChanged: (int? newValue) {
+              setState(() {
+                _selectedStatus = newValue;
+              });
+            },
           ),
-
-          Row(
-            children: [
-              Expanded(child: _buildTextField("Birthday")),
-              SizedBox(width: 10),
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    labelText: "Organization-Church",
-                    border: OutlineInputBorder(),
-                  ),
-                  dropdownColor: Colors.black,
-                  style: TextStyle(color: Colors.white),
-                  items:
-                      ["Church 1", "Church 2", "Church 3"].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                  onChanged: (String? newValue) {
-                    // Handle change
-                  },
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
@@ -219,15 +243,15 @@ class _AddPastorState extends State<AddPastor> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 24),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Submit",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: ElevatedButton(
                   onPressed: _resetFields,
@@ -236,9 +260,9 @@ class _AddPastorState extends State<AddPastor> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 24),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Reset",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
@@ -251,26 +275,60 @@ class _AddPastorState extends State<AddPastor> {
     );
   }
 
-  Widget _buildTextField(String label, {bool isPassword = false}) {
+  Widget _buildTextField(String label, {TextEditingController? controller, bool isPassword = false, TextInputType? keyboardType}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
-        controller: _controllers[label],
+        controller: controller,
         obscureText: isPassword,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white70),
+          labelStyle: const TextStyle(color: Colors.white70),
           filled: true,
           fillColor: const Color.fromRGBO(27, 27, 41, 1),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.white24),
+            borderSide: const BorderSide(color: Colors.white24),
           ),
         ),
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
             return "$label is required";
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildDropdownField<T>({
+    required String labelText,
+    T? value,
+    required List<DropdownMenuItem<T>> items,
+    required ValueChanged<T?>? onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: DropdownButtonFormField<T>(
+        dropdownColor: const Color.fromRGBO(27, 27, 41, 1),
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: const TextStyle(color: Colors.white70),
+          filled: true,
+          fillColor: const Color.fromRGBO(27, 27, 41, 1),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.white24),
+          ),
+        ),
+        value: value,
+        items: items,
+        onChanged: onChanged,
+        validator: (value) {
+          if (value == null) {
+            return "$labelText is required";
           }
           return null;
         },

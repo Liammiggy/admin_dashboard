@@ -370,6 +370,9 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart'; // Import the logger package
+
+final logger = Logger(); // Initialize the logger
 
 class UserList extends StatefulWidget {
   const UserList({super.key});
@@ -381,6 +384,7 @@ class UserList extends StatefulWidget {
 class _UserListState extends State<UserList> {
   List users = [];
   List filteredUsers = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -388,38 +392,321 @@ class _UserListState extends State<UserList> {
     fetchUsers();
   }
 
+  // Future<void> fetchUsers() async {
+  //   final response = await http.get(
+  //     Uri.parse("http://stewardshipapi.test/api/manage-users/list"),
+  //   );
+
+  //   logger.d('Fetch Users Response: ${response.statusCode}, ${response.body}');
+
+  //   if (response.statusCode == 200) {
+  //     final data = json.decode(response.body);
+  //     setState(() {
+  //       users = List<Map<String, dynamic>>.from(data['users']);
+  //       filteredUsers = List<Map<String, dynamic>>.from(users);
+  //     });
+  //   } else {
+  //     // Consider showing an error message to the user
+  //     throw Exception('Failed to load users');
+  //   }
+  // }
+
   Future<void> fetchUsers() async {
-    final response = await http.get(
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final response = await http.get(
       Uri.parse("http://stewardshipapi.test/api/manage-users/list"),
     );
+
+    logger.d('Fetch Users Response: ${response.statusCode}, ${response.body}');
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
-        users = data['users'];
-        filteredUsers = users;
+        users = List<Map<String, dynamic>>.from(data['users']);
+        filteredUsers = List<Map<String, dynamic>>.from(users);
       });
     } else {
+      // Consider showing an error message to the user
       throw Exception('Failed to load users');
+    }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      logger.e('Error fetching members: $error');
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Network error occurred')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   void filterSearch(String query) {
     setState(() {
-      filteredUsers =
-          users
-              .where(
-                (user) =>
-                    user['first_name'].toLowerCase().contains(
-                      query.toLowerCase(),
-                    ) ||
-                    user['last_name'].toLowerCase().contains(
-                      query.toLowerCase(),
-                    ) ||
-                    user['email'].toLowerCase().contains(query.toLowerCase()),
-              )
-              .toList();
+      filteredUsers = users
+          .where((user) =>
+              user['first_name'].toLowerCase().contains(query.toLowerCase()) ||
+              user['last_name'].toLowerCase().contains(query.toLowerCase()) ||
+              user['email'].toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
+  }
+
+  Future<void> _showEditDialog(BuildContext context, Map<String, dynamic> user) async {
+    TextEditingController firstNameController = TextEditingController(text: user['first_name']);
+    TextEditingController lastNameController = TextEditingController(text: user['last_name']);
+    TextEditingController emailController = TextEditingController(text: user['email']);
+    bool isUpdating = false;
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Stack(
+              children: [
+                AlertDialog(
+                  backgroundColor: Colors.grey[800],
+                  title: const Text('Edit User', style: TextStyle(color: Colors.white)),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        TextField(
+                          controller: firstNameController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'First Name',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                          ),
+                        ),
+                        TextField(
+                          controller: lastNameController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Last Name',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                          ),
+                        ),
+                        TextField(
+                          controller: emailController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                          ),
+                        ),
+                        DropdownButtonFormField<int>(
+                          value: user['status'],
+                          dropdownColor: Colors.grey[800],
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Status',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                          ),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text('Active', style: TextStyle(color: Colors.white)),
+                            ),
+                            DropdownMenuItem(
+                              value: 0,
+                              child: Text('Inactive', style: TextStyle(color: Colors.white)),
+                            ),
+                          ],
+                          onChanged: (int? newValue) {
+                            user['status'] = newValue!;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Cancel', style: TextStyle(color: Colors.white)),
+                      onPressed: isUpdating
+                          ? null
+                          : () {
+                              Navigator.of(context).pop();
+                            },
+                    ),
+                    TextButton(
+                      child: const Text('Update', style: TextStyle(color: Colors.blue)),
+                      onPressed: () async {
+                            setState(() {
+                              isUpdating = true;
+                            });
+
+                            try {
+                                final response = await http.post(
+                                  Uri.parse("http://stewardshipapi.test/api/manage-users/update/${user['user_id']}"),
+                                  body: {
+                                    'first_name': firstNameController.text,
+                                    'last_name': lastNameController.text,
+                                    'email': emailController.text,
+                                    'status': user['status'].toString(),
+                                  },
+                                );
+
+                                logger.d('Update User Response: ${response.statusCode}, ${response.body}');
+
+                                setState(() {
+                                  isUpdating = false;
+                                });
+
+                                if (response.statusCode == 200) {
+                                  final responseData = jsonDecode(response.body);
+                                  if (responseData['code'] == 200) {
+                                    // _fetchUsersWithLoading();
+                                    logger.d('Update User Response: $filteredUsers');
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(responseData['msg'])),
+                                    );
+                                    fetchUsers();
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(responseData['msg'])),
+                                    );
+                                  }
+                                } else {
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Failed to update user')),
+                                  );
+                                }
+                            } catch (e) {
+                              logger.e('Error updating member: $e');
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('An error occurred while updating')),
+                              );
+                            } finally {
+                              setState(() {
+                                isUpdating = false;
+                              });
+                            }
+                          },
+                    ),
+                  ],
+                ),
+                if (isUpdating)
+                  Container(
+                    color: Colors.black54,
+                    child: const Center(
+                      child: CircularProgressIndicator(color: Colors.blue),
+                    ),
+                  ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _showDeleteConfirmationDialog(BuildContext context, int userId) async {
+    bool isDeleting = false;
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Stack(
+              children: [
+                AlertDialog(
+                  backgroundColor: Colors.grey[800],
+                  title: const Text('Confirm Delete', style: TextStyle(color: Colors.white)),
+                  content: const SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Text('Are you sure you want to delete this user?', style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('No', style: TextStyle(color: Colors.white)),
+                      onPressed: isDeleting
+                          ? null
+                          : () {
+                              Navigator.of(context).pop();
+                            },
+                    ),
+                    TextButton(
+                      child: const Text('Yes', style: TextStyle(color: Colors.red)),
+                      onPressed: isDeleting
+                          ? null
+                          : () async {
+                              setState(() {
+                                isDeleting = true;
+                              });
+                              final response = await http.delete(
+                                Uri.parse("http://stewardshipapi.test/api/manage-users/delete/$userId"),
+                              );
+
+                              logger.d('Delete User Response: ${response.statusCode}, ${response.body}');
+
+                              setState(() {
+                                isDeleting = false;
+                              });
+                            
+                              if (response.statusCode == 200) {
+                                final responseData = jsonDecode(response.body);
+                                if (responseData['code'] == 200) {
+                                  // _fetchUsersWithLoading();
+                                  fetchUsers();
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.of(context).pop();
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(responseData['msg'])),
+                                  );
+                                } else {
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(responseData['msg'])),
+                                  );
+                                }
+                              } else {
+                                // ignore: use_build_context_synchronously
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Failed to connect to the server')),
+                                );
+                              }
+                            },
+                    ),
+                  ],
+                ),
+                if (isDeleting)
+                  Container(
+                    color: Colors.black54,
+                    child: const Center(
+                      child: CircularProgressIndicator(color: Colors.red),
+                    ),
+                  ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -430,71 +717,71 @@ class _UserListState extends State<UserList> {
         title: const Text("User List"),
         backgroundColor: Colors.black,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              onChanged: filterSearch,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: "Search Member...",
-                hintStyle: const TextStyle(color: Colors.white70),
-                prefixIcon: const Icon(Icons.search, color: Colors.white),
-                filled: true,
-                fillColor: Colors.grey[900],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            )
+          : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    onChanged: filterSearch,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: "Search Member...",
+                      hintStyle: const TextStyle(color: Colors.white70),
+                      prefixIcon: const Icon(Icons.search, color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.grey[900],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SizedBox(
-                width:
-                    MediaQuery.of(context).size.width * 1.2, // Increase width
-                child: DataTable(
-                  columnSpacing: 50, // Widen column spacing
-                  headingRowColor: WidgetStateColor.resolveWith(
-                    (states) => Colors.grey[900]!,
-                  ),
-                  dataRowColor: WidgetStateColor.resolveWith(
-                    (states) => Colors.grey[850]!,
-                  ),
-                  columns: const [
-                    DataColumn(
-                      label: Text("ID", style: TextStyle(color: Colors.white)),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        "Name",
-                        style: TextStyle(color: Colors.white),
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: DataTable(
+                      columnSpacing: 50, // Widen column spacing
+                      headingRowColor: WidgetStateColor.resolveWith(
+                        (states) => Colors.grey[900]!,
                       ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        "Email",
-                        style: TextStyle(color: Colors.white),
+                      dataRowColor: WidgetStateColor.resolveWith(
+                        (states) => Colors.grey[850]!,
                       ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        "Status",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        "Action",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                  rows:
-                      filteredUsers.map((user) {
+                      columns: const [
+                        DataColumn(
+                          label: Text("ID", style: TextStyle(color: Colors.white)),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Name",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Email",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Status",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            "Action",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                      rows: filteredUsers.map((user) {
                         return DataRow(
                           cells: [
                             DataCell(
@@ -517,15 +804,9 @@ class _UserListState extends State<UserList> {
                             ),
                             DataCell(
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 5,
-                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                                 decoration: BoxDecoration(
-                                  color:
-                                      user['status'] == 1
-                                          ? Colors.green
-                                          : Colors.red,
+                                  color: user['status'] == 1 ? Colors.green : Colors.red,
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Text(
@@ -535,25 +816,37 @@ class _UserListState extends State<UserList> {
                               ),
                             ),
                             DataCell(
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.blue,
-                                ),
-                                onPressed: () {
-                                  // Handle edit action
-                                },
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
+                                    onPressed: () {
+                                      _showEditDialog(context, user);
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      _showDeleteConfirmationDialog(context, user['user_id']);
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         );
                       }).toList(),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

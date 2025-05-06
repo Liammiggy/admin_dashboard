@@ -1,21 +1,9 @@
-// church.dart
-// import 'package:flutter/material.dart';
-
-// class AddChurchList extends StatelessWidget {
-//   const AddChurchList({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Center(
-//       child: Text(
-//         "Add church",
-//         style: TextStyle(color: Color.fromARGB(255, 54, 1, 1), fontSize: 24),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:logger/logger.dart'; // Import the logger package
+
+final logger = Logger(); // Initialize the logger
 
 class AddnewChurch extends StatefulWidget {
   const AddnewChurch({super.key});
@@ -26,33 +14,72 @@ class AddnewChurch extends StatefulWidget {
 
 class _AddnewChurch extends State<AddnewChurch> {
   final _formKey = GlobalKey<FormState>();
-  final _controllers = {
-    "Church Name": TextEditingController(),
-    "Pastor": TextEditingController(),
-    "Email": TextEditingController(),
-    "Phone": TextEditingController(),
-    "Address": TextEditingController(),
-    "Country": TextEditingController(),
-    "City": TextEditingController(),
-  };
+  final TextEditingController _churchNameController = TextEditingController();
+  int? _selectedStatus;
+  bool _isLoading = false; // Track loading state
 
   void _resetFields() {
-    for (var controller in _controllers.values) {
-      controller.clear();
-    }
+    _churchNameController.clear();
+    _selectedStatus = null;
   }
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       bool confirm = await _showConfirmationDialog();
       if (confirm) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Organization added successfully!")),
-        );
-        _resetFields();
+        setState(() {
+          _isLoading = true; // Show loader
+        });
+        final url = Uri.parse('http://stewardshipapi.test/api/manage-churches/add');
+        try {
+          final response = await http.post(
+            url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{ // Changed to dynamic to accommodate integer
+              'church_name': _churchNameController.text,
+              'status': _selectedStatus, // New status field as integer
+            }),
+          );
+
+          logger.d('Save Churches Response: ${response.statusCode}, ${response.body}');
+          final responseData = jsonDecode(response.body);
+          if (response.statusCode == 200) {
+            if (responseData['code'] == 200) {
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).pop();
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(responseData['msg'])),
+              );
+              _resetFields();
+            } else {
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(responseData['msg'])),
+              );
+            }
+          } else {
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseData['msg'])),
+            );
+          }
+        } catch (error) {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("An error occurred.Please contact your Administrator.")),
+          );
+        } finally {
+          setState(() {
+            _isLoading = false; // Hide loader
+          });
+        }
       }
     }
   }
+
 
   Future<bool> _showConfirmationDialog() async {
     return await showDialog(
@@ -61,7 +88,7 @@ class _AddnewChurch extends State<AddnewChurch> {
               (context) => AlertDialog(
                 title: Text("Confirm Submission"),
                 content: Text(
-                  "Are you sure you want to save this organization?",
+                  "Are you sure you want to save this church?",
                 ),
                 actions: [
                   TextButton(
@@ -89,110 +116,144 @@ class _AddnewChurch extends State<AddnewChurch> {
         ),
         backgroundColor: Color.fromRGBO(21, 21, 33, 1),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildTextField("Church Name"),
-
-                Row(
+      body: Stack(
+        children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: _buildTextField("Pastor")),
-                    SizedBox(width: 10),
-                    Expanded(child: _buildTextField("Email")),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(child: _buildTextField("Phone")),
-                    SizedBox(width: 10),
-                    Expanded(child: _buildTextField("Address")),
-                  ],
-                ),
-                _buildTextField("Country"),
-                _buildTextField("City"),
-                // Row(
-                //   children: [
-                //     Expanded(child: _buildTextField("City")),
-                //     SizedBox(width: 10),
-                //     Expanded(child: _buildTextField("Country")),
-                //   ],
-                // ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _submitForm,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 24),
-                        ),
-                        child: Text(
-                          "Submit",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                      ),
+                    _buildTextField("Church Name", controller: _churchNameController),
+                     _buildDropdownField<int>( // New status dropdown
+                      labelText: "Status",
+                      value: _selectedStatus,
+                      items: const [
+                        DropdownMenuItem(value: 1, child: Text("Active", style: TextStyle(color: Colors.white))),
+                        DropdownMenuItem(value: 0, child: Text("Inactive", style: TextStyle(color: Colors.white))),
+                      ],
+                      onChanged: (int? newValue) {
+                        setState(() {
+                          _selectedStatus = newValue;
+                        });
+                      },
                     ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _resetFields,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromRGBO(
-                            145,
-                            152,
-                            158,
-                            1,
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _submitForm, // Disable button when loading
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 24),
+                            ),
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(fontSize: 16, color: Colors.white),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _resetFields, // Disable button when loading
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(
+                                145,
+                                152,
+                                158,
+                                1,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 24),
+                            ),
+                            child: Text(
+                              "Reset",
+                              style: TextStyle(fontSize: 16, color: Colors.white),
+                            ),
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 24),
                         ),
-                        child: Text(
-                          "Reset",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          if (_isLoading)
+            Container(
+              color: Colors.black54,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
       ),
     );
   }
 
-  Widget _buildTextField(String label, {bool isPassword = false}) {
+    Widget _buildTextField(String label, {TextEditingController? controller, bool isPassword = false, TextInputType? keyboardType}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
-        controller: _controllers[label],
+        controller: controller,
         obscureText: isPassword,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white70),
+          labelStyle: const TextStyle(color: Colors.white70),
           filled: true,
           fillColor: const Color.fromRGBO(27, 27, 41, 1),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.white24),
+            borderSide: const BorderSide(color: Colors.white24),
           ),
         ),
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
             return "$label is required";
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildDropdownField<T>({
+    required String labelText,
+    T? value,
+    required List<DropdownMenuItem<T>> items,
+    required ValueChanged<T?>? onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: DropdownButtonFormField<T>(
+        dropdownColor: const Color.fromRGBO(27, 27, 41, 1),
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: const TextStyle(color: Colors.white70),
+          filled: true,
+          fillColor: const Color.fromRGBO(27, 27, 41, 1),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.white24),
+          ),
+        ),
+        value: value,
+        items: items,
+        onChanged: onChanged,
+        validator: (value) {
+          if (value == null) {
+            return "$labelText is required";
           }
           return null;
         },

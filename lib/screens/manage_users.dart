@@ -1,207 +1,11 @@
-// // manage_users.dart
-// import 'package:flutter/material.dart';
-
-// class ManageUsers extends StatelessWidget {
-//   const ManageUsers({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Center(
-//       child: Text(
-//         "Manage Users Page",
-//         style: TextStyle(color: Color.fromARGB(255, 54, 1, 1), fontSize: 24),
-//       ),
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-
-// class ManageUsers extends StatelessWidget {
-//   const ManageUsers({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Color.fromRGBO(21, 21, 33, 1),
-//       appBar: AppBar(
-//         title: const Text(
-//           "Add New User",
-//           style: TextStyle(color: Colors.white),
-//         ),
-//         backgroundColor: Color.fromRGBO(21, 21, 33, 1),
-//       ),
-//       body: SafeArea(
-//         child: SingleChildScrollView(
-//           padding: EdgeInsets.all(16),
-//           child: LayoutBuilder(
-//             builder: (context, constraints) {
-//               bool isMobile = constraints.maxWidth < 600;
-
-//               return Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   // Add New User Header
-//                   // Text(
-//                   //   "Add New User",
-//                   //   style: TextStyle(
-//                   //     color: Colors.white,
-//                   //     fontSize: 20,
-//                   //     fontWeight: FontWeight.bold,
-//                   //   ),
-//                   // ),
-//                   // SizedBox(height: 16),
-
-//                   // Layout - Stack on Mobile, Row on Desktop
-//                   if (!isMobile)
-//                     Row(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         _buildProfileCard(),
-//                         SizedBox(width: 20),
-//                         Expanded(child: _buildUserForm()),
-//                       ],
-//                     )
-//                   else ...[
-//                     _buildProfileCard(),
-//                     SizedBox(height: 20),
-//                     _buildUserForm(),
-//                   ],
-//                 ],
-//               );
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildProfileCard() {
-//     return Center(
-//       // Centers the container
-//       child: Container(
-//         padding: EdgeInsets.all(16),
-//         decoration: BoxDecoration(
-//           color: const Color.fromRGBO(30, 30, 45, 1),
-//           borderRadius: BorderRadius.circular(12),
-//         ),
-//         width: 500,
-//         height: 300,
-//         child: Column(
-//           mainAxisAlignment:
-//               MainAxisAlignment.center, // Centers content vertically
-//           crossAxisAlignment:
-//               CrossAxisAlignment.center, // Centers content horizontally
-//           children: [
-//             CircleAvatar(
-//               radius: 40,
-//               backgroundColor: Colors.blue,
-//               child: Icon(Icons.person, size: 40, color: Colors.white),
-//             ),
-//             SizedBox(height: 8),
-//             Text(
-//               "Ige Alvarina",
-//               style: TextStyle(color: Colors.white, fontSize: 18),
-//             ),
-//             Text(
-//               "System Administrator",
-//               style: TextStyle(color: Colors.grey, fontSize: 14),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildUserForm() {
-//     return Container(
-//       padding: EdgeInsets.all(20),
-//       decoration: BoxDecoration(
-//         color: const Color.fromRGBO(30, 30, 45, 1),
-//         borderRadius: BorderRadius.circular(8),
-//       ),
-//       child: Column(
-//         children: [
-//           _buildTextField("Name"),
-//           _buildTextField("Email"),
-//           _buildTextField("Phone"),
-//           _buildTextField("Birthday mm/dd/yy"),
-//           _buildTextField("Gender"),
-
-//           Row(
-//             children: [
-//               Expanded(child: _buildTextField("Username")),
-//               SizedBox(width: 10),
-//               Expanded(child: _buildTextField("Password", isPassword: true)),
-//             ],
-//           ),
-
-//           _buildTextField("Access Role"),
-//           SizedBox(height: 20),
-
-//           Row(
-//             children: [
-//               Expanded(
-//                 child: ElevatedButton(
-//                   onPressed: () {},
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(5),
-//                     ),
-//                     padding: EdgeInsets.symmetric(vertical: 24),
-//                   ),
-//                   child: Text(
-//                     "Submit",
-//                     style: TextStyle(fontSize: 16, color: Colors.white),
-//                   ),
-//                 ),
-//               ),
-//               SizedBox(width: 8),
-//               Expanded(
-//                 child: ElevatedButton(
-//                   onPressed: () {},
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: const Color.fromRGBO(145, 152, 158, 1),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(5),
-//                     ),
-//                     padding: EdgeInsets.symmetric(vertical: 25),
-//                   ),
-
-//                   child: Text(
-//                     "Reset",
-//                     style: TextStyle(fontSize: 16, color: Colors.white),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildTextField(String label, {bool isPassword = false}) {
-//     return Padding(
-//       padding: EdgeInsets.only(bottom: 12),
-//       child: TextField(
-//         obscureText: isPassword,
-//         style: TextStyle(color: Colors.white),
-//         decoration: InputDecoration(
-//           labelText: label,
-//           labelStyle: TextStyle(color: Colors.white70),
-//           filled: true,
-//           fillColor: const Color.fromRGBO(27, 27, 41, 1),
-//           border: OutlineInputBorder(
-//             borderRadius: BorderRadius.circular(8),
-//             borderSide: BorderSide(color: Colors.white24),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:logger/logger.dart'; // Import the logger package
+
+final logger = Logger(); // Initialize the logger
 
 class ManageUsers extends StatefulWidget {
   const ManageUsers({super.key});
@@ -212,31 +16,106 @@ class ManageUsers extends StatefulWidget {
 
 class _ManageUsersState extends State<ManageUsers> {
   final _formKey = GlobalKey<FormState>();
-  final _controllers = {
-    "Name": TextEditingController(),
-    "Email": TextEditingController(),
-    "Phone": TextEditingController(),
-    "Birthday mm/dd/yy": TextEditingController(),
-    "Gender": TextEditingController(),
-    "Username": TextEditingController(),
-    "Password": TextEditingController(),
-    "Access Role": TextEditingController(),
-  };
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  // final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _birthDateController = TextEditingController();
+  // String? _selectedGender;
+  // final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  int? _selectedAccessRole;
+  int? _selectedStatus;
+  bool _isLoading = false; // Track loading state
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        _birthDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
 
   void _resetFields() {
-    for (var controller in _controllers.values) {
-      controller.clear();
-    }
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _emailController.clear();
+    // _phoneController.clear();
+    _birthDateController.clear();
+    // _selectedGender = null;
+    // _usernameController.clear();
+    _passwordController.clear();
+    _selectedAccessRole = null;
+    _selectedStatus = null;
   }
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       bool confirm = await _showConfirmationDialog();
       if (confirm) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Member added successfully!")));
-        _resetFields();
+        setState(() {
+          _isLoading = true; // Show loader
+        });
+        final url = Uri.parse('http://stewardshipapi.test/api/manage-users/add');
+        try {
+          final response = await http.post(
+            url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{ // Changed to dynamic to accommodate integer
+              'first_name': _firstNameController.text,
+              'last_name': _lastNameController.text,
+              'email': _emailController.text,
+              // 'phone': _phoneController.text,
+              // 'gender': _selectedGender,
+              // 'username': _usernameController.text,
+              'password': _passwordController.text,
+              'birthdate': _birthDateController.text,
+              'access_role': _selectedAccessRole, // Now an integer
+              'status': _selectedStatus, // New status field as integer
+            }),
+          );
+
+          logger.d('Save User Response: ${response.statusCode}, ${response.body}');
+          final responseData = jsonDecode(response.body);
+          if (response.statusCode == 200) {
+            if (responseData['code'] == 200) {
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).pop();
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(responseData['msg'])),
+              );
+              _resetFields();
+            } else {
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(responseData['msg'])),
+              );
+            }
+          } else {
+            // ignore: use_build_context_synchronously
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(responseData['msg'])),
+            );
+          }
+        } catch (error) {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("An error occurred.Please contact your Administrator.")),
+          );
+        } finally {
+          setState(() {
+            _isLoading = false; // Hide loader
+          });
+        }
       }
     }
   }
@@ -244,21 +123,20 @@ class _ManageUsersState extends State<ManageUsers> {
   Future<bool> _showConfirmationDialog() async {
     return await showDialog(
           context: context,
-          builder:
-              (context) => AlertDialog(
-                title: Text("Confirm Submission"),
-                content: Text("Are you sure you want to save this member?"),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text("Cancel"),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: Text("Save"),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text("Confirm Submission"),
+            content: const Text("Are you sure you want to save this user?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text("Cancel"),
               ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text("Save"),
+              ),
+            ],
+          ),
         ) ??
         false;
   }
@@ -266,45 +144,56 @@ class _ManageUsersState extends State<ManageUsers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(21, 21, 33, 1),
+      backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
       appBar: AppBar(
         title: const Text(
-          "Add New Member",
+          "Add New User",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color.fromRGBO(21, 21, 33, 1),
+        backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              bool isMobile = constraints.maxWidth < 600;
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isMobile = constraints.maxWidth < 600;
 
-              return Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (!isMobile)
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildProfileCard(),
-                          SizedBox(width: 20),
-                          Expanded(child: _buildUserForm()),
+                  return Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (!isMobile)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // _buildProfileCard(),
+                              // const SizedBox(width: 20),
+                              Expanded(child: _buildUserForm()),
+                            ],
+                          )
+                        else ...[
+                          // _buildProfileCard(),
+                          // const SizedBox(height: 20),
+                          _buildUserForm(),
                         ],
-                      )
-                    else ...[
-                      _buildProfileCard(),
-                      SizedBox(height: 20),
-                      _buildUserForm(),
-                    ],
-                  ],
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            if (_isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
                 ),
-              );
-            },
-          ),
+              ),
+          ],
         ),
       ),
     );
@@ -313,14 +202,14 @@ class _ManageUsersState extends State<ManageUsers> {
   Widget _buildProfileCard() {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: const Color.fromRGBO(30, 30, 45, 1),
           borderRadius: BorderRadius.circular(12),
         ),
         width: 500,
         height: 300,
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -346,57 +235,93 @@ class _ManageUsersState extends State<ManageUsers> {
 
   Widget _buildUserForm() {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(30, 30, 45, 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         children: [
-          _buildTextField("Name"),
-          _buildTextField("Email"),
-          _buildTextField("Phone"),
-          _buildTextField("Birthday mm/dd/yy"),
-          _buildTextField("Gender"),
           Row(
             children: [
-              Expanded(child: _buildTextField("Username")),
-              SizedBox(width: 10),
-              Expanded(child: _buildTextField("Password", isPassword: true)),
+              Expanded(child: _buildTextField("Firstname", controller: _firstNameController)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildTextField("Lastname", controller: _lastNameController)),
             ],
           ),
-          _buildTextField("Access Role"),
-          SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(child: _buildTextField("Email", controller: _emailController, keyboardType: TextInputType.emailAddress)),
+              const SizedBox(width: 10),
+              Expanded(child: _buildTextField("Password", controller: _passwordController, isPassword: true)),
+            ],
+          ),
+          _buildDateField("Birthdate", controller: _birthDateController, onTap: () => _selectDate(context)),
+          Row(
+            children: [
+              Expanded(
+                  child: _buildDropdownField<int>( // New status dropdown
+                    labelText: "Status",
+                    value: _selectedStatus,
+                    items: const [
+                      DropdownMenuItem(value: 1, child: Text("Active", style: TextStyle(color: Colors.white))),
+                      DropdownMenuItem(value: 0, child: Text("Inactive", style: TextStyle(color: Colors.white))),
+                    ],
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        _selectedStatus = newValue;
+                      });
+                    },
+                  )),
+              const SizedBox(width: 10),
+              Expanded(child: _buildDropdownField<int>( // Updated access role dropdown to integer
+                labelText: "Access Role",
+                value: _selectedAccessRole,
+                items: const [
+                  DropdownMenuItem(value: 1, child: Text("Staff", style: TextStyle(color: Colors.white))),
+                  DropdownMenuItem(value: 2, child: Text("Pastor", style: TextStyle(color: Colors.white))),
+                  DropdownMenuItem(value: 3, child: Text("User", style: TextStyle(color: Colors.white))),
+                ],
+                onChanged: (int? newValue) {
+                  setState(() {
+                    _selectedAccessRole = newValue;
+                  });
+                },
+              ),),
+            ],
+          ),
+
+          const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: _submitForm,
+                  onPressed: _isLoading ? null : _submitForm, // Disable button when loading
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 24),
                   ),
-                  child: Text(
-                    "Submit",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
+                  child: const Text(
+                          "Submit",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: _resetFields,
+                  onPressed: _isLoading ? null : _resetFields, // Disable button when loading
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(145, 152, 158, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 24),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Reset",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
@@ -409,26 +334,93 @@ class _ManageUsersState extends State<ManageUsers> {
     );
   }
 
-  Widget _buildTextField(String label, {bool isPassword = false}) {
+  Widget _buildTextField(String label, {TextEditingController? controller, bool isPassword = false, TextInputType? keyboardType}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
-        controller: _controllers[label],
+        controller: controller,
         obscureText: isPassword,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.white70),
+          labelStyle: const TextStyle(color: Colors.white70),
           filled: true,
           fillColor: const Color.fromRGBO(27, 27, 41, 1),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.white24),
+            borderSide: const BorderSide(color: Colors.white24),
           ),
         ),
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
             return "$label is required";
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildDateField(String label, {TextEditingController? controller, VoidCallback? onTap}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextFormField(
+        controller: controller,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: Colors.white70),
+          filled: true,
+          fillColor: const Color.fromRGBO(27, 27, 41, 1),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.white24),
+          ),
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.calendar_today, color: Colors.white70),
+            onPressed: onTap,
+          ),
+        ),
+        readOnly: true,
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return "$label is required";
+          }
+          // You can add more specific date format validation if needed
+          return null;
+        },
+        onTap: onTap,
+      ),
+    );
+  }
+
+  Widget _buildDropdownField<T>({
+    required String labelText,
+    T? value,
+    required List<DropdownMenuItem<T>> items,
+    required ValueChanged<T?>? onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: DropdownButtonFormField<T>(
+        dropdownColor: const Color.fromRGBO(27, 27, 41, 1),
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: const TextStyle(color: Colors.white70),
+          filled: true,
+          fillColor: const Color.fromRGBO(27, 27, 41, 1),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.white24),
+          ),
+        ),
+        value: value,
+        items: items,
+        onChanged: onChanged,
+        validator: (value) {
+          if (value == null) {
+            return "$labelText is required";
           }
           return null;
         },
