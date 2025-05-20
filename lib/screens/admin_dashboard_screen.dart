@@ -8,7 +8,8 @@ import 'manage_users.dart';
 import 'church/Claims_request/claims.dart';
 import 'church/Claims_request/request_approval.dart';
 import 'church/Claims_request/releasing_disbursment.dart';
-import 'contributions.dart';
+import 'church/contributions/contribution_posted.dart';
+import 'church/contributions/incident_contribution.dart';
 import 'user_list.dart';
 import 'user_access_role.dart';
 import 'package:admin_dashboard/screens/members/add_member.dart';
@@ -131,8 +132,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       case "release_disbursement":
         return ReleasingDisbursement();
 
-      case "Contributions":
-        return Contributions();
+      case "contributions":
+        return ContributionsPosted();
+
+      case "incedent_":
+        return IncidentContributions();
 
       case "Reports":
         return Reports();

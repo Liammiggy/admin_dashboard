@@ -1,35 +1,3 @@
-// import 'package:flutter/material.dart';
-// class UserList extends StatelessWidget {
-//   const UserList({super.key}); // Add key to the constructor
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Text(
-//         "User Lista",
-//         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//       ),
-//     );
-//   }
-// }import 'package:flutter/material.dart';
-
-// import 'package:dropdown_button2/dropdown_button2.dart';
-
-// import 'package:flutter/material.dart';
-// class UserList extends StatelessWidget {
-//   const UserList({super.key}); // Add key to the constructor
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Text(
-//         "User Lista",
-//         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//       ),
-//     );
-//   }
-// }import 'package:flutter/material.dart';
-
-// import 'package:dropdown_button2/dropdown_button2.dart';
-
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
