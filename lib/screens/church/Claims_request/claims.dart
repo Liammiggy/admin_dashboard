@@ -14,8 +14,6 @@
 //     );
 //   }
 // }
-import 'package:admin_dashboard/screens/church/addchurch.dart';
-import 'package:admin_dashboard/screens/organization/add_organization.dart';
 import 'package:flutter/material.dart';
 
 class Claims extends StatefulWidget {
@@ -173,7 +171,7 @@ class _ClaimsState extends State<Claims> {
   final List<Map<String, dynamic>> users = [
     {
       "id": "ID01",
-      "name": "Oasis",
+      "name": "Oasisss",
       "incidentTitle": "Cebu City",
       "incidentType": "09123456789",
       "pastor": "Jane Smith",
@@ -221,7 +219,7 @@ class _ClaimsState extends State<Claims> {
     },
     {
       "id": "ID07",
-      "name": "Miguel Alvarina",
+      "name": "Miguel Alvarina Jr",
       "incidentTitle": "Cebu City",
       "incidentType": "09123456789",
       "pastor": "Jane Smith",
@@ -363,7 +361,7 @@ class _ClaimsState extends State<Claims> {
                           child: TextField(
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              hintText: "Search Incedent/member...",
+                              hintText: "Search Incedent/members...",
                               hintStyle: const TextStyle(color: Colors.white),
                               prefixIcon: const Icon(
                                 Icons.search,

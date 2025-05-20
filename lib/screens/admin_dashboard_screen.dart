@@ -6,6 +6,8 @@ import 'dash.dart';
 import 'manage_users.dart';
 // import 'pastor.dart';
 import 'church/Claims_request/claims.dart';
+import 'church/Claims_request/request_approval.dart';
+import 'church/Claims_request/releasing_disbursment.dart';
 import 'contributions.dart';
 import 'user_list.dart';
 import 'user_access_role.dart';
@@ -122,6 +124,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
       case "Claims_Request":
         return Claims();
+
+      case "request_approval":
+        return RequestApproval();
+
+      case "release_disbursement":
+        return ReleasingDisbursement();
 
       case "Contributions":
         return Contributions();

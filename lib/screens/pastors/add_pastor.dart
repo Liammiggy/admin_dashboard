@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart'; // Import the logger package
 
 final logger = Logger(); // Initialize the logger
+
 class AddPastor extends StatefulWidget {
   const AddPastor({super.key});
 
@@ -37,7 +37,9 @@ class _AddPastorState extends State<AddPastor> {
         setState(() {
           _isLoading = true; // Show loader
         });
-        final url = Uri.parse('http://stewardshipapi.test/api/manage-pastors/add');
+        final url = Uri.parse(
+          'http://stewardshipapi.test/api/manage-pastors/add',
+        );
         try {
           final response = await http.post(
             url,
@@ -53,26 +55,32 @@ class _AddPastorState extends State<AddPastor> {
             }),
           );
 
-          logger.d('Save Pastor Response: ${response.statusCode}, ${response.body}');
+          logger.d(
+            'Save Pastor Response: ${response.statusCode}, ${response.body}',
+          );
           final responseData = jsonDecode(response.body);
           if (response.statusCode == 200) {
             // ignore: use_build_context_synchronously
             Navigator.of(context).pop();
             // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(responseData['msg'])),
-            );
-            _resetFields(); 
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(responseData['msg'])));
+            _resetFields();
           } else {
             // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(responseData['msg'])),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(responseData['msg'])));
           }
         } catch (error) {
           // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("An error occurred.Please contact your Administrator.")),
+            const SnackBar(
+              content: Text(
+                "An error occurred.Please contact your Administrator.",
+              ),
+            ),
           );
         } finally {
           setState(() {
@@ -86,20 +94,23 @@ class _AddPastorState extends State<AddPastor> {
   Future<bool> _showConfirmationDialog() async {
     return await showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text("Confirm Submission"),
-            content: const Text("Are you sure you want to save this pastor?"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text("Cancel"),
+          builder:
+              (context) => AlertDialog(
+                title: const Text("Confirm Submission"),
+                content: const Text(
+                  "Are you sure you want to save this pastor?",
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text("Cancel"),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text("Save"),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text("Save"),
-              ),
-            ],
-          ),
         ) ??
         false;
   }
@@ -152,9 +163,7 @@ class _AddPastorState extends State<AddPastor> {
             if (_isLoading)
               Container(
                 color: Colors.black.withOpacity(0.5),
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: const Center(child: CircularProgressIndicator()),
               ),
           ],
         ),
@@ -207,24 +216,48 @@ class _AddPastorState extends State<AddPastor> {
         children: [
           Row(
             children: [
-              Expanded(child: _buildTextField("Firstname", controller: _firstNameController)),
+              Expanded(
+                child: _buildTextField(
+                  "Firstname",
+                  controller: _firstNameController,
+                ),
+              ),
               const SizedBox(width: 10),
-              Expanded(child: _buildTextField("Lastname", controller: _lastNameController)),
+              Expanded(
+                child: _buildTextField(
+                  "Lastname",
+                  controller: _lastNameController,
+                ),
+              ),
             ],
           ),
           Row(
             children: [
-              Expanded(child: _buildTextField("Phone", controller: _phoneController)),
+              Expanded(
+                child: _buildTextField("Phone", controller: _phoneController),
+              ),
               const SizedBox(width: 10),
-              Expanded(child: _buildTextField("Email", controller: _emailController, keyboardType: TextInputType.emailAddress)),
+              Expanded(
+                child: _buildTextField(
+                  "Email",
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                ),
+              ),
             ],
           ),
           _buildDropdownField<int>(
             labelText: "Status",
             value: _selectedStatus,
             items: const [
-              DropdownMenuItem(value: 1, child: Text("Active", style: TextStyle(color: Colors.white))),
-              DropdownMenuItem(value: 0, child: Text("Inactive", style: TextStyle(color: Colors.white))),
+              DropdownMenuItem(
+                value: 1,
+                child: Text("Active", style: TextStyle(color: Colors.white)),
+              ),
+              DropdownMenuItem(
+                value: 0,
+                child: Text("Inactive", style: TextStyle(color: Colors.white)),
+              ),
             ],
             onChanged: (int? newValue) {
               setState(() {
@@ -275,7 +308,12 @@ class _AddPastorState extends State<AddPastor> {
     );
   }
 
-  Widget _buildTextField(String label, {TextEditingController? controller, bool isPassword = false, TextInputType? keyboardType}) {
+  Widget _buildTextField(
+    String label, {
+    TextEditingController? controller,
+    bool isPassword = false,
+    TextInputType? keyboardType,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(

@@ -31,7 +31,6 @@
 // import 'package:dropdown_button2/dropdown_button2.dart';
 
 import 'package:flutter/material.dart';
-import 'package:admin_dashboard/screens/members/add_member.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart'; // Import the logger package
@@ -64,7 +63,9 @@ class _MemberListState extends State<MemberList> {
         Uri.parse("http://stewardshipapi.test/api/manage-members/list"),
       );
 
-      logger.d('Fetch Members Response: ${response.statusCode}, ${response.body}');
+      logger.d(
+        'Fetch Members Response: ${response.statusCode}, ${response.body}',
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -76,17 +77,17 @@ class _MemberListState extends State<MemberList> {
         // Consider showing an error message to the user using a SnackBar or Dialog
         logger.e('Failed to load users: ${response.statusCode}');
         // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to load members')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Failed to load members')));
       }
     } catch (error) {
       // Handle network errors or other exceptions
       logger.e('Error fetching members: $error');
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Network error occurred')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Network error occurred')));
     } finally {
       setState(() {
         _isLoading = false;
@@ -94,289 +95,404 @@ class _MemberListState extends State<MemberList> {
     }
   }
 
-  Future<void> _showEditDialog(BuildContext context, Map<String, dynamic> member) async {
-      TextEditingController firstNameController = TextEditingController(text: member['first_name']);
-      TextEditingController lastNameController = TextEditingController(text: member['last_name']);
-      TextEditingController emailController = TextEditingController(text: member['email']);
-      TextEditingController birthDateController = TextEditingController(text: member['birthdate']);
-      TextEditingController parentsNameController = TextEditingController(text: member['parents_name']);
-      TextEditingController addressController = TextEditingController(text: member['address']);
-      TextEditingController phoneController = TextEditingController(text: member['phone']);
-      TextEditingController emailAddressController = TextEditingController(text: member['email']);
-      TextEditingController beneficiaryOneController = TextEditingController(text: member['beneficiaries_1']);
-      TextEditingController beneficiaryTwoController = TextEditingController(text: member['beneficiaries_2']);
-      bool isUpdating = false;
+  Future<void> _showEditDialog(
+    BuildContext context,
+    Map<String, dynamic> member,
+  ) async {
+    TextEditingController firstNameController = TextEditingController(
+      text: member['first_name'],
+    );
+    TextEditingController lastNameController = TextEditingController(
+      text: member['last_name'],
+    );
+    TextEditingController emailController = TextEditingController(
+      text: member['email'],
+    );
+    TextEditingController birthDateController = TextEditingController(
+      text: member['birthdate'],
+    );
+    TextEditingController parentsNameController = TextEditingController(
+      text: member['parents_name'],
+    );
+    TextEditingController addressController = TextEditingController(
+      text: member['address'],
+    );
+    TextEditingController phoneController = TextEditingController(
+      text: member['phone'],
+    );
+    TextEditingController emailAddressController = TextEditingController(
+      text: member['email'],
+    );
+    TextEditingController beneficiaryOneController = TextEditingController(
+      text: member['beneficiaries_1'],
+    );
+    TextEditingController beneficiaryTwoController = TextEditingController(
+      text: member['beneficiaries_2'],
+    );
+    bool isUpdating = false;
 
-      return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return Stack(
-                children: [
-                  AlertDialog(
-                    backgroundColor: Colors.grey[800],
-                    title: const Text('Edit Member', style: TextStyle(color: Colors.white)),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          TextField(
-                            controller: firstNameController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'First Name',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Stack(
+              children: [
+                AlertDialog(
+                  backgroundColor: Colors.grey[800],
+                  title: const Text(
+                    'Edit Member',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        TextField(
+                          controller: firstNameController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'First Name',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          TextField(
-                            controller: lastNameController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Last Name',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        TextField(
+                          controller: lastNameController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Last Name',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          TextField(
-                            controller: birthDateController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Birth Date',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        TextField(
+                          controller: birthDateController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Birth Date',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          TextField(
-                            controller: parentsNameController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Parents Name',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        TextField(
+                          controller: parentsNameController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Parents Name',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          TextField(
-                            controller: addressController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Address',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        TextField(
+                          controller: addressController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Address',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          TextField(
-                            controller: phoneController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Phone',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        TextField(
+                          controller: phoneController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Phone',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          TextField(
-                            controller: emailAddressController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        TextField(
+                          controller: emailAddressController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          DropdownButtonFormField<int>(
-                            value: member['pastor_id'],
-                            dropdownColor: Colors.grey[800],
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Pastor',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        DropdownButtonFormField<int>(
+                          value: member['pastor_id'],
+                          dropdownColor: Colors.grey[800],
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Pastor',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
                             ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 1,
-                                child: Text('Pastor 1', style: TextStyle(color: Colors.white)),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                          ),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text(
+                                'Pastor 1',
+                                style: TextStyle(color: Colors.white),
                               ),
-                              DropdownMenuItem(
-                                value: 2,
-                                child: Text('Pastor 2', style: TextStyle(color: Colors.white)),
-                              ),
-                            ],
-                            onChanged: (int? newValue) {
-                              member['pastor_id'] = newValue!;
-                            },
-                          ),
-                          DropdownButtonFormField<int>(
-                            value: member['membership_type'],
-                            dropdownColor: Colors.grey[800],
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Membership Type',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
                             ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 1,
-                                child: Text('Adult', style: TextStyle(color: Colors.white)),
+                            DropdownMenuItem(
+                              value: 2,
+                              child: Text(
+                                'Pastor 2',
+                                style: TextStyle(color: Colors.white),
                               ),
-                              DropdownMenuItem(
-                                value: 2,
-                                child: Text('Kids', style: TextStyle(color: Colors.white)),
-                              ),
-                            ],
-                            onChanged: (int? newValue) {
-                              member['membership_type'] = newValue!;
-                            },
-                          ),
-                          TextField(
-                            controller: beneficiaryOneController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Beneficiary One',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            ),
+                          ],
+                          onChanged: (int? newValue) {
+                            member['pastor_id'] = newValue!;
+                          },
+                        ),
+                        DropdownButtonFormField<int>(
+                          value: member['membership_type'],
+                          dropdownColor: Colors.grey[800],
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Membership Type',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          TextField(
-                            controller: beneficiaryTwoController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Beneficiary Two',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text(
+                                'Adult',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 2,
+                              child: Text(
+                                'Kids',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                          onChanged: (int? newValue) {
+                            member['membership_type'] = newValue!;
+                          },
+                        ),
+                        TextField(
+                          controller: beneficiaryOneController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Beneficiary One',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          DropdownButtonFormField<int>(
-                            value: member['status'],
-                            dropdownColor: Colors.grey[800],
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              labelText: 'Status',
-                              labelStyle: TextStyle(color: Colors.white70),
-                              enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                        ),
+                        TextField(
+                          controller: beneficiaryTwoController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Beneficiary Two',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
                             ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 1,
-                                child: Text('Active', style: TextStyle(color: Colors.white)),
-                              ),
-                              DropdownMenuItem(
-                                value: 0,
-                                child: Text('Inactive', style: TextStyle(color: Colors.white)),
-                              ),
-                            ],
-                            onChanged: (int? newValue) {
-                              member['status'] = newValue!;
-                            },
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                        DropdownButtonFormField<int>(
+                          value: member['status'],
+                          dropdownColor: Colors.grey[800],
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Status',
+                            labelStyle: TextStyle(color: Colors.white70),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                          ),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text(
+                                'Active',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 0,
+                              child: Text(
+                                'Inactive',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                          onChanged: (int? newValue) {
+                            member['status'] = newValue!;
+                          },
+                        ),
+                      ],
                     ),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('Cancel', style: TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.white),
                       ),
-                      TextButton(
-                        child: const Text('Update', style: TextStyle(color: Colors.blue)),
-                        onPressed: () async {
-                          setState(() {
-                            isUpdating = true;
-                          });
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text(
+                        'Update',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          isUpdating = true;
+                        });
 
-                          try {
-                            final response = await http.post(
-                              Uri.parse("http://stewardshipapi.test/api/manage-members/update/${member['member_id']}"),
-                              body: {
-                                'first_name': firstNameController.text,
-                                'last_name': lastNameController.text,
-                                'birthdate': birthDateController.text,
-                                'parents_name': parentsNameController.text,
-                                'address': addressController.text,
-                                'phone': phoneController.text,
-                                'email': emailController.text,
-                                'pastor_id': member['pastor_id'].toString(),
-                                'membership_type': member['membership_type'].toString(),
-                                'beneficiaries_1': beneficiaryOneController.text,
-                                'beneficiaries_2': beneficiaryTwoController.text,
-                                'status': member['status'].toString(),
-                              },
-                            ).timeout(const Duration(seconds: 10)); // Add a timeout;
+                        try {
+                          final response = await http
+                              .post(
+                                Uri.parse(
+                                  "http://stewardshipapi.test/api/manage-members/update/${member['member_id']}",
+                                ),
+                                body: {
+                                  'first_name': firstNameController.text,
+                                  'last_name': lastNameController.text,
+                                  'birthdate': birthDateController.text,
+                                  'parents_name': parentsNameController.text,
+                                  'address': addressController.text,
+                                  'phone': phoneController.text,
+                                  'email': emailController.text,
+                                  'pastor_id': member['pastor_id'].toString(),
+                                  'membership_type':
+                                      member['membership_type'].toString(),
+                                  'beneficiaries_1':
+                                      beneficiaryOneController.text,
+                                  'beneficiaries_2':
+                                      beneficiaryTwoController.text,
+                                  'status': member['status'].toString(),
+                                },
+                              )
+                              .timeout(
+                                const Duration(seconds: 10),
+                              ); // Add a timeout;
 
-                            logger.d('Update Member Response: ${response.statusCode}, ${response.body}');
+                          logger.d(
+                            'Update Member Response: ${response.statusCode}, ${response.body}',
+                          );
 
-                            if (response.statusCode == 200) {
-                              final responseData = jsonDecode(response.body);
-                              if (responseData['code'] == 200) {
-                                // Optionally trigger a refresh of the member list
-                                // _fetchUsersWithLoading();
-                                logger.d('Update User Response: $responseData');
-                                // ignore: use_build_context_synchronously
-                                Navigator.of(context).pop();
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(responseData['msg'])),
-                                );
-                                _fetchMembers(); // If you have a direct method to fetch members
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(responseData['msg'])),
-                                );
-                              }
+                          if (response.statusCode == 200) {
+                            final responseData = jsonDecode(response.body);
+                            if (responseData['code'] == 200) {
+                              // Optionally trigger a refresh of the member list
+                              // _fetchUsersWithLoading();
+                              logger.d('Update User Response: $responseData');
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pop();
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(responseData['msg'])),
+                              );
+                              _fetchMembers(); // If you have a direct method to fetch members
                             } else {
                               // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Failed to update member')),
+                                SnackBar(content: Text(responseData['msg'])),
                               );
                             }
-                          } catch (e) {
-                            logger.e('Error updating member: $e');
+                          } else {
                             // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('An error occurred while updating')),
+                              const SnackBar(
+                                content: Text('Failed to update member'),
+                              ),
                             );
-                          } finally {
-                            setState(() {
-                              isUpdating = false;
-                            });
                           }
-                        },
-                      ),
-                    ],
-                  ),
-                  if (isUpdating)
-                    Container(
-                      color: Colors.black54,
-                      child: const Center(
-                        child: CircularProgressIndicator(color: Colors.blue),
-                      ),
+                        } catch (e) {
+                          logger.e('Error updating member: $e');
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('An error occurred while updating'),
+                            ),
+                          );
+                        } finally {
+                          setState(() {
+                            isUpdating = false;
+                          });
+                        }
+                      },
                     ),
-                ],
-              );
-            },
-          );
-        },
-      );
-    }
+                  ],
+                ),
+                if (isUpdating)
+                  Container(
+                    color: Colors.black54,
+                    child: const Center(
+                      child: CircularProgressIndicator(color: Colors.blue),
+                    ),
+                  ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 
-  
-  Future<void> _showDeleteConfirmationDialog(BuildContext context, int memberId) async {
+  Future<void> _showDeleteConfirmationDialog(
+    BuildContext context,
+    int memberId,
+  ) async {
     bool isDeleting = false;
 
     return showDialog<void>(
@@ -388,64 +504,92 @@ class _MemberListState extends State<MemberList> {
               children: [
                 AlertDialog(
                   backgroundColor: Colors.grey[800],
-                  title: const Text('Confirm Delete', style: TextStyle(color: Colors.white)),
+                  title: const Text(
+                    'Confirm Delete',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   content: const SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
-                        Text('Are you sure you want to delete this member?', style: TextStyle(color: Colors.white)),
+                        Text(
+                          'Are you sure you want to delete this member?',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('No', style: TextStyle(color: Colors.white)),
-                      onPressed: isDeleting
-                          ? null
-                          : () {
-                              Navigator.of(context).pop();
-                            },
+                      onPressed:
+                          isDeleting
+                              ? null
+                              : () {
+                                Navigator.of(context).pop();
+                              },
+                      child: const Text(
+                        'No',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
-                      child: const Text('Yes', style: TextStyle(color: Colors.red)),
-                      onPressed: isDeleting
-                          ? null
-                          : () async {
-                              setState(() {
-                                isDeleting = true;
-                              });
-                              final response = await http.delete(
-                                Uri.parse("http://stewardshipapi.test/api/manage-members/delete/$memberId"),
-                              );
+                      onPressed:
+                          isDeleting
+                              ? null
+                              : () async {
+                                setState(() {
+                                  isDeleting = true;
+                                });
+                                final response = await http.delete(
+                                  Uri.parse(
+                                    "http://stewardshipapi.test/api/manage-members/delete/$memberId",
+                                  ),
+                                );
 
-                              logger.d('Delete Member Response: ${response.statusCode}, ${response.body}');
+                                logger.d(
+                                  'Delete Member Response: ${response.statusCode}, ${response.body}',
+                                );
 
-                              setState(() {
-                                isDeleting = false;
-                              });
-                            
-                              if (response.statusCode == 200) {
-                                final responseData = jsonDecode(response.body);
-                                if (responseData['code'] == 200) {
-                                  _fetchMembers();
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.of(context).pop();
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                setState(() {
+                                  isDeleting = false;
+                                });
+
+                                if (response.statusCode == 200) {
+                                  final responseData = jsonDecode(
+                                    response.body,
                                   );
+                                  if (responseData['code'] == 200) {
+                                    _fetchMembers();
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                    const SnackBar(
+                                      content: Text(
+                                        'Failed to connect to the server',
+                                      ),
+                                    ),
                                   );
                                 }
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Failed to connect to the server')),
-                                );
-                              }
-                            },
+                              },
+                      child: const Text(
+                        'Yes',
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
                   ],
                 ),
@@ -463,15 +607,22 @@ class _MemberListState extends State<MemberList> {
       },
     );
   }
-  
+
   void filterSearch(String query) {
     setState(() {
-      filteredMembers = members
-          .where((member) =>
-              member['first_name'].toLowerCase().contains(query.toLowerCase()) ||
-              member['last_name'].toLowerCase().contains(query.toLowerCase()) ||
-              member['email'].toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      filteredMembers =
+          members
+              .where(
+                (member) =>
+                    member['first_name'].toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                    member['last_name'].toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                    member['email'].toLowerCase().contains(query.toLowerCase()),
+              )
+              .toList();
     });
   }
 
@@ -518,7 +669,10 @@ class _MemberListState extends State<MemberList> {
                     ),
                     columns: const [
                       DataColumn(
-                        label: Text("ID", style: TextStyle(color: Colors.white)),
+                        label: Text(
+                          "ID",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                       DataColumn(
                         label: Text(
@@ -557,97 +711,107 @@ class _MemberListState extends State<MemberList> {
                         ),
                       ),
                     ],
-                    rows: filteredMembers.map((member) {
-                      return DataRow(
-                        cells: [
-                          DataCell(
-                            Text(
-                              "ID${member['member_id']}",
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          DataCell(
-                            Text(
-                              "${member['first_name']} ${member['last_name']}",
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          DataCell(
-                            Text(
-                              member['birthdate'],
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          DataCell(
-                            Text(
-                              member['phone'],
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          DataCell(
-                            Text(
-                              member['email'],
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          DataCell(
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: member['status'] == 1 ? Colors.green : Colors.red,
-                                borderRadius: BorderRadius.circular(5),
+                    rows:
+                        filteredMembers.map((member) {
+                          return DataRow(
+                            cells: [
+                              DataCell(
+                                Text(
+                                  "ID${member['member_id']}",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                               ),
-                              child: Text(
-                                member['status'] == 1 ? "Active" : "Inactive",
-                                style: const TextStyle(color: Colors.white),
+                              DataCell(
+                                Text(
+                                  "${member['first_name']} ${member['last_name']}",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                               ),
-                            ),
-                          ),
-                          DataCell(
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.remove_red_eye,
-                                    color: Colors.blueGrey,
-                                  ),
-                                  onPressed: () {
-                                    // _showEditDialog(context, member);
-                                  },
+                              DataCell(
+                                Text(
+                                  member['birthdate'],
+                                  style: const TextStyle(color: Colors.white),
                                 ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.blue,
-                                  ),
-                                  onPressed: () {
-                                    _showEditDialog(context, member);
-                                  },
+                              ),
+                              DataCell(
+                                Text(
+                                  member['phone'],
+                                  style: const TextStyle(color: Colors.white),
                                 ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    _showDeleteConfirmationDialog(context, member['member_id']);
-                                  },
+                              ),
+                              DataCell(
+                                Text(
+                                  member['email'],
+                                  style: const TextStyle(color: Colors.white),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    }).toList(),
+                              ),
+                              DataCell(
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        member['status'] == 1
+                                            ? Colors.green
+                                            : Colors.red,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Text(
+                                    member['status'] == 1
+                                        ? "Active"
+                                        : "Inactive",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              DataCell(
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.remove_red_eye,
+                                        color: Colors.blueGrey,
+                                      ),
+                                      onPressed: () {
+                                        // _showEditDialog(context, member);
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Colors.blue,
+                                      ),
+                                      onPressed: () {
+                                        _showEditDialog(context, member);
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        _showDeleteConfirmationDialog(
+                                          context,
+                                          member['member_id'],
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList(),
                   ),
                 ),
               ),
             ],
           ),
           if (_isLoading)
-            const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            ),
+            const Center(child: CircularProgressIndicator(color: Colors.white)),
         ],
       ),
     );

@@ -15,7 +15,6 @@
 //   }
 // }
 
-import 'package:admin_dashboard/screens/church/addchurch.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -55,7 +54,9 @@ class _ChurchListState extends State<ChurchList> {
       Uri.parse("http://stewardshipapi.test/api/manage-churches/list"),
     );
 
-    logger.d('Fetch Churches Response: ${response.statusCode}, ${response.body}');
+    logger.d(
+      'Fetch Churches Response: ${response.statusCode}, ${response.body}',
+    );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -71,15 +72,24 @@ class _ChurchListState extends State<ChurchList> {
 
   void filterSearch(String query) {
     setState(() {
-      filteredChurches = churches
-          .where((church) =>
-              church['church_name'].toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      filteredChurches =
+          churches
+              .where(
+                (church) => church['church_name'].toLowerCase().contains(
+                  query.toLowerCase(),
+                ),
+              )
+              .toList();
     });
   }
 
-  Future<void> _showEditDialog(BuildContext context, Map<String, dynamic> church) async {
-    TextEditingController churchNameController = TextEditingController(text: church['church_name']);
+  Future<void> _showEditDialog(
+    BuildContext context,
+    Map<String, dynamic> church,
+  ) async {
+    TextEditingController churchNameController = TextEditingController(
+      text: church['church_name'],
+    );
     bool isUpdating = false;
 
     return showDialog<void>(
@@ -91,7 +101,10 @@ class _ChurchListState extends State<ChurchList> {
               children: [
                 AlertDialog(
                   backgroundColor: Colors.grey[800],
-                  title: const Text('Edit Church', style: TextStyle(color: Colors.white)),
+                  title: const Text(
+                    'Edit Church',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   content: SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
@@ -101,8 +114,12 @@ class _ChurchListState extends State<ChurchList> {
                           decoration: const InputDecoration(
                             labelText: 'Church Name',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                         ),
                         DropdownButtonFormField<int>(
@@ -112,17 +129,27 @@ class _ChurchListState extends State<ChurchList> {
                           decoration: const InputDecoration(
                             labelText: 'Status',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                           items: const [
                             DropdownMenuItem(
                               value: 1,
-                              child: Text('Active', style: TextStyle(color: Colors.white)),
+                              child: Text(
+                                'Active',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                             DropdownMenuItem(
                               value: 0,
-                              child: Text('Inactive', style: TextStyle(color: Colors.white)),
+                              child: Text(
+                                'Inactive',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ],
                           onChanged: (int? newValue) {
@@ -134,59 +161,81 @@ class _ChurchListState extends State<ChurchList> {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('Cancel', style: TextStyle(color: Colors.white)),
-                      onPressed: isUpdating
-                          ? null
-                          : () {
-                              Navigator.of(context).pop();
-                            },
+                      onPressed:
+                          isUpdating
+                              ? null
+                              : () {
+                                Navigator.of(context).pop();
+                              },
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
-                      child: const Text('Update', style: TextStyle(color: Colors.blue)),
-                      onPressed: isUpdating
-                          ? null
-                          : () async {
-                              setState(() {
-                                isUpdating = true;
-                              });
-                              final response = await http.post(
-                                Uri.parse("http://stewardshipapi.test/api/manage-churches/update/${church['church_id']}"),
-                                body: {
-                                  'church_name': churchNameController.text,
-                                  'status': church['status'].toString(),
-                                },
-                              );
+                      onPressed:
+                          isUpdating
+                              ? null
+                              : () async {
+                                setState(() {
+                                  isUpdating = true;
+                                });
+                                final response = await http.post(
+                                  Uri.parse(
+                                    "http://stewardshipapi.test/api/manage-churches/update/${church['church_id']}",
+                                  ),
+                                  body: {
+                                    'church_name': churchNameController.text,
+                                    'status': church['status'].toString(),
+                                  },
+                                );
 
-                              logger.d('Update Church Response: ${response.statusCode}, ${response.body}');
+                                logger.d(
+                                  'Update Church Response: ${response.statusCode}, ${response.body}',
+                                );
 
-                              setState(() {
-                                isUpdating = false;
-                              });
+                                setState(() {
+                                  isUpdating = false;
+                                });
 
-                              if (response.statusCode == 200) {
-                                final responseData = jsonDecode(response.body);
-                                if (responseData['code'] == 200) {
-                                  _fetchChurchesWithLoading();
-                                  logger.d('Update Church Response: $filteredChurches');
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.of(context).pop();
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                if (response.statusCode == 200) {
+                                  final responseData = jsonDecode(
+                                    response.body,
                                   );
+                                  if (responseData['code'] == 200) {
+                                    _fetchChurchesWithLoading();
+                                    logger.d(
+                                      'Update Church Response: $filteredChurches',
+                                    );
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                    const SnackBar(
+                                      content: Text('Failed to update church'),
+                                    ),
                                   );
                                 }
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Failed to update church')),
-                                );
-                              }
-                            },
+                              },
+                      child: const Text(
+                        'Update',
+                        style: TextStyle(color: Colors.blue),
+                      ),
                     ),
                   ],
                 ),
@@ -205,7 +254,10 @@ class _ChurchListState extends State<ChurchList> {
     );
   }
 
-  Future<void> _showDeleteConfirmationDialog(BuildContext context, int churchId) async {
+  Future<void> _showDeleteConfirmationDialog(
+    BuildContext context,
+    int churchId,
+  ) async {
     bool isDeleting = false;
 
     return showDialog<void>(
@@ -217,64 +269,92 @@ class _ChurchListState extends State<ChurchList> {
               children: [
                 AlertDialog(
                   backgroundColor: Colors.grey[800],
-                  title: const Text('Confirm Delete', style: TextStyle(color: Colors.white)),
+                  title: const Text(
+                    'Confirm Delete',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   content: const SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
-                        Text('Are you sure you want to delete this church?', style: TextStyle(color: Colors.white)),
+                        Text(
+                          'Are you sure you want to delete this church?',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('No', style: TextStyle(color: Colors.white)),
-                      onPressed: isDeleting
-                          ? null
-                          : () {
-                              Navigator.of(context).pop();
-                            },
+                      onPressed:
+                          isDeleting
+                              ? null
+                              : () {
+                                Navigator.of(context).pop();
+                              },
+                      child: const Text(
+                        'No',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
-                      child: const Text('Yes', style: TextStyle(color: Colors.red)),
-                      onPressed: isDeleting
-                          ? null
-                          : () async {
-                              setState(() {
-                                isDeleting = true;
-                              });
-                              final response = await http.delete(
-                                Uri.parse("http://stewardshipapi.test/api/manage-churches/delete/$churchId"),
-                              );
+                      onPressed:
+                          isDeleting
+                              ? null
+                              : () async {
+                                setState(() {
+                                  isDeleting = true;
+                                });
+                                final response = await http.delete(
+                                  Uri.parse(
+                                    "http://stewardshipapi.test/api/manage-churches/delete/$churchId",
+                                  ),
+                                );
 
-                              logger.d('Delete Church Response: ${response.statusCode}, ${response.body}');
+                                logger.d(
+                                  'Delete Church Response: ${response.statusCode}, ${response.body}',
+                                );
 
-                              setState(() {
-                                isDeleting = false;
-                              });
-                            
-                              if (response.statusCode == 200) {
-                                final responseData = jsonDecode(response.body);
-                                if (responseData['code'] == 200) {
-                                  _fetchChurchesWithLoading();
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.of(context).pop();
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                setState(() {
+                                  isDeleting = false;
+                                });
+
+                                if (response.statusCode == 200) {
+                                  final responseData = jsonDecode(
+                                    response.body,
                                   );
+                                  if (responseData['code'] == 200) {
+                                    _fetchChurchesWithLoading();
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                    const SnackBar(
+                                      content: Text(
+                                        'Failed to connect to the server',
+                                      ),
+                                    ),
                                   );
                                 }
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Failed to connect to the server')),
-                                );
-                              }
-                            },
+                              },
+                      child: const Text(
+                        'Yes',
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
                   ],
                 ),
@@ -293,7 +373,6 @@ class _ChurchListState extends State<ChurchList> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -302,124 +381,149 @@ class _ChurchListState extends State<ChurchList> {
         title: const Text("Church List"),
         backgroundColor: Colors.black,
       ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            )
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: TextField(
-                    onChanged: filterSearch,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: "Search Church...",
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      prefixIcon: const Icon(Icons.search, color: Colors.white),
-                      filled: true,
-                      fillColor: Colors.grey[900],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
+      body:
+          _isLoading
+              ? const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              )
+              : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      onChanged: filterSearch,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: "Search Church...",
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[900],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: DataTable(
-                      columnSpacing: 50, // Widen column spacing
-                      headingRowColor: WidgetStateColor.resolveWith(
-                        (states) => Colors.grey[900]!,
-                      ),
-                      dataRowColor: WidgetStateColor.resolveWith(
-                        (states) => Colors.grey[850]!,
-                      ),
-                      columns: const [
-                        DataColumn(
-                          label: Text("ID", style: TextStyle(color: Colors.white)),
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: DataTable(
+                        columnSpacing: 50, // Widen column spacing
+                        headingRowColor: WidgetStateColor.resolveWith(
+                          (states) => Colors.grey[900]!,
                         ),
-                        DataColumn(
-                          label: Text(
-                            "Church Name",
-                            style: TextStyle(color: Colors.white),
-                          ),
+                        dataRowColor: WidgetStateColor.resolveWith(
+                          (states) => Colors.grey[850]!,
                         ),
-                        DataColumn(
-                          label: Text(
-                            "Status",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Text(
-                            "Action",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                      rows: filteredChurches.map((church) {
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              Text(
-                                "ID${church['church_id']}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                        columns: const [
+                          DataColumn(
+                            label: Text(
+                              "ID",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Text(
-                                "${church['church_name']}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Church Name",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: church['status'] == 1 ? Colors.green : Colors.red,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Text(
-                                  church['status'] == 1 ? "Active" : "Inactive",
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Status",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Action",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                        rows:
+                            filteredChurches.map((church) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(
+                                    Text(
+                                      "ID${church['church_id']}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      _showEditDialog(context, church);
-                                    },
                                   ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
+                                  DataCell(
+                                    Text(
+                                      "${church['church_name']}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      _showDeleteConfirmationDialog(context, church['church_id']);
-                                    },
+                                  ),
+                                  DataCell(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            church['status'] == 1
+                                                ? Colors.green
+                                                : Colors.red,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Text(
+                                        church['status'] == 1
+                                            ? "Active"
+                                            : "Inactive",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.edit,
+                                            color: Colors.blue,
+                                          ),
+                                          onPressed: () {
+                                            _showEditDialog(context, church);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            _showDeleteConfirmationDialog(
+                                              context,
+                                              church['church_id'],
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                              );
+                            }).toList(),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
     );
   }
 }

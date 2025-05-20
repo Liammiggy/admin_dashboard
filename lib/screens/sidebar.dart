@@ -201,7 +201,7 @@ class _SidebarState extends State<Sidebar> {
   bool _claimsRequestExpanded = false;
 
   OverlayEntry? _overlayEntry;
-  GlobalKey _logoKey = GlobalKey();
+  final GlobalKey _logoKey = GlobalKey();
   final double _collapsedWidth = 70.0;
   final double _expandedWidth = 250.0;
   final double _iconSize = 24.0;
@@ -221,16 +221,17 @@ class _SidebarState extends State<Sidebar> {
       _overlayEntry = null;
     }
     _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        left: position.dx,
-        top: position.dy,
-        child: Material(
-          elevation: 8.0,
-          borderRadius: BorderRadius.circular(5),
-          color: const Color.fromARGB(255, 30, 30, 45),
-          child: menu,
-        ),
-      ),
+      builder:
+          (context) => Positioned(
+            left: position.dx,
+            top: position.dy,
+            child: Material(
+              elevation: 8.0,
+              borderRadius: BorderRadius.circular(5),
+              color: const Color.fromARGB(255, 30, 30, 45),
+              child: menu,
+            ),
+          ),
     );
     Overlay.of(context).insert(_overlayEntry!);
   }
@@ -269,14 +270,20 @@ class _SidebarState extends State<Sidebar> {
     return MouseRegion(
       onEnter: (_) {
         setState(() => _activeModule = title);
-        if (!widget.isSidebarOpen && subModules != null && subModules.isNotEmpty && _logoKey.currentContext != null) {
-          final RenderBox logoRenderBox = _logoKey.currentContext!.findRenderObject() as RenderBox;
-          final RenderBox? renderBox = _logoKey.currentContext?.findRenderObject() as RenderBox?;
+        if (!widget.isSidebarOpen &&
+            subModules != null &&
+            subModules.isNotEmpty &&
+            _logoKey.currentContext != null) {
+          final RenderBox logoRenderBox =
+              _logoKey.currentContext!.findRenderObject() as RenderBox;
+          final RenderBox? renderBox =
+              _logoKey.currentContext?.findRenderObject() as RenderBox?;
           Offset logoPosition = Offset.zero;
           if (renderBox != null) {
             logoPosition = logoRenderBox.localToGlobal(Offset.zero);
           }
-          double topOffset = logoPosition.dy + (renderBox?.size.height ?? _iconSize);
+          double topOffset =
+              logoPosition.dy + (renderBox?.size.height ?? _iconSize);
           _showPopupMenu(
             context,
             Offset(logoPosition.dx + _collapsedWidth, topOffset - _iconSize),
@@ -289,9 +296,10 @@ class _SidebarState extends State<Sidebar> {
         if (!widget.isSidebarOpen && _overlayEntry != null) {
           Future.delayed(const Duration(milliseconds: 100), () {
             if (_activeModule == "") {
-              if (_overlayEntry != null) { // Check if it's still there
-                 _overlayEntry?.remove();
-                 _overlayEntry = null;
+              if (_overlayEntry != null) {
+                // Check if it's still there
+                _overlayEntry?.remove();
+                _overlayEntry = null;
               }
             }
           });
@@ -303,9 +311,10 @@ class _SidebarState extends State<Sidebar> {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
           decoration: BoxDecoration(
-            color: _activeModule == title
-                ? const Color.fromRGBO(67, 94, 190, 1)
-                : Colors.transparent,
+            color:
+                _activeModule == title
+                    ? const Color.fromRGBO(67, 94, 190, 1)
+                    : Colors.transparent,
             borderRadius: BorderRadius.circular(5),
           ),
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -324,12 +333,14 @@ class _SidebarState extends State<Sidebar> {
                       child: Text(
                         title,
                         style: TextStyle(
-                          color: _activeModule == title
-                              ? const Color.fromARGB(255, 220, 220, 220)
-                              : Colors.white,
-                          fontWeight: _activeModule == title
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                          color:
+                              _activeModule == title
+                                  ? const Color.fromARGB(255, 220, 220, 220)
+                                  : Colors.white,
+                          fontWeight:
+                              _activeModule == title
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                         ),
                         overflow: TextOverflow.fade,
                         softWrap: false,
@@ -355,9 +366,10 @@ class _SidebarState extends State<Sidebar> {
             title,
             style: TextStyle(
               color: Colors.white70,
-              backgroundColor: _activeModule == title
-                  ? const Color.fromRGBO(67, 94, 190, 1)
-                  : Colors.transparent,
+              backgroundColor:
+                  _activeModule == title
+                      ? const Color.fromRGBO(67, 94, 190, 1)
+                      : Colors.transparent,
             ),
           ),
         ),
@@ -375,13 +387,16 @@ class _SidebarState extends State<Sidebar> {
       onEnter: (_) {
         setState(() => _activeModule = "Manage Users");
         if (!widget.isSidebarOpen && _logoKey.currentContext != null) {
-          final RenderBox logoRenderBox = _logoKey.currentContext!.findRenderObject() as RenderBox;
-          final RenderBox? renderBox = _logoKey.currentContext?.findRenderObject() as RenderBox?;
+          final RenderBox logoRenderBox =
+              _logoKey.currentContext!.findRenderObject() as RenderBox;
+          final RenderBox? renderBox =
+              _logoKey.currentContext?.findRenderObject() as RenderBox?;
           Offset logoPosition = Offset.zero;
           if (renderBox != null) {
             logoPosition = logoRenderBox.localToGlobal(Offset.zero);
           }
-          double topOffset = logoPosition.dy + (renderBox?.size.height ?? _iconSize);
+          double topOffset =
+              logoPosition.dy + (renderBox?.size.height ?? _iconSize);
           _showPopupMenu(
             context,
             Offset(logoPosition.dx + _collapsedWidth, topOffset - _iconSize),
@@ -394,18 +409,20 @@ class _SidebarState extends State<Sidebar> {
         if (!widget.isSidebarOpen && _overlayEntry != null) {
           Future.delayed(const Duration(milliseconds: 100), () {
             if (_activeModule == "") {
-              if (_overlayEntry != null) { // Check if it's still there
-                 _overlayEntry?.remove();
-                 _overlayEntry = null;
+              if (_overlayEntry != null) {
+                // Check if it's still there
+                _overlayEntry?.remove();
+                _overlayEntry = null;
               }
             }
           });
         }
       },
       child: Material(
-        color: _activeModule == "Manage Users"
-            ? const Color.fromRGBO(67, 94, 190, 1)
-            : Colors.transparent,
+        color:
+            _activeModule == "Manage Users"
+                ? const Color.fromRGBO(67, 94, 190, 1)
+                : Colors.transparent,
         child: ExpansionTile(
           leading: Icon(Icons.person, color: Colors.white70, size: _iconSize),
           title: AnimatedOpacity(
@@ -420,8 +437,8 @@ class _SidebarState extends State<Sidebar> {
             ),
           ),
           initiallyExpanded: _manageUsersExpanded,
-          onExpansionChanged: (expanded) =>
-              setState(() => _manageUsersExpanded = expanded),
+          onExpansionChanged:
+              (expanded) => setState(() => _manageUsersExpanded = expanded),
           children: widget.isSidebarOpen ? subModules : [],
         ),
       ),
@@ -438,13 +455,16 @@ class _SidebarState extends State<Sidebar> {
       onEnter: (_) {
         setState(() => _activeModule = "Membership");
         if (!widget.isSidebarOpen && _logoKey.currentContext != null) {
-          final RenderBox logoRenderBox = _logoKey.currentContext!.findRenderObject() as RenderBox;
-          final RenderBox? renderBox = _logoKey.currentContext?.findRenderObject() as RenderBox?;
+          final RenderBox logoRenderBox =
+              _logoKey.currentContext!.findRenderObject() as RenderBox;
+          final RenderBox? renderBox =
+              _logoKey.currentContext?.findRenderObject() as RenderBox?;
           Offset logoPosition = Offset.zero;
           if (renderBox != null) {
             logoPosition = logoRenderBox.localToGlobal(Offset.zero);
           }
-          double topOffset = logoPosition.dy + (renderBox?.size.height ?? _iconSize);
+          double topOffset =
+              logoPosition.dy + (renderBox?.size.height ?? _iconSize);
           _showPopupMenu(
             context,
             Offset(logoPosition.dx + _collapsedWidth, topOffset - _iconSize),
@@ -456,8 +476,9 @@ class _SidebarState extends State<Sidebar> {
         setState(() => _activeModule = "");
         if (!widget.isSidebarOpen && _overlayEntry != null) {
           Future.delayed(const Duration(milliseconds: 100), () {
-             if (_activeModule == "") {
-              if (_overlayEntry != null) { //check
+            if (_activeModule == "") {
+              if (_overlayEntry != null) {
+                //check
                 _overlayEntry?.remove();
                 _overlayEntry = null;
               }
@@ -466,11 +487,16 @@ class _SidebarState extends State<Sidebar> {
         }
       },
       child: Material(
-        color: _activeModule == "Membership"
-            ? const Color.fromRGBO(67, 94, 190, 1)
-            : Colors.transparent,
+        color:
+            _activeModule == "Membership"
+                ? const Color.fromRGBO(67, 94, 190, 1)
+                : Colors.transparent,
         child: ExpansionTile(
-          leading: Icon(Icons.group_work, color: Colors.white70, size: _iconSize),
+          leading: Icon(
+            Icons.group_work,
+            color: Colors.white70,
+            size: _iconSize,
+          ),
           title: AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
             opacity: widget.isSidebarOpen ? 1 : 0,
@@ -483,8 +509,8 @@ class _SidebarState extends State<Sidebar> {
             ),
           ),
           initiallyExpanded: _membershipExpanded,
-          onExpansionChanged: (expanded) =>
-              setState(() => _membershipExpanded = expanded),
+          onExpansionChanged:
+              (expanded) => setState(() => _membershipExpanded = expanded),
           children: widget.isSidebarOpen ? subModules : [],
         ),
       ),
@@ -500,13 +526,16 @@ class _SidebarState extends State<Sidebar> {
       onEnter: (_) {
         setState(() => _activeModule = "Pastor");
         if (!widget.isSidebarOpen && _logoKey.currentContext != null) {
-          final RenderBox logoRenderBox = _logoKey.currentContext!.findRenderObject() as RenderBox;
-          final RenderBox? renderBox = _logoKey.currentContext?.findRenderObject() as RenderBox?;
+          final RenderBox logoRenderBox =
+              _logoKey.currentContext!.findRenderObject() as RenderBox;
+          final RenderBox? renderBox =
+              _logoKey.currentContext?.findRenderObject() as RenderBox?;
           Offset logoPosition = Offset.zero;
           if (renderBox != null) {
             logoPosition = logoRenderBox.localToGlobal(Offset.zero);
           }
-          double topOffset = logoPosition.dy + (renderBox?.size.height ?? _iconSize);
+          double topOffset =
+              logoPosition.dy + (renderBox?.size.height ?? _iconSize);
           _showPopupMenu(
             context,
             Offset(logoPosition.dx + _collapsedWidth, topOffset - _iconSize),
@@ -519,7 +548,8 @@ class _SidebarState extends State<Sidebar> {
         if (!widget.isSidebarOpen && _overlayEntry != null) {
           Future.delayed(const Duration(milliseconds: 100), () {
             if (_activeModule == "") {
-              if (_overlayEntry != null) { //check
+              if (_overlayEntry != null) {
+                //check
                 _overlayEntry?.remove();
                 _overlayEntry = null;
               }
@@ -528,11 +558,16 @@ class _SidebarState extends State<Sidebar> {
         }
       },
       child: Material(
-        color: _activeModule == "Pastor"
-            ? const Color.fromRGBO(67, 94, 190, 1)
-            : Colors.transparent,
+        color:
+            _activeModule == "Pastor"
+                ? const Color.fromRGBO(67, 94, 190, 1)
+                : Colors.transparent,
         child: ExpansionTile(
-          leading: Icon(Icons.volunteer_activism, color: Colors.white70, size: _iconSize),
+          leading: Icon(
+            Icons.volunteer_activism,
+            color: Colors.white70,
+            size: _iconSize,
+          ),
           title: AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
             opacity: widget.isSidebarOpen ? 1 : 0,
@@ -545,8 +580,8 @@ class _SidebarState extends State<Sidebar> {
             ),
           ),
           initiallyExpanded: _pastorExpanded,
-          onExpansionChanged: (expanded) =>
-              setState(() => _pastorExpanded = expanded),
+          onExpansionChanged:
+              (expanded) => setState(() => _pastorExpanded = expanded),
           children: widget.isSidebarOpen ? subModules : [],
         ),
       ),
@@ -562,13 +597,16 @@ class _SidebarState extends State<Sidebar> {
       onEnter: (_) {
         setState(() => _activeModule = "Churchs");
         if (!widget.isSidebarOpen && _logoKey.currentContext != null) {
-          final RenderBox logoRenderBox = _logoKey.currentContext!.findRenderObject() as RenderBox;
-          final RenderBox? renderBox = _logoKey.currentContext?.findRenderObject() as RenderBox?;
+          final RenderBox logoRenderBox =
+              _logoKey.currentContext!.findRenderObject() as RenderBox;
+          final RenderBox? renderBox =
+              _logoKey.currentContext?.findRenderObject() as RenderBox?;
           Offset logoPosition = Offset.zero;
           if (renderBox != null) {
             logoPosition = logoRenderBox.localToGlobal(Offset.zero);
           }
-          double topOffset = logoPosition.dy + (renderBox?.size.height ?? _iconSize);
+          double topOffset =
+              logoPosition.dy + (renderBox?.size.height ?? _iconSize);
           _showPopupMenu(
             context,
             Offset(logoPosition.dx + _collapsedWidth, topOffset - _iconSize),
@@ -580,8 +618,9 @@ class _SidebarState extends State<Sidebar> {
         setState(() => _activeModule = "");
         if (!widget.isSidebarOpen && _overlayEntry != null) {
           Future.delayed(const Duration(milliseconds: 100), () {
-             if (_activeModule == "") {
-              if (_overlayEntry != null) { //check
+            if (_activeModule == "") {
+              if (_overlayEntry != null) {
+                //check
                 _overlayEntry?.remove();
                 _overlayEntry = null;
               }
@@ -590,9 +629,10 @@ class _SidebarState extends State<Sidebar> {
         }
       },
       child: Material(
-        color: _activeModule == "Churchs"
-            ? const Color.fromRGBO(67, 94, 190, 1)
-            : Colors.transparent,
+        color:
+            _activeModule == "Churchs"
+                ? const Color.fromRGBO(67, 94, 190, 1)
+                : Colors.transparent,
         child: ExpansionTile(
           leading: Icon(Icons.church, color: Colors.white70, size: _iconSize),
           title: AnimatedOpacity(
@@ -607,8 +647,8 @@ class _SidebarState extends State<Sidebar> {
             ),
           ),
           initiallyExpanded: _churchExpanded,
-          onExpansionChanged: (expanded) =>
-              setState(() => _churchExpanded = expanded),
+          onExpansionChanged:
+              (expanded) => setState(() => _churchExpanded = expanded),
           children: widget.isSidebarOpen ? subModules : [],
         ),
       ),
@@ -624,13 +664,16 @@ class _SidebarState extends State<Sidebar> {
       onEnter: (_) {
         setState(() => _activeModule = "Organization");
         if (!widget.isSidebarOpen && _logoKey.currentContext != null) {
-          final RenderBox logoRenderBox = _logoKey.currentContext!.findRenderObject() as RenderBox;
-          final RenderBox? renderBox = _logoKey.currentContext?.findRenderObject() as RenderBox?;
+          final RenderBox logoRenderBox =
+              _logoKey.currentContext!.findRenderObject() as RenderBox;
+          final RenderBox? renderBox =
+              _logoKey.currentContext?.findRenderObject() as RenderBox?;
           Offset logoPosition = Offset.zero;
           if (renderBox != null) {
             logoPosition = logoRenderBox.localToGlobal(Offset.zero);
           }
-          double topOffset = logoPosition.dy + (renderBox?.size.height ?? _iconSize);
+          double topOffset =
+              logoPosition.dy + (renderBox?.size.height ?? _iconSize);
           _showPopupMenu(
             context,
             Offset(logoPosition.dx + _collapsedWidth, topOffset - _iconSize),
@@ -643,7 +686,8 @@ class _SidebarState extends State<Sidebar> {
         if (!widget.isSidebarOpen && _overlayEntry != null) {
           Future.delayed(const Duration(milliseconds: 100), () {
             if (_activeModule == "") {
-              if (_overlayEntry != null) { //check
+              if (_overlayEntry != null) {
+                //check
                 _overlayEntry?.remove();
                 _overlayEntry = null;
               }
@@ -652,11 +696,16 @@ class _SidebarState extends State<Sidebar> {
         }
       },
       child: Material(
-        color: _activeModule == "Organization"
-            ? const Color.fromRGBO(67, 94, 190, 1)
-            : Colors.transparent,
+        color:
+            _activeModule == "Organization"
+                ? const Color.fromRGBO(67, 94, 190, 1)
+                : Colors.transparent,
         child: ExpansionTile(
-          leading: Icon(Icons.account_tree, color: Colors.white70, size: _iconSize),
+          leading: Icon(
+            Icons.account_tree,
+            color: Colors.white70,
+            size: _iconSize,
+          ),
           title: AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
             opacity: widget.isSidebarOpen ? 1 : 0,
@@ -669,8 +718,8 @@ class _SidebarState extends State<Sidebar> {
             ),
           ),
           initiallyExpanded: _organizationExpanded,
-          onExpansionChanged: (expanded) =>
-              setState(() => _organizationExpanded = expanded),
+          onExpansionChanged:
+              (expanded) => setState(() => _organizationExpanded = expanded),
           children: widget.isSidebarOpen ? subModules : [],
         ),
       ),
@@ -681,19 +730,23 @@ class _SidebarState extends State<Sidebar> {
     List<Widget> subModules = [
       _buildSubModuleItem("Incident Management", "Claims_Request"),
       _buildSubModuleItem("New Request", "add_org"),
-      _buildSubModuleItem("Releasing", "orglist"),
+      _buildSubModuleItem("Request Approval", "request_approval"),
+      _buildSubModuleItem("Releasing", "release_disbursement"),
     ];
     return MouseRegion(
       onEnter: (_) {
         setState(() => _activeModule = "ClaimsRequest");
         if (!widget.isSidebarOpen && _logoKey.currentContext != null) {
-          final RenderBox logoRenderBox = _logoKey.currentContext!.findRenderObject() as RenderBox;
-          final RenderBox? renderBox = _logoKey.currentContext?.findRenderObject() as RenderBox?;
+          final RenderBox logoRenderBox =
+              _logoKey.currentContext!.findRenderObject() as RenderBox;
+          final RenderBox? renderBox =
+              _logoKey.currentContext?.findRenderObject() as RenderBox?;
           Offset logoPosition = Offset.zero;
           if (renderBox != null) {
             logoPosition = logoRenderBox.localToGlobal(Offset.zero);
           }
-          double topOffset = logoPosition.dy + (renderBox?.size.height ?? _iconSize);
+          double topOffset =
+              logoPosition.dy + (renderBox?.size.height ?? _iconSize);
           _showPopupMenu(
             context,
             Offset(logoPosition.dx + _collapsedWidth, topOffset - _iconSize),
@@ -706,7 +759,8 @@ class _SidebarState extends State<Sidebar> {
         if (!widget.isSidebarOpen && _overlayEntry != null) {
           Future.delayed(const Duration(milliseconds: 100), () {
             if (_activeModule == "") {
-               if (_overlayEntry != null) { //check
+              if (_overlayEntry != null) {
+                //check
                 _overlayEntry?.remove();
                 _overlayEntry = null;
               }
@@ -715,11 +769,16 @@ class _SidebarState extends State<Sidebar> {
         }
       },
       child: Material(
-        color: _activeModule == "ClaimsRequest"
-            ? const Color.fromRGBO(67, 94, 190, 1)
-            : Colors.transparent,
+        color:
+            _activeModule == "ClaimsRequest"
+                ? const Color.fromRGBO(67, 94, 190, 1)
+                : Colors.transparent,
         child: ExpansionTile(
-          leading: Icon(Icons.request_page, color: Colors.white70, size: _iconSize),
+          leading: Icon(
+            Icons.request_page,
+            color: Colors.white70,
+            size: _iconSize,
+          ),
           title: AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
             opacity: widget.isSidebarOpen ? 1 : 0,
@@ -732,8 +791,8 @@ class _SidebarState extends State<Sidebar> {
             ),
           ),
           initiallyExpanded: _claimsRequestExpanded,
-          onExpansionChanged: (expanded) =>
-              setState(() => _claimsRequestExpanded = expanded),
+          onExpansionChanged:
+              (expanded) => setState(() => _claimsRequestExpanded = expanded),
           children: widget.isSidebarOpen ? subModules : [],
         ),
       ),

@@ -15,7 +15,6 @@
 //   }
 // }
 
-import 'package:admin_dashboard/screens/organization/add_organization.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -71,19 +70,35 @@ class _PastorList1State extends State<PastorList1> {
 
   void filterSearch(String query) {
     setState(() {
-      filteredOrgs = orgs
-          .where((org) =>
-              org['first_name'].toLowerCase().contains(query.toLowerCase()) ||
-              org['last_name'].toLowerCase().contains(query.toLowerCase()) ||
-              org['org_name'].toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      filteredOrgs =
+          orgs
+              .where(
+                (org) =>
+                    org['first_name'].toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                    org['last_name'].toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                    org['org_name'].toLowerCase().contains(query.toLowerCase()),
+              )
+              .toList();
     });
   }
 
-  Future<void> _showEditDialog(BuildContext context, Map<String, dynamic> org) async {
-    TextEditingController firstNameController = TextEditingController(text: org['first_name']);
-    TextEditingController lastNameController = TextEditingController(text: org['last_name']);
-    TextEditingController orgNameController = TextEditingController(text: org['org_name']);
+  Future<void> _showEditDialog(
+    BuildContext context,
+    Map<String, dynamic> org,
+  ) async {
+    TextEditingController firstNameController = TextEditingController(
+      text: org['first_name'],
+    );
+    TextEditingController lastNameController = TextEditingController(
+      text: org['last_name'],
+    );
+    TextEditingController orgNameController = TextEditingController(
+      text: org['org_name'],
+    );
     bool isUpdating = false;
 
     return showDialog<void>(
@@ -95,18 +110,25 @@ class _PastorList1State extends State<PastorList1> {
               children: [
                 AlertDialog(
                   backgroundColor: Colors.grey[800],
-                  title: const Text('Edit Org', style: TextStyle(color: Colors.white)),
+                  title: const Text(
+                    'Edit Org',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   content: SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
-                         TextField(
+                        TextField(
                           controller: orgNameController,
                           style: const TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
                             labelText: 'Org Name',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                         ),
                         TextField(
@@ -115,8 +137,12 @@ class _PastorList1State extends State<PastorList1> {
                           decoration: const InputDecoration(
                             labelText: 'First Name',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                         ),
                         TextField(
@@ -125,8 +151,12 @@ class _PastorList1State extends State<PastorList1> {
                           decoration: const InputDecoration(
                             labelText: 'Last Name',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                         ),
                         DropdownButtonFormField<int>(
@@ -136,17 +166,27 @@ class _PastorList1State extends State<PastorList1> {
                           decoration: const InputDecoration(
                             labelText: 'Status',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                           items: const [
                             DropdownMenuItem(
                               value: 1,
-                              child: Text('Active', style: TextStyle(color: Colors.white)),
+                              child: Text(
+                                'Active',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                             DropdownMenuItem(
                               value: 0,
-                              child: Text('Inactive', style: TextStyle(color: Colors.white)),
+                              child: Text(
+                                'Inactive',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ],
                           onChanged: (int? newValue) {
@@ -158,61 +198,83 @@ class _PastorList1State extends State<PastorList1> {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('Cancel', style: TextStyle(color: Colors.white)),
-                      onPressed: isUpdating
-                          ? null
-                          : () {
-                              Navigator.of(context).pop();
-                            },
+                      onPressed:
+                          isUpdating
+                              ? null
+                              : () {
+                                Navigator.of(context).pop();
+                              },
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
-                      child: const Text('Update', style: TextStyle(color: Colors.blue)),
-                      onPressed: isUpdating
-                          ? null
-                          : () async {
-                              setState(() {
-                                isUpdating = true;
-                              });
-                              final response = await http.post(
-                                Uri.parse("http://stewardshipapi.test/api/manage-org/update/${org['org_id']}"),
-                                body: {
-                                  'first_name': firstNameController.text,
-                                  'last_name': lastNameController.text,
-                                  'org_name': orgNameController.text,
-                                  'status': org['status'].toString(),
-                                },
-                              );
+                      onPressed:
+                          isUpdating
+                              ? null
+                              : () async {
+                                setState(() {
+                                  isUpdating = true;
+                                });
+                                final response = await http.post(
+                                  Uri.parse(
+                                    "http://stewardshipapi.test/api/manage-org/update/${org['org_id']}",
+                                  ),
+                                  body: {
+                                    'first_name': firstNameController.text,
+                                    'last_name': lastNameController.text,
+                                    'org_name': orgNameController.text,
+                                    'status': org['status'].toString(),
+                                  },
+                                );
 
-                              logger.d('Update User Response: ${response.statusCode}, ${response.body}');
+                                logger.d(
+                                  'Update User Response: ${response.statusCode}, ${response.body}',
+                                );
 
-                              setState(() {
-                                isUpdating = false;
-                              });
+                                setState(() {
+                                  isUpdating = false;
+                                });
 
-                              if (response.statusCode == 200) {
-                                final responseData = jsonDecode(response.body);
-                                if (responseData['code'] == 200) {
-                                  _fetchOrgsWithLoading();
-                                  logger.d('Update User Response: $filteredOrgs');
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.of(context).pop();
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                if (response.statusCode == 200) {
+                                  final responseData = jsonDecode(
+                                    response.body,
                                   );
+                                  if (responseData['code'] == 200) {
+                                    _fetchOrgsWithLoading();
+                                    logger.d(
+                                      'Update User Response: $filteredOrgs',
+                                    );
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                    const SnackBar(
+                                      content: Text('Failed to update org'),
+                                    ),
                                   );
                                 }
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Failed to update org')),
-                                );
-                              }
-                            },
+                              },
+                      child: const Text(
+                        'Update',
+                        style: TextStyle(color: Colors.blue),
+                      ),
                     ),
                   ],
                 ),
@@ -231,7 +293,10 @@ class _PastorList1State extends State<PastorList1> {
     );
   }
 
-  Future<void> _showDeleteConfirmationDialog(BuildContext context, int orgId) async {
+  Future<void> _showDeleteConfirmationDialog(
+    BuildContext context,
+    int orgId,
+  ) async {
     bool isDeleting = false;
 
     return showDialog<void>(
@@ -243,64 +308,92 @@ class _PastorList1State extends State<PastorList1> {
               children: [
                 AlertDialog(
                   backgroundColor: Colors.grey[800],
-                  title: const Text('Confirm Delete', style: TextStyle(color: Colors.white)),
+                  title: const Text(
+                    'Confirm Delete',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   content: const SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
-                        Text('Are you sure you want to delete this organization?', style: TextStyle(color: Colors.white)),
+                        Text(
+                          'Are you sure you want to delete this organization?',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('No', style: TextStyle(color: Colors.white)),
-                      onPressed: isDeleting
-                          ? null
-                          : () {
-                              Navigator.of(context).pop();
-                            },
+                      onPressed:
+                          isDeleting
+                              ? null
+                              : () {
+                                Navigator.of(context).pop();
+                              },
+                      child: const Text(
+                        'No',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
-                      child: const Text('Yes', style: TextStyle(color: Colors.red)),
-                      onPressed: isDeleting
-                          ? null
-                          : () async {
-                              setState(() {
-                                isDeleting = true;
-                              });
-                              final response = await http.delete(
-                                Uri.parse("http://stewardshipapi.test/api/manage-org/delete/$orgId"),
-                              );
+                      onPressed:
+                          isDeleting
+                              ? null
+                              : () async {
+                                setState(() {
+                                  isDeleting = true;
+                                });
+                                final response = await http.delete(
+                                  Uri.parse(
+                                    "http://stewardshipapi.test/api/manage-org/delete/$orgId",
+                                  ),
+                                );
 
-                              logger.d('Delete Org Response: ${response.statusCode}, ${response.body}');
+                                logger.d(
+                                  'Delete Org Response: ${response.statusCode}, ${response.body}',
+                                );
 
-                              setState(() {
-                                isDeleting = false;
-                              });
-                            
-                              if (response.statusCode == 200) {
-                                final responseData = jsonDecode(response.body);
-                                if (responseData['code'] == 200) {
-                                  _fetchOrgsWithLoading();
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.of(context).pop();
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                setState(() {
+                                  isDeleting = false;
+                                });
+
+                                if (response.statusCode == 200) {
+                                  final responseData = jsonDecode(
+                                    response.body,
                                   );
+                                  if (responseData['code'] == 200) {
+                                    _fetchOrgsWithLoading();
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                    const SnackBar(
+                                      content: Text(
+                                        'Failed to connect to the server',
+                                      ),
+                                    ),
                                   );
                                 }
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Failed to connect to the server')),
-                                );
-                              }
-                            },
+                              },
+                      child: const Text(
+                        'Yes',
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
                   ],
                 ),
@@ -321,142 +414,169 @@ class _PastorList1State extends State<PastorList1> {
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black, // Dark theme background
       appBar: AppBar(
         title: const Text("Organization List"),
         backgroundColor: Colors.black,
       ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            )
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: TextField(
-                    onChanged: filterSearch,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: "Search Organization...",
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      prefixIcon: const Icon(Icons.search, color: Colors.white),
-                      filled: true,
-                      fillColor: Colors.grey[900],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
+      body:
+          _isLoading
+              ? const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              )
+              : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      onChanged: filterSearch,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: "Search Organization...",
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[900],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: DataTable(
-                      columnSpacing: 50, // Widen column spacing
-                      headingRowColor: WidgetStateColor.resolveWith(
-                        (states) => Colors.grey[900]!,
-                      ),
-                      dataRowColor: WidgetStateColor.resolveWith(
-                        (states) => Colors.grey[850]!,
-                      ),
-                      columns: const [
-                        DataColumn(
-                          label: Text("ID", style: TextStyle(color: Colors.white)),
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: DataTable(
+                        columnSpacing: 50, // Widen column spacing
+                        headingRowColor: WidgetStateColor.resolveWith(
+                          (states) => Colors.grey[900]!,
                         ),
-                        DataColumn(
-                          label: Text(
-                            "Organization Name",
-                            style: TextStyle(color: Colors.white),
-                          ),
+                        dataRowColor: WidgetStateColor.resolveWith(
+                          (states) => Colors.grey[850]!,
                         ),
-                        DataColumn(
-                          label: Text(
-                            "Owner Name",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Text(
-                            "Status",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Text(
-                            "Action",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                      rows: filteredOrgs.map((org) {
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              Text(
-                                "ID${org['org_id']}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                        columns: const [
+                          DataColumn(
+                            label: Text(
+                              "ID",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Text(
-                                "${org['org_name']}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Organization Name",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Text(
-                                "${org['first_name']} ${org['last_name']}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Owner Name",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: org['status'] == 1 ? Colors.green : Colors.red,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Text(
-                                  org['status'] == 1 ? "Active" : "Inactive",
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Status",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Action",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                        rows:
+                            filteredOrgs.map((org) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(
+                                    Text(
+                                      "ID${org['org_id']}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      _showEditDialog(context, org);
-                                    },
                                   ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
+                                  DataCell(
+                                    Text(
+                                      "${org['org_name']}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      _showDeleteConfirmationDialog(context, org['org_id']);
-                                    },
+                                  ),
+                                  DataCell(
+                                    Text(
+                                      "${org['first_name']} ${org['last_name']}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            org['status'] == 1
+                                                ? Colors.green
+                                                : Colors.red,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Text(
+                                        org['status'] == 1
+                                            ? "Active"
+                                            : "Inactive",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.edit,
+                                            color: Colors.blue,
+                                          ),
+                                          onPressed: () {
+                                            _showEditDialog(context, org);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            _showDeleteConfirmationDialog(
+                                              context,
+                                              org['org_id'],
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                              );
+                            }).toList(),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
     );
   }
 }

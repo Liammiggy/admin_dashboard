@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart'; // Import the logger package
@@ -51,33 +50,39 @@ class _Add_OrganizationState extends State<Add_Organization> {
             }),
           );
 
-          logger.d('Save Org Response: ${response.statusCode}, ${response.body}');
+          logger.d(
+            'Save Org Response: ${response.statusCode}, ${response.body}',
+          );
           final responseData = jsonDecode(response.body);
           if (response.statusCode == 200) {
             if (responseData['code'] == 200) {
               // ignore: use_build_context_synchronously
               Navigator.of(context).pop();
               // ignore: use_build_context_synchronously
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(responseData['msg'])),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(responseData['msg'])));
               _resetFields();
             } else {
               // ignore: use_build_context_synchronously
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(responseData['msg'])),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(responseData['msg'])));
             }
           } else {
             // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(responseData['msg'])),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(responseData['msg'])));
           }
         } catch (error) {
           // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("An error occurred.Please contact your Administrator.")),
+            const SnackBar(
+              content: Text(
+                "An error occurred.Please contact your Administrator.",
+              ),
+            ),
           );
         } finally {
           setState(() {
@@ -91,22 +96,23 @@ class _Add_OrganizationState extends State<Add_Organization> {
   Future<bool> _showConfirmationDialog() async {
     return await showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text("Confirm Submission"),
-            content: const Text(
-              "Are you sure you want to save this organization?",
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text("Cancel"),
+          builder:
+              (context) => AlertDialog(
+                title: const Text("Confirm Submission"),
+                content: const Text(
+                  "Are you sure you want to save this organization?",
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text("Cancel"),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text("Save"),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text("Save"),
-              ),
-            ],
-          ),
         ) ??
         false;
   }
@@ -117,7 +123,7 @@ class _Add_OrganizationState extends State<Add_Organization> {
       backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
       appBar: AppBar(
         title: const Text(
-          "Add New Organization",
+          "Add New Organizations",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color.fromRGBO(21, 21, 33, 1),
@@ -132,20 +138,45 @@ class _Add_OrganizationState extends State<Add_Organization> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildTextField("Organization Name", controller: _orgNameController),
+                    _buildTextField(
+                      "Organization Name",
+                      controller: _orgNameController,
+                    ),
                     Row(
                       children: [
-                        Expanded(child: _buildTextField("Firstname", controller: _firstNameController)),
+                        Expanded(
+                          child: _buildTextField(
+                            "Firstname",
+                            controller: _firstNameController,
+                          ),
+                        ),
                         const SizedBox(width: 10),
-                        Expanded(child: _buildTextField("Lastname", controller: _lastNameController)),
+                        Expanded(
+                          child: _buildTextField(
+                            "Lastname",
+                            controller: _lastNameController,
+                          ),
+                        ),
                       ],
                     ),
                     _buildDropdownField<int>(
                       labelText: "Status",
                       value: _selectedStatus,
                       items: const [
-                        DropdownMenuItem(value: 1, child: Text("Active", style: TextStyle(color: Colors.white))),
-                        DropdownMenuItem(value: 0, child: Text("Inactive", style: TextStyle(color: Colors.white))),
+                        DropdownMenuItem(
+                          value: 1,
+                          child: Text(
+                            "Active",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        DropdownMenuItem(
+                          value: 0,
+                          child: Text(
+                            "Inactive",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ],
                       onChanged: (int? newValue) {
                         setState(() {
@@ -160,7 +191,12 @@ class _Add_OrganizationState extends State<Add_Organization> {
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _submitForm,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(67, 94, 190, 1),
+                              backgroundColor: const Color.fromRGBO(
+                                67,
+                                94,
+                                190,
+                                1,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
                               ),
@@ -168,7 +204,10 @@ class _Add_OrganizationState extends State<Add_Organization> {
                             ),
                             child: const Text(
                               "Submit",
-                              style: TextStyle(fontSize: 16, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -190,7 +229,10 @@ class _Add_OrganizationState extends State<Add_Organization> {
                             ),
                             child: const Text(
                               "Reset",
-                              style: TextStyle(fontSize: 16, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -215,7 +257,12 @@ class _Add_OrganizationState extends State<Add_Organization> {
     );
   }
 
-  Widget _buildTextField(String label, {TextEditingController? controller, bool isPassword = false, TextInputType? keyboardType}) {
+  Widget _buildTextField(
+    String label, {
+    TextEditingController? controller,
+    bool isPassword = false,
+    TextInputType? keyboardType,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(

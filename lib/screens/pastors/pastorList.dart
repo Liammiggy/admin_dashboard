@@ -54,7 +54,9 @@ class _PastorListState extends State<PastorList> {
       Uri.parse("http://stewardshipapi.test/api/manage-pastors/list"),
     );
 
-    logger.d('Fetch Pastors Response: ${response.statusCode}, ${response.body}');
+    logger.d(
+      'Fetch Pastors Response: ${response.statusCode}, ${response.body}',
+    );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -68,19 +70,33 @@ class _PastorListState extends State<PastorList> {
     }
   }
 
-   void filterSearch(String query) {
+  void filterSearch(String query) {
     setState(() {
-      filteredPastors = pastors
-          .where((pastor) =>
-              pastor['first_name'].toLowerCase().contains(query.toLowerCase()) ||
-              pastor['last_name'].toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      filteredPastors =
+          pastors
+              .where(
+                (pastor) =>
+                    pastor['first_name'].toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ||
+                    pastor['last_name'].toLowerCase().contains(
+                      query.toLowerCase(),
+                    ),
+              )
+              .toList();
     });
   }
 
-  Future<void> _showEditDialog(BuildContext context, Map<String, dynamic> pastor) async {
-    TextEditingController firstNameController = TextEditingController(text: pastor['first_name']);
-    TextEditingController lastNameController = TextEditingController(text: pastor['last_name']);
+  Future<void> _showEditDialog(
+    BuildContext context,
+    Map<String, dynamic> pastor,
+  ) async {
+    TextEditingController firstNameController = TextEditingController(
+      text: pastor['first_name'],
+    );
+    TextEditingController lastNameController = TextEditingController(
+      text: pastor['last_name'],
+    );
     bool isUpdating = false;
 
     return showDialog<void>(
@@ -92,7 +108,10 @@ class _PastorListState extends State<PastorList> {
               children: [
                 AlertDialog(
                   backgroundColor: Colors.grey[800],
-                  title: const Text('Edit Pastor', style: TextStyle(color: Colors.white)),
+                  title: const Text(
+                    'Edit Pastor',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   content: SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
@@ -102,8 +121,12 @@ class _PastorListState extends State<PastorList> {
                           decoration: const InputDecoration(
                             labelText: 'First Name',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                         ),
                         TextField(
@@ -112,8 +135,12 @@ class _PastorListState extends State<PastorList> {
                           decoration: const InputDecoration(
                             labelText: 'Last Name',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                         ),
                         DropdownButtonFormField<int>(
@@ -123,17 +150,27 @@ class _PastorListState extends State<PastorList> {
                           decoration: const InputDecoration(
                             labelText: 'Status',
                             labelStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
                           ),
                           items: const [
                             DropdownMenuItem(
                               value: 1,
-                              child: Text('Active', style: TextStyle(color: Colors.white)),
+                              child: Text(
+                                'Active',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                             DropdownMenuItem(
                               value: 0,
-                              child: Text('Inactive', style: TextStyle(color: Colors.white)),
+                              child: Text(
+                                'Inactive',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ],
                           onChanged: (int? newValue) {
@@ -145,60 +182,82 @@ class _PastorListState extends State<PastorList> {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('Cancel', style: TextStyle(color: Colors.white)),
-                      onPressed: isUpdating
-                          ? null
-                          : () {
-                              Navigator.of(context).pop();
-                            },
+                      onPressed:
+                          isUpdating
+                              ? null
+                              : () {
+                                Navigator.of(context).pop();
+                              },
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
-                      child: const Text('Update', style: TextStyle(color: Colors.blue)),
-                      onPressed: isUpdating
-                          ? null
-                          : () async {
-                              setState(() {
-                                isUpdating = true;
-                              });
-                              final response = await http.post(
-                                Uri.parse("http://stewardshipapi.test/api/manage-pastors/update/${pastor['pastor_id']}"),
-                                body: {
-                                  'first_name': firstNameController.text,
-                                  'last_name': lastNameController.text,
-                                  'status': pastor['status'].toString(),
-                                },
-                              );
+                      onPressed:
+                          isUpdating
+                              ? null
+                              : () async {
+                                setState(() {
+                                  isUpdating = true;
+                                });
+                                final response = await http.post(
+                                  Uri.parse(
+                                    "http://stewardshipapi.test/api/manage-pastors/update/${pastor['pastor_id']}",
+                                  ),
+                                  body: {
+                                    'first_name': firstNameController.text,
+                                    'last_name': lastNameController.text,
+                                    'status': pastor['status'].toString(),
+                                  },
+                                );
 
-                              logger.d('Update Pastor Response: ${response.statusCode}, ${response.body}');
+                                logger.d(
+                                  'Update Pastor Response: ${response.statusCode}, ${response.body}',
+                                );
 
-                              setState(() {
-                                isUpdating = false;
-                              });
+                                setState(() {
+                                  isUpdating = false;
+                                });
 
-                              if (response.statusCode == 200) {
-                                final responseData = jsonDecode(response.body);
-                                if (responseData['code'] == 200) {
-                                  _fetchPastorsWithLoading();
-                                  logger.d('Update Pastor Response: $filteredPastors');
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.of(context).pop();
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                if (response.statusCode == 200) {
+                                  final responseData = jsonDecode(
+                                    response.body,
                                   );
+                                  if (responseData['code'] == 200) {
+                                    _fetchPastorsWithLoading();
+                                    logger.d(
+                                      'Update Pastor Response: $filteredPastors',
+                                    );
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                    const SnackBar(
+                                      content: Text('Failed to update user'),
+                                    ),
                                   );
                                 }
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Failed to update user')),
-                                );
-                              }
-                            },
+                              },
+                      child: const Text(
+                        'Update',
+                        style: TextStyle(color: Colors.blue),
+                      ),
                     ),
                   ],
                 ),
@@ -217,7 +276,10 @@ class _PastorListState extends State<PastorList> {
     );
   }
 
-  Future<void> _showDeleteConfirmationDialog(BuildContext context, int pastorId) async {
+  Future<void> _showDeleteConfirmationDialog(
+    BuildContext context,
+    int pastorId,
+  ) async {
     bool isDeleting = false;
 
     return showDialog<void>(
@@ -229,64 +291,92 @@ class _PastorListState extends State<PastorList> {
               children: [
                 AlertDialog(
                   backgroundColor: Colors.grey[800],
-                  title: const Text('Confirm Delete', style: TextStyle(color: Colors.white)),
+                  title: const Text(
+                    'Confirm Delete',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   content: const SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
-                        Text('Are you sure you want to delete this pastor?', style: TextStyle(color: Colors.white)),
+                        Text(
+                          'Are you sure you want to delete this pastor?',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: const Text('No', style: TextStyle(color: Colors.white)),
-                      onPressed: isDeleting
-                          ? null
-                          : () {
-                              Navigator.of(context).pop();
-                            },
+                      onPressed:
+                          isDeleting
+                              ? null
+                              : () {
+                                Navigator.of(context).pop();
+                              },
+                      child: const Text(
+                        'No',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     TextButton(
-                      child: const Text('Yes', style: TextStyle(color: Colors.red)),
-                      onPressed: isDeleting
-                          ? null
-                          : () async {
-                              setState(() {
-                                isDeleting = true;
-                              });
-                              final response = await http.delete(
-                                Uri.parse("http://stewardshipapi.test/api/manage-pastors/delete/$pastorId"),
-                              );
+                      onPressed:
+                          isDeleting
+                              ? null
+                              : () async {
+                                setState(() {
+                                  isDeleting = true;
+                                });
+                                final response = await http.delete(
+                                  Uri.parse(
+                                    "http://stewardshipapi.test/api/manage-pastors/delete/$pastorId",
+                                  ),
+                                );
 
-                              logger.d('Delete Pastor Response: ${response.statusCode}, ${response.body}');
+                                logger.d(
+                                  'Delete Pastor Response: ${response.statusCode}, ${response.body}',
+                                );
 
-                              setState(() {
-                                isDeleting = false;
-                              });
-                            
-                              if (response.statusCode == 200) {
-                                final responseData = jsonDecode(response.body);
-                                if (responseData['code'] == 200) {
-                                  _fetchPastorsWithLoading();
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.of(context).pop();
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                setState(() {
+                                  isDeleting = false;
+                                });
+
+                                if (response.statusCode == 200) {
+                                  final responseData = jsonDecode(
+                                    response.body,
                                   );
+                                  if (responseData['code'] == 200) {
+                                    _fetchPastorsWithLoading();
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  } else {
+                                    // ignore: use_build_context_synchronously
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(responseData['msg']),
+                                      ),
+                                    );
+                                  }
                                 } else {
                                   // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(responseData['msg'])),
+                                    const SnackBar(
+                                      content: Text(
+                                        'Failed to connect to the server',
+                                      ),
+                                    ),
                                   );
                                 }
-                              } else {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Failed to connect to the server')),
-                                );
-                              }
-                            },
+                              },
+                      child: const Text(
+                        'Yes',
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
                   ],
                 ),
@@ -313,124 +403,149 @@ class _PastorListState extends State<PastorList> {
         title: const Text("Pastor List"),
         backgroundColor: Colors.black,
       ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            )
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: TextField(
-                    onChanged: filterSearch,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: "Search Pastor...",
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      prefixIcon: const Icon(Icons.search, color: Colors.white),
-                      filled: true,
-                      fillColor: Colors.grey[900],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
+      body:
+          _isLoading
+              ? const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              )
+              : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      onChanged: filterSearch,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: "Search Pastor...",
+                        hintStyle: const TextStyle(color: Colors.white70),
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[900],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: DataTable(
-                      columnSpacing: 50, // Widen column spacing
-                      headingRowColor: WidgetStateColor.resolveWith(
-                        (states) => Colors.grey[900]!,
-                      ),
-                      dataRowColor: WidgetStateColor.resolveWith(
-                        (states) => Colors.grey[850]!,
-                      ),
-                      columns: const [
-                        DataColumn(
-                          label: Text("ID", style: TextStyle(color: Colors.white)),
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: DataTable(
+                        columnSpacing: 50, // Widen column spacing
+                        headingRowColor: WidgetStateColor.resolveWith(
+                          (states) => Colors.grey[900]!,
                         ),
-                        DataColumn(
-                          label: Text(
-                            "Name",
-                            style: TextStyle(color: Colors.white),
-                          ),
+                        dataRowColor: WidgetStateColor.resolveWith(
+                          (states) => Colors.grey[850]!,
                         ),
-                        DataColumn(
-                          label: Text(
-                            "Status",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Text(
-                            "Action",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                      rows: filteredPastors.map((pastor) {
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              Text(
-                                "ID${pastor['pastor_id']}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                        columns: const [
+                          DataColumn(
+                            label: Text(
+                              "ID",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Text(
-                                "${pastor['first_name']} ${pastor['last_name']}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Name",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: pastor['status'] == 1 ? Colors.green : Colors.red,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Text(
-                                  pastor['status'] == 1 ? "Active" : "Inactive",
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Status",
+                              style: TextStyle(color: Colors.white),
                             ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                          ),
+                          DataColumn(
+                            label: Text(
+                              "Action",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                        rows:
+                            filteredPastors.map((pastor) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(
+                                    Text(
+                                      "ID${pastor['pastor_id']}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      _showEditDialog(context, pastor);
-                                    },
                                   ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
+                                  DataCell(
+                                    Text(
+                                      "${pastor['first_name']} ${pastor['last_name']}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      _showDeleteConfirmationDialog(context, pastor['pastor_id']);
-                                    },
+                                  ),
+                                  DataCell(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            pastor['status'] == 1
+                                                ? Colors.green
+                                                : Colors.red,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Text(
+                                        pastor['status'] == 1
+                                            ? "Active"
+                                            : "Inactive",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.edit,
+                                            color: Colors.blue,
+                                          ),
+                                          onPressed: () {
+                                            _showEditDialog(context, pastor);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            _showDeleteConfirmationDialog(
+                                              context,
+                                              pastor['pastor_id'],
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                              );
+                            }).toList(),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
     );
   }
 }
